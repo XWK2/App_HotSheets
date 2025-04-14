@@ -1,0 +1,31 @@
+input[type=file]::file-selector-button {
+    border: 2px transparent;
+    color: #fff;
+    padding: .2em .4em;
+    border-radius: .2em;
+    background-color: #dc0032;
+    transition: 1s;
+  }
+  
+  input[type=file]::file-selector-button:hover {
+    background-color:  #9f0024;
+    color: #fff;
+    border: 2px transparent;
+  }
+
+  /* #botonpersonal{
+    input[type=file]::file-selector-button {
+      border: 2px transparent;
+      color: #fff;
+      padding: .2em .4em;
+      border-radius: .2em;
+      background-color: #dc0032;
+      transition: 1s;
+    }
+    
+    input[type=file]::file-selector-button:hover {
+      background-color:  #9f0024;
+      color: #fff;
+      border: 2px transparent;
+    }
+} */

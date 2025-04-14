@@ -1,0 +1,39 @@
+﻿<div [@routerTransition]>
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <h1>{{ "DevExpress" | localize }}</h1>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="content px-2">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Data Grid</h3>
+        </div>
+        <div class="card-body">
+          <app-data-grid></app-data-grid>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Pivot Grid</h3>
+        </div>
+        <div class="card-body">
+          <app-pivot-grid></app-pivot-grid>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Chart</h3>
+        </div>
+        <div class="card-body">
+          <app-chart></app-chart>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

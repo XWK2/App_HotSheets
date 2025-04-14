@@ -1,0 +1,172 @@
+<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1 class="denso-page-title"><i class="fas fa-truck-fast"></i>&nbsp;{{ 'Carriers' | localize }}</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body grid-content" [busy]="isTableLoading">
+                        <dx-data-grid
+                            keyExpr="id"
+                            [dataSource]="carriers"
+                            [allowColumnReordering]="false"
+                            [allowColumnResizing]="false"
+                            [columnAutoWidth]="true"
+                            (onEditCanceling)="onEditCanceling($event)"
+                            (onInitNewRow)="onInitNewRow($event)"
+                            (onEditingStart)="onEditingStart($event)"
+                            (onSaving)="onSavingCarrier($event)"
+                        >
+                            <dxo-toolbar>
+                                <dxi-item name="addRowButton" showText="always" caption="Test"> </dxi-item>
+                            </dxo-toolbar>
+
+                            <dxo-scrolling mode="none"></dxo-scrolling>
+                            <dxo-paging [pageSize]="20"></dxo-paging>
+                            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100]"></dxo-pager>
+                            <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+                            <dxo-header-filter [visible]="true"></dxo-header-filter>
+
+                            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+                            <dxi-column caption="ID" dataField="id" alignment="center" [width]="120" sortOrder="asc"></dxi-column>
+                            <dxi-column [caption]="'Name' | localize" dataField="name" [width]="350"></dxi-column>
+                            <dxi-column [caption]="'DivisorNumber' | localize" dataField="divisorNumber" [width]="180"></dxi-column>
+                            <dxi-column [caption]="'DocumentType' | localize" dataField="documentType.name" [width]="450"></dxi-column>
+                            <dxi-column [caption]="'Active' | localize" dataField="isActive" [width]="120"></dxi-column>
+                            <dxo-editing mode="popup" [allowUpdating]="true" [useIcons]="true"  [allowAdding]="true" [allowDeleting]="false">
+                                <dxo-popup title="CarrierInfo" [showTitle]="true" [width]="900" [height]="800" titleTemplate="titleTemplateAddCarrier">
+                                    <div *dxTemplate="let data of 'titleTemplateAddCarrier'" style="font-size: 16px">
+                                        <i class="dx-icon-product" style="font-size: 20px"></i> {{ 'CarrierInfo' | localize }}
+                                    </div>
+                                </dxo-popup>
+                                <dxo-form colCount="2" [disabled]="isLoadingData">
+                                    <dxi-item [label]="{ text: 'Name' | localize }" [colSpan]="2">
+                                        <div *dxTemplate>
+                                            <dx-text-box [(value)]="carriersChanges.name"></dx-text-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'DocumentType' | localize }" [colSpan]="2">
+                                        <div *dxTemplate>
+                                            <dx-select-box
+                                                displayExpr="fullName"
+                                                valueExpr="id"
+                                                [(value)]="carriersChanges.documentTypeId"
+                                                [items]="documentTypes"
+                                                [searchEnabled]="true"
+                                                (onValueChanged)="onDocumentTypeChanged($event)"
+                                            >
+                                            </dx-select-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'DivisorNumber' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-number-box format="#,##0.00" [(value)]="carriersChanges.divisorNumber"></dx-number-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'IsActive' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-check-box [(value)]="carriersChanges.isActive"> </dx-check-box>
+                                        </div>
+                                    </dxi-item>
+
+                                    <dxi-item [label]="{ text: '' }" [colSpan]="2">
+                                        <div *dxTemplate>
+                                            <dx-form labelLocation="top" colCount="2">
+                                                <dxi-item [colSpan]="1" [label]="{ text: 'Services' | localize }">
+                                                    <div *dxTemplate style="border: 1px solid #dee1e3">
+                                                        <dx-list
+                                                            #list
+                                                            [dataSource]="servicesDataSource"
+                                                            [height]="450"
+                                                            [selectionMode]="'all'"
+                                                            [selectAllMode]="'allPages'"
+                                                            [showSelectionControls]="false"
+                                                            pageLoadMode="scrollBottom"
+                                                            itemTemplate="data"
+                                                            [searchEnabled]="true"
+                                                            searchExpr="serviceName"
+                                                            displayExpr="serviceName"
+                                                            searchMode="contains"
+                                                        >
+                                                            <div *dxTemplate="let item of 'data'">
+                                                                <dx-check-box
+                                                                    id="{{ item.serviceId }}"
+                                                                    [(value)]="item.isActive"
+                                                                    (onValueChanged)="handleValueChange($event)"
+                                                                ></dx-check-box>
+                                                                <span>{{ item.serviceName }}</span>
+                                                            </div>
+                                                        </dx-list>
+                                                    </div>
+                                                </dxi-item>
+                                                <dxi-item [colSpan]="1" [label]="{ text: 'NonWorkingDays' | localize }">
+                                                    <div *dxTemplate style="border: 1px solid #dee1e3">
+                                                        <dx-scheduler
+                                                            id="scheduler"
+                                                            [dataSource]="[]"
+                                                            [views]="['month']"
+                                                            currentView="month"
+                                                            [currentDate]="currentDate"
+                                                            [height]="450"
+                                                            (onAppointmentFormOpening)="onAppointmentFormOpening($event)"
+                                                            (onAppointmentDeleted)="onAppointmentDeleted($event)"
+                                                        >
+                                                            <dxo-editing [allowResizing]="false" [allowDragging]="false"></dxo-editing>
+                                                        </dx-scheduler>
+                                                        <dx-popup
+                                                            [width]="300"
+                                                            [height]="200"
+                                                            [closeOnOutsideClick]="true"
+                                                            [(visible)]="isCustomPopupVisible"
+                                                            title="Non Work Day"
+                                                            (onHiding)="onHiding($event)"
+                                                        >
+                                                            <div *dxTemplate="let data of 'content'">
+                                                                <p>
+                                                                    Date Selected: <b>{{ editAppointmentData.startDate | date : 'yyyy/MM/dd' }}</b>
+                                                                </p>
+                                                            </div>
+                                                            <dxi-toolbar-item
+                                                                widget="dxButton"
+                                                                toolbar="bottom"
+                                                                location="after"
+                                                                [options]="{
+                                                                    text: 'Add date as Non Work Day',
+                                                                    onClick: saveDateSelected
+                                                                }"
+                                                            >
+                                                            </dxi-toolbar-item>
+                                                        </dx-popup>
+                                                    </div>
+                                                </dxi-item>
+                                            </dx-form>
+                                        </div>
+                                    </dxi-item>
+                                </dxo-form>
+                            </dxo-editing>
+                        </dx-data-grid>
+                    </div>
+                    <div class="card-footer table-card-footer bg-light border-top">
+                        <div class="row">
+                            <div class="col-sm-4 col-12 text-sm-left text-center">
+                                <button class="btn btn-sm btn-secondary" (click)="refresh()">
+                                    <i class="fas fa-redo-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

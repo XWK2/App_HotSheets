@@ -1,0 +1,552 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<localizationDictionary culture="en">
+  <texts>
+    <text name="HomePage" value="Home page" />
+    <text name="About" value="About" />
+    <text name="WelcomeMessage" value="Welcome to Denso - Hot Sheet!" />
+    <text name="FormIsNotValidMessage" value="Form is not valid. Please check and fix errors." />
+    <text name="TenantNameCanNotBeEmpty" value="Tenant name can not be empty" />
+    <text name="InvalidUserNameOrPassword" value="Invalid user name or password" />
+    <text name="ThereIsNoTenantDefinedWithName{0}" value="There is no tenant defined with name {0}" />
+    <text name="TenantIsNotActive" value="Tenant {0} is not active." />
+    <text name="UserIsNotActiveAndCanNotLogin" value="User {0} is not active and can not log in." />
+    <text name="UserEmailIsNotConfirmedAndCanNotLogin">Your email address is not confirmed. You can not login.</text>
+    <text name="UserLockedOutMessage">The user account has been locked out. Please try again later.</text>
+    <text name="PleaseEnterLoginInformation" value="Please enter login information" />
+    <text name="TenancyName" value="Tenancy name" />
+    <text name="UserNameOrEmail" value="User name or email" />
+    <text name="Password" value="Password" />
+    <text name="ResetPassword" value="Reset Password" />
+    <text name="UpdatePassword" value="Update Password" />
+    <text name="RememberMe" value="Remember me" />
+    <text name="LogIn" value="Log in" />
+    <text name="LoginFailed" value="Login failed!" />
+    <text name="NameSurname" value="Name surname" />
+    <text name="UserName" value="User name" />
+    <text name="Name" value="Name" />
+    <text name="Surname" value="Surname" />
+    <text name="EmailAddress" value="Email address" />
+    <text name="Tenants" value="Tenants" />
+    <text name="SavedSuccessfully" value="Saved successfully" />
+    <text name="CreateNewTenant" value="Create new tenant" />
+    <text name="AdminEmailAddress" value="Admin email address" />
+    <text name="AdminPassword" value="Admin password" />
+    <text name="Save" value="Save" />
+    <text name="Cancel" value="Cancel" />
+    <text name="TenantName_Regex_Description" value="Tenant name must be at least 2 chars, starts with a letter and continue with letter, number, dash or underscore." />
+    <text name="DefaultPasswordIs" value="Default password is {0}" />
+    <text name="CanBeEmptyToLoginAsHost" value="Can be empty to login as host." />
+    <text name="Register" value="Register" />
+    <text name="OrLoginWith" value="Or login with" />
+    <text name="WaitingForActivationMessage" value="Your account is waiting to be activated by system admin." />
+    <text name="TenantSelection" value="Tenant Selection" />
+    <text name="TenantSelection_Detail" value="Please select one of the following tenants." />
+    <text name="Logout" value="Logout" />
+    <text name="RegisterFormUserNameInvalidMessage">Please don't enter an email address for username.</text>
+    <text name="DatabaseConnectionString" value="Database connection string" />
+    <text name="Users" value="Users" />
+    <text name="IsActive" value="Is active" />
+    <text name="FullName" value="Full name" />
+    <text name="CreateNewUser" value="Create new user" />
+    <text name="Yes" value="Yes" />
+    <text name="No" value="No" />
+    <text name="Optional" value="Optional" />
+    <text name="LeaveEmptyToSwitchToHost">Leave empty to switch to the host</text>
+    <text name="CurrentTenant">Current tenant</text>
+    <text name="NotSelected">Not selected</text>
+    <text name="Change">Change</text>
+    <text name="ChangeTenant">Change tenant</text>
+    <text name="MultiLevelMenu">Multi Level Menu</text>
+    <text name="Back">Back</text>
+    <text name="SuccessfullyRegistered">Successfully registered</text>
+    <text name="WaitingForEmailActivation">Your email address should be activated</text>
+    <text name="Roles">Roles</text>
+    <text name="DisplayName">Display Name</text>
+    <text name="Edit">Edit</text>
+    <text name="Delete">Delete</text>
+    <text name="CreateNewRole">Create new role</text>
+    <text name="RoleName">Role Name</text>
+    <text name="Actions">Actions</text>
+    <text name="CouldNotCompleteLoginOperation">Could not complete login operation. Please try again later.</text>
+    <text name="CouldNotValidateExternalUser">Could not validate external user</text>
+    <text name="EditRole">Edit role</text>
+    <text name="EditTenant">Edit tenant</text>
+    <text name="EditUser">Edit user</text>
+    <text name="TenantIdIsNotActive{0}">TenantId {0} is not active</text>
+    <text name="UnknownTenantId{0}">Unknown tenantId {0}</text>
+    <text name="ThisFieldIsRequired">This field is required</text>
+    <text name="PleaseWait">Please wait...</text>
+    <text name="Administration">Administration</text>
+    <text name="ClearAll">Clear all</text>
+    <text name="ClearOthers">Clear others</text>
+    <text name="LabelOptions">Label options</text>
+    <text name="Permissions">Permissions</text>
+    <text name="RoleDescription">Role description</text>
+    <text name="Refresh">Refresh</text>
+    <text name="Create">Create</text>
+    <text name="UserDetails">User details</text>
+    <text name="UserRoles">User roles</text>
+    <text name="ConfirmPassword">Confirm password</text>
+    <text name="Version">Version</text>
+    <text name="On">On</text>
+    <text name="Off">Off</text>
+    <text name="AreYouSureWantToDelete">Are you sure want to delete {0}?</text>
+    <text name="SuccessfullyDeleted">Successfully deleted</text>
+    <text name="StartTyping">Start Typing</text>
+    <text name="Skins">Skins</text>
+    <text name="Settings">Settings</text>
+    <text name="Filter">Filter</text>
+    <text name="CurrentPassword">Current Password</text>
+    <text name="NewPassword">New Password</text>
+    <text name="ConfirmNewPassword">Confirm New Password</text>
+    <text name="PasswordsDoNotMatch">Passwords do not match</text>
+    <text name="PasswordsMustBeAtLeast8CharactersContainLowercaseUppercaseNumber">Passwords must be at least 8 characters, contain a lowercase, uppercase, and number</text>
+    <text name="UserDeleteWarningMessage">User {0} will be deleted.</text>
+    <text name="RoleDeleteWarningMessage">Role {0} will be deleted and unassigned from all assigned users.</text>
+    <text name="TenantDeleteWarningMessage">Tenant {0} will be deleted.</text>
+    <text name="SearchWithThreeDot">Search...</text>
+    <text name="PleaseEnterAtLeastNCharacter">Please enter at least {0} characters</text>
+    <text name="PleaseEnterNoMoreThanNCharacter">Please enter no more than {0} characters</text>
+    <text name="InvalidEmailAddress">Invalid email address</text>
+    <text name="InvalidPattern">Invalid</text>
+    <text name="PairsDoNotMatch">Do not match</text>
+    <text name="All">All</text>
+    <text name="TotalRecordsCount">Total: {0}</text>
+    <text name="Search">Search</text>
+    <text name="Clear">Clear</text>
+    <text name="ResetPasswordStepOneInfo">1. Enter your administrator password</text>
+    <text name="ResetPasswordStepTwoInfo">2. Copy this random password so you can send it to the user</text>
+    <text name="UsersActivation">Users activation</text>
+    
+    <!--Denso - Hot Sheet-->
+    <text name="HotSheet" value="Hot Sheet" />
+    <text name="Catalogs" value="Catalogs" />
+    <text name="Carriers" value="Carriers" />
+    <text name="CarrierInfo" value="Carrier Info" />
+    <text name="DivisorNumber" value="Divisor Number" />
+    <text name="Plants" value="Plants" />
+    <text name="Plant" value="Plant" />
+    <text name="Departments" value="Departments" />
+    <text name="DocumentTypes" value="Document Types" />
+    <text name="ProductCodeSat" value="Product Code SAT" />
+    
+    
+    <text name="ShortageShift" value="Shortage Shift" />
+    <text name="StatusHotsheet" value="Status Hot sheet" />
+    
+    <text name="ProductCodesSat" value="Product Codes SAT" />
+    <text name="UnitMeasure" value="Unit Measure" />
+    <text name="UnitMeasures" value="Unit Measures" />
+    <text name="UnitMeasuresSAT" value="Unit Measures SAT" />
+    <text name="UserDepartmentsAndPlants" value="Departments and Plants" />    
+    <text name="HotSheetCreate" value="Create Hot Sheet" />
+    <text name="HotSheetEdit" value="Edit Hot Sheet" />
+    <text name="HotSheetCancel" value="Cancel Hot Sheet" />
+    <text name="HotSheetApprovals" value="Approvals Hot Sheet" />
+    <text name="HotSheetExportToAS400" value="Export Hot Sheet To AS400" />
+    <text name="HotSheetPendingForApproval" value="Hot Sheet Pending for Approval" />
+    <text name="HotSheetTemplates" value="Hot Sheet Templates" />
+    <text name="HotSheetsGenerated" value="HotSheets Generated" />
+    <text name="FolioToAssign" value="To Assign" />
+    <text name="Author" value="Author" />
+    <text name="CreatedBy" value="Created By" />
+    <text name="StatusDraft" value="Draft" />
+    <text name="StatusCirculating" value="Circulating" />
+    <text name="StatusApproved" value="Approved" />
+    <text name="StatusPendingForApproval" value="Pending for Approval" />
+    <text name="StatusRejected" value="Rejected" />
+   
+    <text name="SaveDataXLSX" value="Save Data of XLSX" />
+    <text name="PackingInformation" value="Packing Information" />
+    <text name="Approval" value="Approval" />    
+    <text name="ShippedBy" value="Shipped By" />
+    <text name="SoldTo" value="Sold To" />
+    <text name="ShipTo" value="Ship To" />
+    <text name="Address" value="Address" />
+    <text name="DocumentType" value="Document Type" />
+    <text name="Carrier" value="Carrier" />
+    <text name="SelectACarrier" value="Select a Carrier..." />
+    <text name="Service" value="Service" />
+    <text name="Services" value="Services" />
+    <text name="ServicesIsNational" value="Is National" />
+    <text name="ServicesIsInternational" value="Is International" />
+    <text name="ServicesShowHigestCostWarning" value="Show Higest Cost Warning" />
+    <text name="ServicesGround" value="Ground" />
+    <text name="ServicesAir" value="Air" />
+    <text name="ServicesSea" value="Sea" />
+    
+    <text name="SelectACarrierAndService" value="Select a Carrier and Choose a Service..." />
+    <text name="ServiceCoverageAreaNational" value="Service coverage area National" />
+    <text name="ServiceCoverageAreaInternational" value="Service coverage area International" />
+    <text name="ServiceCoverageAreaNationalInternational" value="Service coverage area National and International" />
+    <text name="FullTruckLoad" value="Full Truck Load" />
+    <text name="Reason" value="Reason" />
+    <text name="AdditionalExplanation" value="Additional Explanation" />
+    <text name="SpecialExpeditedReason" value="Special Expedited Reason" />
+    <text name="TermOfPayment" value="Term of Payment" />
+    <text name="TermsOfPayment" value="Terms of Payment" />
+    <text name="SelectAnOption" value="Select an Option..." />
+    <text name="SelectAnPaymentTerm" value="Select an Term of Payment..." />
+    <text name="SaveAsTemplate" value="Save as Template" />
+    <text name="SaveTemplate" value="Save Template" />
+    <text name="GenerateCopy" value="Generate Copy" />
+    <text name="SendForApproval" value="Send for Approval" />
+    <text name="SupervisorOfDepartments" value="Supervisor of Departments" />
+    <text name="SupervisorOfPlants" value="Supervisor of Plants" />
+    <text name="SelectACustomer" value="Select a Customer..." />
+    <text name="SelectACustomerPlant" value="Select a Customer Plant..." />
+    <text name="CostOfMerchandisePaidBy" value="Cost of Merchandise Paid By" />
+    <text name="FreightCostPaidBy" value="Freight Cost Paid By" />
+    <text name="EmbarkedTo" value="Embarked To" />
+    <text name="TermOfHotSheet" value="Term of HotSheet" />
+    <text name="HotSheetTerms" value="Term of HotSheet"/>
+    <text name="HotSheetDetails" value="HotSheet Details (Filled by PQ Depto)" />
+    <text name="Description" value="Description"/>
+    <text name="HotSheetReasons" value="HotSheet Reasons"/>
+    <text name="HotSheetReasonBNoticeRMARequired" value="Fields B-Notice and RMA Required"/>
+    <text name="HotSheetReasonPictureTechnicalInfoMakerModelSerialNumber" value="Add Fields Picture, Technical information, Maker, Model and Serial Number"/>
+    <text name="HotSheetReasonAttachPurchaseOrder" value="Attach Purchase Order"/>
+    <text name="HotSheetReasonTechnicalInfoPicture" value="Add Technical information and picture"/>
+    <text name="HotSheetReasonAccountingApprovalRequired" value="Required Accounting Approval"/>
+    <text name="HotSheetReasonExcludeTermOfPayment" value="Exclude option from Term of Payment"/>    
+
+    <text name="RmaAssigned" value="RMA Assigned" />
+    <text name="By" value="By" />
+    <text name="RmaNumber" value="RMA Number" />
+    <text name="BNotice" value="B-Notice" />
+    <text name="AccountNumber" value="Account Number" />
+    <text name="CourierAccountNumber" value="Courier Account Number" />
+    <text name="HotSheetCreatedSuccessfully" value="Shipping Instruction created successfully" />
+    <text name="HotSheetavedSuccessfully" value="Shipping Instruction saved successfully" />
+    <text name="HotSheetUpdatedSuccessfully" value="Shipping Instruction updated successfully" />
+    <text name="PaymentStatus" value="Payment Status" />
+    <text name="Paid" value="Paid" />
+    <text name="PaidBy" value="Paid By" />
+    <text name="NotPaid" value="Not Paid" />
+    <text name="PartiallyPaid" value="Partially Paid" />
+    <text name="RequestedBy" value="Requested By" />
+    <text name="Payment" value="Payment" />    
+    
+    <text name="SentForApproval" value="Sent for Approval" />
+    <text name="SentForApprovalDate" value="Sent for Approval Date" />
+    <text name="Date" value="Date" />
+    <text name="Estimated" value="Estimated" />
+    <text name="Shipping" value="Shipping" />
+    <text name="DNMXSupplier" value="DNMX Supplier" />    
+    <text name="Export" value="Export" />
+    <text name="ExportedToCigma" value="Exported To Cigma" />
+    
+    <text name="UnitOfMeasure" value="Unit Of Measure" />
+    <text name="MerchandiseDescription" value="Merchandise Description" />
+    <text name="ShippedQuantity" value="Shipped Quantity" />
+    <text name="UnitPrice" value="Unit Price" />
+    <text name="AdditionalInformation" value="Additional Information" />
+    <text name="Model" value="Model" />
+    <text name="Serial" value="Serial #" />
+    <text name="Maker" value="Maker" />
+    <text name="TechInfo" value="Tech. Info." />
+    <text name="PONumber" value="P.O. Number" />
+    <text name="Attachments" value="Attachments" />
+    <text name="OriginCountry" value="Origin Country" />
+    <text name="Total" value="Total" />
+    <text name="AddProduct" value="Add a Product" />
+    <text name="CommercialValue" value="Commercial Value" />
+    <text name="EditProduct" value="Edit Product" />
+    <text name="SaveAndNew" value="Save and New" />
+    <text name="SaveAndClose" value="Save and Close" />
+    <text name="Close" value="Close" />
+    <text name="NoDataText" value="No data" />
+    <text name="PackagingDescription" value="Packaging Description" />
+    <text name="DimentionsLWH" value="Dimentions L - W - H" />
+    <text name="Dimentions" value="Dimentions" />
+    <text name="PalletsQuantity" value="Pallets Quantity" />
+    <text name="NetWeight" value="Net Weight" />
+    <text name="GrossWeight" value="Gross Weight" />
+    <text name="WeightPerBox" value="Weight Per Box" />    
+    <text name="DimensionalWeightPerBox" value="Weight Per Box" />
+    <text name="BoxQuantity" value="Box Quantity" />
+    <text name="PackagingInstructions" value="Favor de agregar la Información de cada Paquete del Embarque" />    
+    <text name="AddPackaging" value="Add Packaging" />
+    <text name="EditPackaging" value="Edit Packaging" />    
+    <text name="MerchandiseDescriptionSpanish" value="Merchandise Description Spanish" />
+    <text name="PlantInfo" value="Plant Info" />
+    <text name="DepartmentInfo" value="Department Info" />
+    <text name="PartNumberInfo" value="Part Number Info" />
+    <text name="ProductCodeSATInfo" value="Product Code SAT Info" />
+    <text name="RmaAssignedInfo" value="RMA Assigned Info" />
+    <text name="HotSheetReasonInfo" value="HotSheet Reason Info" />
+    <text name="HotSheetTermInfo" value="HotSheet Term Info" />
+    <text name="UnitMeasureInfo" value="Unit Measure Info" />
+    <text name="DensoCode" value="Denso Code" />
+    <text name="SatCode" value="SAT Code" />
+    <text name="SegroveCode" value="Segrove Code" />
+    <text name="PaidByInfo" value="Paid By Info" />
+    <text name="DocumentTypeInfo" value="Document Type Info" />
+    <text name="DescriptionSpanish" value="Description Spanish" />
+    <text name="Fraction" value="Fraction" />
+    <text name="Code" value="Code" />
+    <text name="Active" value="Active" />
+    <text name="TotalUsers" value="Total Users" />
+    <text name="Reports" value="Reports" />
+    <text name="Customers" value="Customers" />
+    <text name="Customer" value="Customer" />
+    <text name="AddressLine1" value="Address Line 1" />
+    <text name="AddressLine2" value="Address Line 2" />
+    <text name="AddressLine3" value="Address Line 3" />
+    <text name="AddressLine4" value="Address Line 4" />
+    <text name="State" value="State" />
+    <text name="TaxId" value="TaxId" />
+    <text name="Country" value="Country" />
+    <text name="Contact" value="Contact" />
+    <text name="FedexCta" value="Fedex Cta" />
+    <text name="Phone" value="Phone" />
+    <text name="Zip" value="Zip" />
+    <text name="CustomerInfo" value="Customer Info" />
+    <text name="Divisions" value="Divisions" />
+    <text name="PaymentTerms" value="Payment Terms" />
+    <text name="PaymentTerm" value="Payment Term" />
+    <text name="ExportToAS400" value="Export To AS/400" />
+    <text name="AreYouSureWantToCancel">Are you sure want to cancel {0}?</text>
+    <text name="AreYouSure">Are you sure?</text>
+    <text name="AreYouSureWantToExportToAS400">Are you sure want to Export {0} to AS/400?</text>
+    <text name="CancelledSuccessfully" value="Cancelled successfully" />
+    <text name="ExportedToAS400Successfully" value="Exported to AS/400 successfully" />
+    <text name="StatusCancelled" value="Cancelled" />
+    <text name="View" value="View" />
+    <text name="ProformaInvoice" value="Proforma Invoice" />
+    <text name="TrackingNumber" value="Tracking Number" />
+    <text name="SelectAnApprover" value="Select an Approver" />
+    <text name="ManagerApproval" value="Manager Approval" />
+    <text name="AccountingApproval" value="Accounting Approval" />
+    <text name="IEStaffApproval" value="Impo/Expo Staff Approval" />
+    <text name="ShippersInfo" value="Shipper's Information" />
+    <text name="ImportExportDepto" value="Import/Export Department" />
+    <text name="TelephoneExt" value="Telephone Ext" />    
+    
+    <text name="ApprovedDate" value="Approved Date" />
+    <text name="ShowBehalfFields" value="Show in behalf of fields" />
+    <text name="Department" value="Department" />
+    <text name="Approve" value="Approve" />
+    <text name="SentForApprovalBy" value="Sent for Approval by" />
+    <text name="ApprovedBy" value="Approved by" />
+    <text name="AreYouSureWantToSendForApproval">Are you sure want to Send {0} for Approval?</text>
+    <text name="AreYouSureWantToApproveShipping">Are you sure want to Approve the Shipping {0}?</text>
+    <text name="ApprovalSentDate" value="Approval Sent Date" />
+    <text name="NoFilter" value="No Filter" />
+    <text name="FilteredBy" value="Filtered by" />
+    <text name="CreationDate" value="Creation Date" />
+    <text name="TemplateName" value="Template Name" />
+    <text name="HotSheetCreateFromTemplate" value="Create Hot Sheet From Template" />
+    <text name="OptionWithoutTemplate" value="Without Template" />
+    <text name="AreYouSureWantToGenerateCopy">Are you sure want to Generate a Copy?</text>
+    <text name="ConfirmApprove" value="Confirm Approve" />
+    <text name="ConfirmReject" value="Confirm Reject" />
+    <text name="PendingForApproval" value="Pending for Approval" />
+    <text name="Templates" value="Templates" />
+    <text name="CreateTemplate" value="Create Template" />
+    <text name="NotificationSentSuccessfully" value="Notification sent successfully" />
+    <text name="ApprovedSuccessfully" value="Approved successfully" />
+    <text name="VerifyApproval" value="Verify Approval" />
+    <text name="Reject" value="Reject" />
+    <text name="EmailNotificationSent" value="Email Notification Sent" />
+    <text name="Reseted" value="Reseted" />
+    <text name="ApproverChanged" value="Approver changed" />    
+    <text name="TextOn" value="on" />
+    <text name="ApproverChangedBy" value="Approver changed by" />
+    <text name="RejectBy" value="Reject by" />
+    <text name="Reset" value="Reset" />
+    <text name="AreYouSureWantToReset" value="Are you sure want to Reset the Shipping {0}?" />
+    <text name="UpdatedBy" value="Updated by" />
+    <text name="ResetedBy" value="Reseted by" />
+    <text name="History" value="History" />
+    <text name="ChangeApprovers" value="Change Approvers" />
+    <text name="ImportExportStaff" value="Import/Export Staff" />
+    <text name="UpdateApprovers" value="Update Approvers" />
+    <text name="DeptoOrSection" value="Depto or Section" />
+    <text name="NetNumber" value="Net Number" />
+    <text name="HelpInfo" value="Help Information" />
+    <text name="HelpText" value="Text Information" />    
+    <text name="LastNotificationDate" value="Notification Date" />
+    <text name="DaysLateApproval" value="Days Late" />
+    <text name="EmployeeId" value="Employee Id" />
+    <text name="Responsible" value="Responsible" />
+    <text name="Employees" value="Employees" />
+    <text name="Credential" value="Credential" />
+    <text name="EmployeeType" value="Employee Type" />
+    <text name="BirthDate" value="Birth Date" />
+    <text name="EntryDate" value="Entry Date" />
+    <text name="Currencies" value="Currencies" />
+    <text name="Currency" value="Currency" />    
+    <text name="Survey" value="Survey" />
+    <text name="Surveys" value="Surveys" />
+    <text name="HotSheets" value="HotSheets" />
+    <text name="AnswerSurvey" value="Answer Survey" />
+    <text name="SurveyTitle" value="User Satisfaction Survey" />
+    <text name="SurveySubTitle" value="Please help us to improve our service answering this brief surver" />
+    <text name="SurveyQuestion1" value="1. The Service provided by IE Staff to the User was:" />
+    <text name="SurveyQuestion2" value="2. How do you evaluate the Communication regarding the follow-up of the requirement?" />
+    <text name="SurveyQuestion3" value="3. How do you consider the response time of the Staff to respond to your request?" />
+    <text name="SurveyQuestion4" value="4. Did the IE Staff offer additional help or support?" />
+    <text name="SurveyQuestion5" value="5. How do you evaluate the new Shipping Instruction Web Application?" />
+    <text name="SurveyQuestion6" value="6. Do you have any other comments or additional requests?" />
+    <text name="SurveyQuestion6_6" value="Tell us how to improve our services" />
+    <text name="SurveyQuestion6_7" value="Please send your general feedback" />
+    <text name="SurveyQuestion1Answer1" value="Excellent" />
+    <text name="SurveyQuestion1Answer2" value="Well" />
+    <text name="SurveyQuestion1Answer3" value="Regular" />
+    <text name="SurveyQuestion1Answer4" value="Unsatisfactory" />
+    <text name="SurveyQuestion1Answer5" value="Very Unsatisfactory" />
+    <text name="SurveyQuestion2Answer1" value="Excellent" />
+    <text name="SurveyQuestion2Answer2" value="Well" />
+    <text name="SurveyQuestion2Answer3" value="Regular" />
+    <text name="SurveyQuestion2Answer4" value="Unsatisfactory" />
+    <text name="SurveyQuestion2Answer5" value="Very Unsatisfactory" />
+    <text name="SurveyQuestion3Answer1" value="Well" />
+    <text name="SurveyQuestion3Answer2" value="Regular" />
+    <text name="SurveyQuestion3Answer3" value="Bad" />
+    <text name="SurveyQuestion4Answer1" value="Yes" />
+    <text name="SurveyQuestion4Answer2" value="No" />
+    <text name="SurveyQuestion5Answer1" value="Excellent" />
+    <text name="SurveyQuestion5Answer2" value="Well" />
+    <text name="SurveyQuestion5Answer3" value="Regular" />
+    <text name="SurveyQuestion5Answer4" value="Unsatisfactory" />
+    <text name="SurveyQuestion5Answer5" value="Very Unsatisfactory" />
+    <text name="AreYouSureWantToSendSurvey" value="Are you sure want to send your survey answers?" />
+    <text name="Send" value="Send" />
+    <text name="SendAnswers" value="Send Answers" />
+    <text name="SentSuccessfully" value="Sent Successfully" />
+    <text name="Qualification" value="Qualification" />
+    <text name="HotSheetCode" value="Shipping Code" />
+    <text name="SelectAUser" value="Select a User" />
+    <text name="TotalHotSheets" value="Total HotSheets" />
+    <text name="Documents" value="Documents" />
+    <text name="Download" value="Download" />
+    <text name="FileName" value="File Name" />
+    <text name="FileSize" value="Size" />
+    <text name="UploadedBy" value="Uploaded By" />
+    <text name="Remove" value="Remove" />
+    <text name="UploadDocuments" value="Upload Documents" />
+    <text name="PartNumberPrices" value="Part Number Prices" />
+    <text name="PartNumberPricesMenu" value="Part Num. Prices" />
+    <text name="PartNumberPriceInfo" value="Part Number Price Info" /> 
+    <text name="PublishDate" value="Publish Date" />
+    <text name="HotSheetsReports" value="HotSheets Reports" />
+    <text name="GenerateReport" value="Generate Report" />
+    <text name="ClearFilters" value="Clear Filters" />
+    <text name="RangeDates" value="Range Dates" />
+    <text name="EmptyGroupPanelText" value="Drag a column header here to group by that column" />
+    <text name="TotalDaysPassed" value="Total Days Passed" />
+    <text name="CreateCustomer" value="Create Customer" />
+    <text name="EditCustomer" value="Edit Customer" />
+    <text name="HotSheetsPerformanceDashboard" value="HotSheets Performance Dashboard" />
+    <text name="Saving" value="Saving..." />
+    <text name="PartNumbersInternal" value="Part Numbers Internal" />
+    <text name="PartNumbersInternalMenu" value="Part Num. Internal" />
+    <text name="PartNumberInternalInfo" value="Part Number Internal Info" />
+    <text name="PartNumberPricesInternal" value="Part Number Prices Internal" />
+    <text name="PartNumberPricesInternalMenu" value="P. N. Prices Internal" />
+    <text name="PartNumberPriceInternalInfo" value="Part Number Price Internal Info" />
+    <text name="DaysInAdvanceForNonWorkDaysNotification" value="Advance Days for Notice of Non-Working Days" />
+    <text name="NotificationCarrierNonWorkingDays" value="Carriers Non-Working Days" />
+    <text name="NonWorkingDay" value="Non-Working Day" />
+    <text name="SaveSettings" value="Save Settings" />
+    <text name="ServiceHightCostWarning" value="Warning! You have selected the highest cost. It must be authorized by Manager" />
+    <text name="ChargeTo" value="Charge To" />
+    <text name="HotSheetFolio" value="Shipping Instruction Folio" />
+    <text name="Notices" value="Notices" />
+    <text name="EditNotice" value="Edit Notice" />
+    <text name="ShippingHaveChangesAreYouSureWantToContinueSendForApproval" value="Hot Sheet {0} have changes. Are you sure want to continue to Send for Approval?" />       
+    <text name="MsgPackagingOp1" value="Chargable weight will be Dimencional" />
+    <text name="MsgPackagingOp2" value="Chargable weight will be Gross Weight" />
+    <text name="PendingApprover" value="Pending Approver" />
+    <text name="ProductConfirmDeleteMessage" value="Are you sure you want to delete this Product?" />
+    <text name="FreightPrePaidExplanation" value="Freight PrePaid Explanation" />
+    <text name="ViewProduct" value="View Product" />
+    <text name="ProductDetails" value="Product Details" />
+    <text name="DownloadTemplateNP" value="For new part numbers (for export), click to download the format and fill it out, once filled out you can attach it in the Documents section of this shipping or send it via email to IE, to add it to the NP catalog"/>
+    <text name="Manifest" value="Manifest"/>
+    <text name="RejectedBy" value="Rejected By" />
+    <text name="Print" value="Print" />
+    <text name="ReasonHotSheet" value="Reason of the HotSheet" />
+    <text name="UpdateInformation" value="Update Information" />
+    <text name="UpdateShippingInfoUpdated" value="{0} Information Updated" />
+    <text name="AreYouSureWantToUpdateShippingInfo">Are you sure want to update {0} information?</text>
+
+    <text name="PendingApprovalByIE">Pending Approval By IE</text>
+    <text name="PendingForProformaInvoice">Pending for Proforma</text>
+    <text name="PendingForPayment">Pending for Payment</text>
+    <text name="MoreInfo">More info</text>
+    <text name="TimeElapsed">Time Elapsed</text>
+    <text name="HotSheetsDetails">HotSheets Details</text>
+
+    <text name="StatusIndicator">Status Indicator</text>
+    <text name="SummaryImplementationsResponsible">Summary of Implementations by Responsible</text>
+    <text name="RefreshData">Refresh Data</text>
+    <text name="Indicator">Indicator</text>    
+    <text name="Assigned">Assigned</text>
+    <text name="InProgress">In Progress</text>
+    <text name="Completed">Completed</text>
+    <text name="Approved">Approved</text>
+    <text name="IEStaffResponsesPerformance">IE Staff Responses Performance</text>
+    <text name="TrackingScrapSales">Tracking Scrap Sales</text>
+    <text name="Manifests" value="Manifests"/>
+    <text name="ManifestsInfo" value="Manifests Info"/>
+    <text name="HotSheetDate" value="HotSheet Date"/>
+    <text name="ReportDate" value="Report Date"/>
+    <text name="ReportDateStart" value="Report Date Start"/>
+    <text name="ReportDateEnd" value="Report Date End"/>
+    <text name="ReportDateStartValidation" value="Report Start Date must be less than or equal to Report End Date"/>
+    <text name="ReportDateEndValidation" value="Report End Date must be greater than or equal to Report Start Date"/>
+    
+    <text name="GuideReference" value="Guide Reference"/>
+    <text name="GuideStatusDetail" value="Guide Status Detail"/>
+    <text name="GuideStatus" value="Guide Status"/>
+    <text name="GuideCost" value="Guide Cost"/>
+    <text name="GuideCurrency" value="Guide Currency"/>
+    <text name="TrackingGuidesReports">Tracking Guides Reports</text>
+    <text name="TrackingGuidesInfo">Tracking Guides Info</text>
+
+    <text name="ManagerApprovalDate" value="Manager Approval Date"/>
+    <text name="IEStaffApprovalDateTitle" value="IE Staff Approval Date"/>
+    <text name="InvoiceEmissionDate" value="Invoice Emission Date"/>
+    <text name="Amount" value="Amount"/>
+    <text name="PaymentDate" value="Payment Date"/>
+    <text name="RecyclerName" value="Recycler Name"/>
+    <text name="ImportationRequest" value="Importation Request"/>
+
+    <text name="Comments" value="Comments" />
+    <text name="HotSheetInfo" value="HotSheet Information" />
+    <text name="HotSheetFile" value="HotSheet Document" />
+    <text name="PartNumbers" value="Part Numbers" />    
+    <text name="Planner" value="Planner"/>
+    <text name="PlannerCode" value="Code"/>
+    <text name="PlannerName" value="Name"/>
+    <text name="Supplier" value="Supplier"/>
+    <text name="SupplierCode" value="Code"/>
+    <text name="SupplerName" value="Name"/>
+    <text name="PartNumber" value="Part Number"/>
+    <text name="PartNumberHS" value="Part Number"/>
+    <text name="PartNumberCodeHS" value="Code"/>
+    <text name="PartDescriptionHS" value="Description"/>
+    <text name="InTransitQty" value="InTransitQty"/>
+    <text name="DiaStockIn" value="InTransitQty"/>
+    <text name="DiaLocation" value="DiaLocation"/>
+    <text name="CIGMAReceived" value="CIGMAReceived"/>
+    <text name="TransportMode" value="Transport Mode"/>
+    <text name="TransportModeId" value="Id"/>
+    <text name="TransportModeName" value="Name"/>
+    <text name="DeliveryOrder" value="Delivery Order"/>
+    <text name="TrafficContainerFX" value="Traffic Container FX"/>
+    <text name="UnitNumber" value="Unit Number"/>
+    <text name="EtaDNMX" value="ETA DNMX"/>
+    <text name="Status" value="Status" />
+    <text name="StatusId" value="Id"/>
+    <text name="StatusHotSheetName" value="Name"/>
+    <text name="Shortage" value="Shortage"/>
+    <text name="RealShortageDate" value="Real Date"/>
+    <text name="ShortageShiftId" value="Id"/>
+    <text name="ShortageShiftName" value="Name"/>
+    <text name="ShortageTime" value="Time"/>
+
+  </texts>
+</localizationDictionary>

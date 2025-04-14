@@ -1,0 +1,213 @@
+<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-2">
+                    <h1 class="denso-page-title"><i class="fa-solid fa-square-poll-vertical"></i>&nbsp;{{ 'Surveys' | localize }}</h1>
+                </div>
+                <div class="col-10 text-right">
+                    <dx-form colCount="12">
+                        <dxi-item [label]="{ text: 'User' | localize }" [colSpan]="3">
+                            <div *dxTemplate>
+                                <dx-select-box
+                                    displayExpr="fullName"
+                                    valueExpr="userId"
+                                    [(value)]="userIdSelected"
+                                    [dataSource]="usersDataSource"
+                                    [placeholder]="'SelectAUser' | localize"
+                                    [searchEnabled]="true"
+                                    searchMode="contains"
+                                    [width]="280"
+                                    showClearButton="true"
+                                >
+                                </dx-select-box>
+                            </div>
+                        </dxi-item>
+                        <dxi-item [label]="{ text: 'ShippingInstructionCode' | localize }" [colSpan]="3">
+                            <div *dxTemplate>
+                                <dx-text-box [(value)]="shippingCode" showClearButton="true"></dx-text-box>
+                            </div>
+                        </dxi-item>
+                        <dxi-item [label]="{ text: 'Date' | localize }" [colSpan]="2">
+                            <div *dxTemplate>
+                                <dx-date-box type="date" [(value)]="creationDate" showClearButton="true"> </dx-date-box>
+                            </div>
+                        </dxi-item>
+                        <!-- <dxi-item [label]="{ text: 'Qualification' | localize }" [colSpan]="2">
+                            <div *dxTemplate>
+                                <dx-select-box
+                                    displayExpr="name"
+                                    valueExpr="id"
+                                    [(value)]="qualificationSelected"
+                                    [items]="qualificationOptions"
+                                    [placeholder]="'SelectAnOption' | localize"
+                                    [width]="180"
+                                    showClearButton="true"
+                                >
+                                </dx-select-box>
+                            </div>
+                        </dxi-item> -->
+                        <dxi-item label="" [colSpan]="2">
+                            <div *dxTemplate>
+                                <dx-button
+                                    stylingMode="contained"
+                                    [text]="'Search' | localize"
+                                    icon="search"
+                                    type="normal"
+                                    [width]="120"
+                                    (click)="refresh()"
+                                    class="dx-button-ml"
+                                >
+                                </dx-button>
+                            </div>
+                        </dxi-item>
+                    </dx-form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body grid-content" [busy]="isTableLoading">
+                        <dx-data-grid
+                            keyExpr="id"
+                            [dataSource]="surveys"
+                            [allowColumnReordering]="false"
+                            [allowColumnResizing]="false"
+                            [columnAutoWidth]="true"
+                            [showBorders]="true"
+                            [noDataText]="'NoDataText' | localize"
+                            [rowAlternationEnabled]="true"
+                            (onExporting)="exportGrid($event)"
+                        >
+                            <dxo-paging [pageSize]="20"></dxo-paging>
+                            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100]"></dxo-pager>
+                            <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']"> </dxo-export>
+
+                            <dxi-column [caption]="'Shipping Folio' | localize" dataField="shippingInstructionFolio" [width]="130"></dxi-column>
+                            <dxi-column [caption]="'Author' | localize" dataField="creatorFullName" [width]="250"></dxi-column>
+                            <dxi-column
+                                [caption]="'CreationDate' | localize"
+                                dataField="creationTime"
+                                [width]="150"
+                                dataType="date"
+                                format="yyyy-MM-dd HH:mm"
+                            ></dxi-column>
+
+                            <dxi-column
+                                [caption]="'SurveyQuestion1' | localize"
+                                dataField="answerQuestion1"
+                                headerCellTemplate="surveyQuestion1HeaderTemplate"
+                                cellTemplate="answerQuestion1CellTemplate"
+                                alignment="center"
+                                [width]="150"
+                            ></dxi-column>
+                            <div *dxTemplate="let info of 'surveyQuestion1HeaderTemplate'">
+                                <p class="survey-question-header">{{ 'SurveyQuestion1' | localize }}</p>
+                            </div>
+                            <div *dxTemplate="let info of 'answerQuestion1CellTemplate'">
+                                <img style="width: 32px" [src]="'assets/survey-images/survey-option-' + info.data.answerQuestion1 + '.png'" />
+                            </div>
+
+                            <dxi-column
+                                [caption]="'SurveyQuestion2' | localize"
+                                dataField="answerQuestion2"
+                                headerCellTemplate="surveyQuestion2HeaderTemplate"
+                                cellTemplate="answerQuestion2CellTemplate"
+                                alignment="center"
+                                [width]="200"
+                            ></dxi-column>
+                            <div *dxTemplate="let info of 'surveyQuestion2HeaderTemplate'">
+                                <p class="survey-question-header">{{ 'SurveyQuestion2' | localize }}</p>
+                            </div>
+                            <div *dxTemplate="let info of 'answerQuestion2CellTemplate'">
+                                <img style="width: 32px" [src]="'assets/survey-images/survey-option-' + info.data.answerQuestion2 + '.png'" />
+                            </div>
+
+                            <dxi-column
+                                [caption]="'SurveyQuestion3' | localize"
+                                dataField="answerQuestion3"
+                                headerCellTemplate="surveyQuestion3HeaderTemplate"
+                                cellTemplate="answerQuestion3CellTemplate"
+                                alignment="center"
+                                [width]="200"
+                            ></dxi-column>
+                            <div *dxTemplate="let info of 'surveyQuestion3HeaderTemplate'">
+                                <p class="survey-question-header">{{ 'SurveyQuestion3' | localize }}</p>
+                            </div>
+                            <div *dxTemplate="let info of 'answerQuestion3CellTemplate'">
+                                <img *ngIf="info.data.answerQuestion3 === '1'" style="width: 32px" [src]="'assets/survey-images/survey-option-2.png'" />
+                                <img *ngIf="info.data.answerQuestion3 === '2'" style="width: 32px" [src]="'assets/survey-images/survey-option-3.png'" />
+                                <img *ngIf="info.data.answerQuestion3 === '3'" style="width: 32px" [src]="'assets/survey-images/survey-option-5.png'" />
+                            </div>
+
+                            <dxi-column
+                                [caption]="'SurveyQuestion4' | localize"
+                                dataField="answerQuestion4"
+                                headerCellTemplate="surveyQuestion4HeaderTemplate"
+                                cellTemplate="answerQuestion4CellTemplate"
+                                alignment="center"
+                                [width]="150"
+                            ></dxi-column>
+                            <div *dxTemplate="let info of 'surveyQuestion4HeaderTemplate'">
+                                <p class="survey-question-header">{{ 'SurveyQuestion4' | localize }}</p>
+                            </div>
+                            <div *dxTemplate="let info of 'answerQuestion4CellTemplate'">
+                                <img *ngIf="info.data.answerQuestion4 === '1'" style="width: 32px" [src]="'assets/survey-images/survey-option-2.png'" />
+                                <img *ngIf="info.data.answerQuestion4 === '2'" style="width: 32px" [src]="'assets/survey-images/survey-option-5.png'" />
+                            </div>
+
+                            <dxi-column
+                                [caption]="'SurveyQuestion5' | localize"
+                                dataField="answerQuestion5"
+                                headerCellTemplate="surveyQuestion5HeaderTemplate"
+                                cellTemplate="answerQuestion5CellTemplate"
+                                alignment="center"
+                                [width]="150"
+                            ></dxi-column>
+                            <div *dxTemplate="let info of 'surveyQuestion5HeaderTemplate'">
+                                <p class="survey-question-header">{{ 'SurveyQuestion5' | localize }}</p>
+                            </div>
+                            <div *dxTemplate="let info of 'answerQuestion5CellTemplate'">
+                                <img style="width: 32px" [src]="'assets/survey-images/survey-option-' + info.data.answerQuestion5 + '.png'" />
+                            </div>
+
+                            <dxi-column
+                                [caption]="'SurveyQuestion6_6' | localize"
+                                dataField="answerQuestion6"
+                                headerCellTemplate="surveyQuestion6HeaderTemplate"
+                                alignment="center"
+                                [width]="150"
+                            ></dxi-column>
+                            <div *dxTemplate="let info of 'surveyQuestion6HeaderTemplate'">
+                                <p class="survey-question-header">{{ 'SurveyQuestion6_6' | localize }}</p>
+                            </div>
+
+                            <dxi-column
+                                [caption]="'SurveyQuestion6_7' | localize"
+                                dataField="answerQuestion7"
+                                headerCellTemplate="surveyQuestion7HeaderTemplate"
+                                alignment="center"
+                                [width]="150"
+                            ></dxi-column>
+                            <div *dxTemplate="let info of 'surveyQuestion7HeaderTemplate'">
+                                <p class="survey-question-header">{{ 'SurveyQuestion6_7' | localize }}</p>
+                            </div>
+                        </dx-data-grid>
+                    </div>
+                    <div class="card-footer table-card-footer bg-light border-top">
+                        <div class="row">
+                            <div class="col-sm-4 col-12 text-sm-left text-center">
+                                <button class="btn btn-sm btn-secondary" (click)="refresh()">
+                                    <i class="fas fa-redo-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

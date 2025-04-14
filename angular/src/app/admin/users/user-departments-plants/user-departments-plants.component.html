@@ -1,0 +1,73 @@
+﻿<div class="form-group">
+    <label for="departmentIds">{{ 'Departments' | localize }}</label>
+    <ng-select
+        [items]="departments"
+        bindLabel="fullName"
+        bindValue="id"
+        labelForId="departmentIds"
+        [multiple]="true"
+        [placeholder]="l('Departments')"
+        clearAllText="Clear"
+        [(ngModel)]="user.departmentIds"
+        [hideSelected]="true"
+        [ngModelOptions]="{ standalone: true }"
+        (change)="onDeptoChange($event)"
+    >
+    </ng-select>
+</div>
+<div class="form-group row mb-8">
+    <div class="col-md-12">{{ 'SupervisorOfDepartments' | localize }}:</div>
+    <ng-container *ngFor="let item of user.departments; let i = index">
+        <div class="col-md-6">
+            <div class="custom-control custom-checkbox">
+                <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    [id]="'item_depto_' + i"
+                    [checked]="item.isSupervisor"
+                    (change)="onDeptoSupervisorChange(item, $event)"
+                />
+                <label class="custom-control-label" [for]="'item_depto_' + i" style="font-weight: normal">
+                    {{ getDeptoName(item.departmentId) }}
+                </label>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+<div class="form-group">
+    <label for="plantIds">{{ 'Plants' | localize }}</label>
+    <ng-select
+        [items]="plants"
+        bindLabel="name"
+        bindValue="id"
+        labelForId="plantIds"
+        [multiple]="true"
+        [placeholder]="l('Plants')"
+        clearAllText="Clear"
+        [(ngModel)]="user.plantIds"
+        [hideSelected]="true"
+        [ngModelOptions]="{ standalone: true }"
+        (change)="onPlantChange($event)"
+    >
+    </ng-select>
+</div>
+<div class="form-group row mb-8">
+    <div class="col-md-12">{{ 'SupervisorOfPlants' | localize }}:</div>
+    <ng-container *ngFor="let item of user.plants; let i = index">
+        <div class="col-md-6">
+            <div class="custom-control custom-checkbox">
+                <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    [id]="'item_plant_' + i"
+                    [checked]="item.isSupervisor"
+                    (change)="onPlantSupervisorChange(item, $event)"
+                />
+                <label class="custom-control-label" [for]="'item_plant_' + i" style="font-weight: normal">
+                    {{ getPlantName(item.plantId) }}
+                </label>
+            </div>
+        </div>
+    </ng-container>
+</div>

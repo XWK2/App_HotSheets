@@ -1,0 +1,416 @@
+import { Component, Injector, OnInit, ViewChild,LOCALE_ID } from '@angular/core';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+import { AppComponentBase } from '@shared/app-component-base';
+import { UserServiceProxy, HotSheetServiceProxy, HotSheetsItemDto, HotSheetsDto,FileDto, TransportModeDto,CatalogServiceProxy, UserByCurrentUserDto, ShortageShiftDto, HotSheetsCommetsDto } from '@shared/service-proxies/service-proxies';
+import { finalize } from 'rxjs/operators';
+import { DxDataGridComponent } from 'devextreme-angular';
+import DataSource from 'devextreme/data/data_source';
+import { Moment } from 'moment';
+import { Workbook } from 'exceljs';
+import saveAs from 'file-saver';
+import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter';
+import { jsPDF } from 'jspdf';
+import { exportDataGrid } from 'devextreme/excel_exporter';
+import { FileUploader, FileUploaderOptions } from 'ng2-file-upload';
+import { AppConsts } from '@shared/AppConsts';
+import { TokenService } from 'abp-ng2-module';
+
+import { DrawerProps } from '@app/denso/shared/models/drawer.props';
+import { PopupTemplate } from '@app/denso/shared/models/popup-template';
+import { cloneDeep } from 'lodash-es';
+import { DxAccordionComponent } from 'devextreme-angular';
+import { AppUtilsService } from '@shared/utils/app-utils.service';
+
+declare var bootstrap: any;
+
+@Component({
+    selector: 'report-hot-sheets',
+    templateUrl: './report-hot-sheets.component.html',
+    styleUrls: ['./report-hot-sheets.component.css'],
+    animations: [appModuleAnimation()],
+})
+export class HotSheetsReportsComponent extends AppComponentBase implements OnInit {
+    hotSheets: HotSheetsItemDto[] = [];
+    isTableLoading: boolean = false;
+
+    userIdSelected: number;
+    usersDataSource: DataSource = new DataSource({
+        store: [],
+        pageSize: 50,
+    });
+
+    shippingCode: string;
+    creationDate: Moment;
+    qualificationOptions: any[] = [];
+    qualificationSelected: string;
+
+    plannerCode: string;
+    supplierCode: string;
+    partNumber: string;
+    transportModeId: number ;
+    statusId: number;
+    shortageShiftId: number ;
+
+    hotSheetChanges: HotSheetsDto = new HotSheetsDto();
+    Editing: boolean = false;
+    transportMode: TransportModeDto[] = [];
+    shortageShift: ShortageShiftDto[] =[];
+    isLoadingData: boolean = false;
+    timeShortage: any;    
+
+    hotSheetFiles: FileDto[] =[];
+
+    hotSheetComments: HotSheetsCommetsDto[] =[];
+
+    @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
+
+
+    //Files
+    saving: boolean = false;
+    //uploader: FileUploader;
+    uploaderHotSheet: FileUploader;
+    hotSheetEntityType: string = 'HotSheet';
+    productFilesUploadedCount: number = 0;
+
+    showDocumentViewerPopup: boolean = false;
+    documentViewerExtensionsSupported: string[] = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.ppt', '.pptx', '.doc', '.docx', '.xls', '.xlsx'];
+    documentViewerFileSelected: FileDto;
+
+    showCommentsPopup: boolean=false;
+    filaSeleccionada: any = null;
+    comentario: string = '';
+    commentSelected: HotSheetsCommetsDto;
+
+    constructor(
+        injector: Injector, 
+        private _hotSheetservice: HotSheetServiceProxy, 
+        private _tokenService: TokenService, 
+        private _userService: UserServiceProxy, 
+        private _catalogService: CatalogServiceProxy ) {
+        super(injector);
+        this.timeShortage = new Date();
+
+        const uploaderOptions: FileUploaderOptions = {
+            url: AppConsts.remoteServiceBaseUrl + '/api/services/app/File/Upload',
+            autoUpload: false,
+            authToken: 'Bearer ' + this._tokenService.getToken(),
+            removeAfterUpload: true,
+        };
+
+        //this.uploader = new FileUploader(uploaderOptions);
+        this.uploaderHotSheet = new FileUploader(uploaderOptions);
+
+        /* this.uploader.onBuildItemForm = (item, form) => {
+            form.append('entityType', this.hotSheetEntityType);
+            form.append('entityId', this.hotSheetChanges.id);
+        }; */
+
+        this.uploaderHotSheet.onBuildItemForm = (item, form) => {
+            form.append('entityType', this.hotSheetEntityType);
+            form.append('entityId', this.hotSheetChanges.id);
+        };
+
+        // this.uploader.onCompleteAll = () => {
+        //     this.saving = false;
+        //     this.productFilesUploadedCount++;
+
+        //     // if (this.productFilesUploadedCount === this.productFilesToUpload.length) {
+        //     //     setTimeout(() => {
+        //     //         abp.ui.clearBusy();
+        //     //         this.showSaveNotification();
+        //     //     }, 500);
+        //     // }
+        // };
+
+        this.uploaderHotSheet.onCompleteAll = () => {
+            this.saving = false;
+            abp.ui.clearBusy();
+            this.notify.success(this.l('SavedSuccessfully'), this.l('HotSheetFile'));
+            this._hotSheetservice.getHotSheetFiles(this.hotSheetChanges.id).subscribe((filesReponse: FileDto[]) => {
+                this.hotSheetFiles = filesReponse;
+                this.hotSheetFiles.forEach((docItem) => {
+                    docItem.url = AppConsts.remoteServiceBaseUrl + '/file/GetDocumentBy?docId=' + docItem.id;
+                });
+            });
+        };  
+    }
+
+    public ngOnInit(): void {
+       
+        this.refresh();
+
+        this.isLoadingData = true;
+        Promise.all([
+            this._catalogService.getTransportMode(undefined).toPromise(),
+            this._catalogService.getShortageShift(undefined).toPromise(),     
+            
+        ]).then((responses) => {
+            this.transportMode = responses[0];
+            this.shortageShift = responses[1];           
+
+            this.isLoadingData = false;
+        });
+
+        
+    }
+
+    public onInitNewRow(event: any): void {
+        this.hotSheetChanges = new HotSheetsDto();
+    }
+
+    public onEditingStart(event: any): void {
+            this.hotSheetChanges = new HotSheetsDto();
+            let newhotSheet = new HotSheetsItemDto(); 
+            newhotSheet = this.hotSheets.find((pn: HotSheetsItemDto) => pn.hotSheetId === event.data.hotSheetId);
+            this.hotSheetChanges.id = event.data.hotSheetId;
+            this.hotSheetChanges.transportModeId = newhotSheet.transportModeId;            
+            this.hotSheetChanges.deliveryOrder = newhotSheet.deliveryOrder;
+            this.hotSheetChanges.trafficContainerFX = newhotSheet.trafficContainerFX;
+            this.hotSheetChanges.unitNumber = newhotSheet.unitNumber;
+            this.hotSheetChanges.etaDNMX = newhotSheet.etaDNMX;
+            this.hotSheetChanges.shortageShiftId = newhotSheet.shortageShiftId;                                    
+            this.hotSheetChanges.realShortageDate = newhotSheet.realShortageDate;                
+            this.hotSheetChanges.shortage = newhotSheet.shortage;
+            const shortage = newhotSheet.shortage;
+            const shortageVal = newhotSheet.shortageVal;      
+            const parts = shortageVal.split(":");
+            const hora = parseInt(parts[0].toString());
+            const min =parseInt(parts[1].toString());
+            const seg = parseInt(parts[2].toString());
+
+            this.timeShortage = new Date(2025,1,1,hora,min,seg);
+            //this.timeShortage = newhotSheet.shortageVal;
+            //this.hotSheetChanges.shortage = new TimeSpan(this.timeShortage);
+
+            this.hotSheetChanges.pcComments = newhotSheet.pcComments;
+            this.Editing = true;
+
+            Promise.all([
+                this._hotSheetservice.getHotSheetFiles(event.data.hotSheetId).toPromise(),
+                this._hotSheetservice.getHotSheetComments(event.data.hotSheetId).toPromise(),
+            ]).then((responses) => {
+                this.hotSheetFiles = responses[0];                
+                this.hotSheetFiles.forEach((docItem) => {
+                    docItem.url = AppConsts.remoteServiceBaseUrl + '/file/GetDocumentBy?docId=' + docItem.id;
+                });
+
+                this.hotSheetComments = responses[1];       
+                this.isLoadingData = false;
+            });
+        }        
+
+        public onEditCanceling(event: any) {
+            this.Editing = false;
+        }
+
+
+        public onSavingHotSheet(e: any): void {
+                const change = e.changes[0];
+        
+                //veremos como viene el dato
+                var ok= this.timeShortage;
+
+                if (change || this.Editing) {
+                    e.cancel = true;
+        
+                    if (change != undefined && change.type === 'remove') {                      
+                        abp.notify.success(this.l('SuccessfullyDeleted'));
+                    } else if ((change != undefined && change.type === 'insert') || this.Editing) {
+                        this._hotSheetservice
+                            .createOrUpdateHotSheet(this.hotSheetChanges)
+                            .pipe(
+                                finalize(() => {                                    
+                                })
+                            )
+                            .subscribe(() => {
+                                this.notify.success(this.l('SavedSuccessfully'), this.l('Hot Sheet'));
+                                this.refresh();
+                            });
+                    }
+        
+                    e.changes = [];
+                    e.component.cancelEditData();
+                    this.Editing = false;
+                }
+        
+                console.log('onSavingHotSheet', e, this.hotSheetChanges);
+            }
+
+    public refresh(): void {
+        this.isTableLoading = true;
+        const statusCompleted = 1;
+        this._hotSheetservice
+            .getHotSheets(statusCompleted)
+            .pipe(
+                finalize(() => {
+                    this.isTableLoading = false;
+                })
+            )
+            .subscribe((response: HotSheetsItemDto[]) => {
+                this.hotSheets = response;
+               
+            });
+    }
+
+    public exportGrid(e: any): void {
+        if (e.format === 'xlsx') {
+            const workbook = new Workbook();
+            const worksheet = workbook.addWorksheet('Main sheet');
+            exportDataGrid({
+                worksheet: worksheet,
+                component: e.component,
+            }).then(function () {
+                workbook.xlsx.writeBuffer().then(function (buffer) {
+                    saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'hotSheetsReport_' + Date.now().toString() + '.xlsx');
+                });
+            });
+            e.cancel = true;
+        } else if (e.format === 'pdf') {
+            const doc = new jsPDF();
+            exportDataGridToPdf({
+                jsPDFDocument: doc,
+                component: e.component,
+            }).then(() => {
+                doc.save('hotSheetsReport_' + Date.now().toString() + '.pdf');
+            });
+        }
+    }
+
+    public onReasonChanged(event: any): void {
+        var ok =  event.value;
+        const hours = '0' + ok.getHours().toString(); 
+        const min = '0' + ok.getMinutes(); 
+        const seg = '0' +  ok.getSeconds(); 
+        const val = hours.slice(-2) + ':'+  min.slice(-2) + ':'+ seg.slice(-2);          
+
+        this.hotSheetChanges.shortage = val;       
+    }
+
+    public downloadFile(fileItem: any): void {
+        window.open(fileItem.url, '_blank');
+    }
+
+    public viewFile(fileItem: any): void {
+        this.showDocumentViewerPopup = true;
+        this.documentViewerFileSelected = fileItem;
+    }
+
+    public saveDocuments(): void {
+        abp.ui.setBusy();
+        this.saving = true;
+        this.uploaderHotSheet.uploadAll();
+    }
+
+    public deleteFile(fileItem: any): void {
+        abp.message.confirm(this.l('AreYouSureWantToDelete', fileItem.name), this.l('AreYouSure'), (answerYes: boolean) => {
+            if (answerYes) {
+                this._hotSheetservice.deleteFile(fileItem.id).subscribe(() => {
+                    this.notify.success(this.l('SuccessfullyDeleted'), this.l('HotSheetFile'));
+                    this.hotSheetFiles = this.hotSheetFiles.filter((f) => f.id !== fileItem.id);
+                });
+            }
+        });
+    }
+
+    // public getActionOptionsBy(item: HotSheetsItemDto): any {
+    //     let actionSettings: any[] = [];
+
+    //     if (!item.isTemplate) {
+    //         if (item.isOwner) {
+    //             if (this.isGranted('Pages.ShippingInstructions.Edit')) {
+    //                 if (item.statusId === DensoDocumentStatus.Draft) {
+    //                     actionSettings.push({ value: 'edit', name: this.l('Edit'), icon: 'edit' });
+    //                 } else {
+    //                     actionSettings.push({ value: 'view', name: this.l('View'), icon: 'doc' });
+    //                     if (item.statusId !== DensoDocumentStatus.Approved) {
+    //                         actionSettings.push({ value: 'reset', name: this.l('Reset'), icon: 'revert' });
+    //                     }
+    //                 }
+    //             } else if (this.isGranted('Pages.ShippingInstructions')) {
+    //                 actionSettings.push({ value: 'view', name: this.l('View'), icon: 'doc' });
+    //             }
+
+    //             if (this.isGranted('Pages.ShippingInstructions.Cancel') && item.statusId === DensoDocumentStatus.Draft) {
+    //                 actionSettings.push({ value: 'cancel', name: this.l('Cancel'), icon: 'trash' });
+    //             }
+    //             if (
+    //                 this.isGranted('Pages.ShippingInstructions.Edit') &&
+    //                 item.statusId === DensoDocumentStatus.Draft &&
+    //                 (item.managerApprovalId || item.accountingApprovalId || item.ieStaffId)
+    //             ) {
+    //                 actionSettings.push({ value: 'sendForApproval', name: this.l('SendForApproval'), icon: 'importselected' });
+    //             }
+    //             if (
+    //                 this.isGranted('Pages.ShippingInstructions.ExportToAS400') &&
+    //                 item.statusId === DensoDocumentStatus.Approved &&
+    //                 item.exportedCigmaStatus === 3
+    //             ) {
+    //                 actionSettings.push({ value: 'exportToAs400', name: this.l('ExportToAS400'), icon: 'export' });
+    //             }
+    //             // if (this.isGranted('Pages.ShippingInstructions.Create') && item.isOwner) {
+    //             //     actionSettings.push({ value: 'generateCopy', name: this.l('GenerateCopy'), icon: 'copy' });
+    //             // }
+    //         } else {
+    //             if (this.isGranted('Pages.ShippingInstructions')) {
+    //                 //if (item.statusId === DensoDocumentStatus.Approved || item.statusId === DensoDocumentStatus.Cancelled) {
+    //                 actionSettings.push({ value: 'view', name: this.l('View'), icon: 'doc' });
+    //                 //}
+    //             }
+
+    //             if (this.isGranted('Pages.ShippingInstructions.Approvals') && item.statusId === DensoDocumentStatus.PendingForApproval) {
+    //                 if (item.managerApprovalId === this.appSession.userId && !item.managerIsApproved) {
+    //                     actionSettings.push({ value: 'managerApproval', name: this.l('ManagerApproval'), icon: 'check' });
+    //                 }
+    //                 if (item.accountingApproverUserId === this.appSession.userId && !item.accountingIsApproved && item.managerIsApproved) {
+    //                     actionSettings.push({ value: 'accountingApproval', name: this.l('AccountingApproval'), icon: 'check' });
+    //                 }
+    //                 if (
+    //                     item.ieStaffApproverUserId === this.appSession.userId &&
+    //                     !item.ieStaffIsApproved &&
+    //                     (item.accountingIsApproved || (item.managerIsApproved && item.accountingApproverUserId == null))
+    //                 ) {
+    //                     actionSettings.push({ value: 'ieStaffApproval', name: this.l('IEStaffApproval'), icon: 'check' });
+    //                 }
+    //             }
+    //         }
+    //     } else {
+    //         if (this.isGranted('Pages.ShippingInstructions.Edit') && item.statusId === DensoDocumentStatus.Draft) {
+    //             actionSettings.push({ value: 'edit', name: this.l('Edit'), icon: 'edit' });
+    //         }
+    //     }
+
+    //     return actionSettings;
+    // }
+
+    abrirComentarioModal(e: any) {
+        this.filaSeleccionada = e.row.data;
+        this.comentario = this.filaSeleccionada.comentario || '';
+        const modalElement = document.getElementById('comentarioModal');
+        if (modalElement) {
+          const modal = new bootstrap.Modal(modalElement);
+          modal.show();
+        }
+      }
+    
+      guardarComentario() {
+        if (this.filaSeleccionada) {
+          this.filaSeleccionada.comentario = this.comentario;
+        }
+        // Cerrar el modal manualmente
+        const modalElement = document.getElementById('comentarioModal');
+        if (modalElement) {
+          bootstrap.Modal.getInstance(modalElement)?.hide();
+        }
+        this.comentario = '';
+        this.filaSeleccionada = null;
+      }
+
+      public viewComent(hotSheet: any): void {
+        this.showCommentsPopup = true;
+        var newCommentsItem = new HotSheetsCommetsDto();    
+        newCommentsItem.hotSheetId = hotSheet.row.data.hotSheetId;
+        //newCommentsItem.comments = hotSheet.row.data.pcComments;
+        newCommentsItem.comments = "";
+        this.commentSelected = newCommentsItem;
+    }
+}

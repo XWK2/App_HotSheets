@@ -1,0 +1,173 @@
+<div [@routerTransition] id="customersSection">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1 class="denso-page-title"><i class="fa-solid fa-users-gear"></i>&nbsp;{{ 'Customers' | localize }}</h1>
+                </div>
+                <div class="col-5 text-right">
+                    <dx-button
+                        stylingMode="contained"
+                        [text]="'UpdateInformation' | localize"
+                        icon="refresh"
+                        type="default"
+                        [width]="220"
+                        class="dx-button-ml"
+                        (click)="wsPortalShippingUpdateCustomers()"
+                        *ngIf="isGranted('Pages.Catalogs.Customers')"
+                        [disabled]="isTableLoading"
+                    >
+                    </dx-button>
+                    <dx-button
+                        stylingMode="contained"
+                        [text]="'CreateCustomer' | localize"
+                        icon="add"
+                        type="default"
+                        [width]="200"
+                        class="dx-button-ml"
+                        (click)="createCustomer()"
+                        *ngIf="isGranted('Pages.Catalogs.Customers')"
+                        [disabled]="isTableLoading"
+                    >
+                    </dx-button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body grid-content" [busy]="isTableLoading">
+                        <dx-data-grid
+                            #dataGrid
+                            id="gridCustomers"
+                            keyExpr="id"
+                            [dataSource]="customers"
+                            [allowColumnReordering]="false"
+                            [allowColumnResizing]="false"
+                            [columnAutoWidth]="true"
+                            (onSaving)="onSave($event)"
+                            [showBorders]="true"
+                            [noDataText]="'NoDataText' | localize"
+                            [rowAlternationEnabled]="true"
+                        >
+                            <dxo-scrolling mode="none"></dxo-scrolling>
+                            <dxo-paging [pageSize]="20"></dxo-paging>
+                            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100]"></dxo-pager>
+                            <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+                            <dxo-header-filter [visible]="true"></dxo-header-filter>
+
+                            <dxo-editing mode="popup" [allowUpdating]="false" [allowAdding]="false" [allowDeleting]="false">
+                                <dxo-popup [title]="'CustomerInfo' | localize" [showTitle]="true" [width]="700" [height]="600">
+                                    <dxi-toolbar-item
+                                        widget="dxButton"
+                                        toolbar="bottom"
+                                        location="after"
+                                        [options]="{
+                                            text: 'Save' | localize,
+                                            onClick: onSaveChanges,
+                                            icon: 'save',
+                                            type: 'default'
+                                        }"
+                                    >
+                                    </dxi-toolbar-item>
+                                    <dxi-toolbar-item
+                                        widget="dxButton"
+                                        toolbar="bottom"
+                                        location="after"
+                                        [options]="{ text: 'Cancel' | localize, onClick: onClosePopup, icon: 'close' }"
+                                    >
+                                    </dxi-toolbar-item>
+                                </dxo-popup>
+                                <dxo-form>
+                                    <dxi-item [caption]="'Name' | localize" dataField="name" [colSpan]="2">
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [caption]="'AddressLine1' | localize" dataField="addressLine1" [colSpan]="2">
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [caption]="'AddressLine2' | localize" dataField="addressLine2" [colSpan]="2"></dxi-item>
+                                    <dxi-item [caption]="'AddressLine3' | localize" dataField="addressLine3" [colSpan]="2"></dxi-item>
+                                    <dxi-item [caption]="'AddressLine4' | localize" dataField="addressLine4" [colSpan]="2"></dxi-item>
+                                    <dxi-item [caption]="'RFC' | localize" dataField="rfc">
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [caption]="'State' | localize" dataField="state">
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [caption]="'Country' | localize" dataField="country">
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [caption]="'TaxId' | localize" dataField="taxId">
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [caption]="'Contact' | localize" dataField="contact">
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [caption]="'FedexCta' | localize" dataField="fedexCta"> </dxi-item>
+                                    <dxi-item [caption]="'Phone' | localize" dataField="phone">
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [caption]="'Zip' | localize" dataField="zipCode">
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item dataField="payment" [colSpan]="1" [caption]="'Payment' | localize" itemType="dxCheckBox"> </dxi-item>
+                                    <dxi-item dataField="isActive" [colSpan]="1" [caption]="'IsActive' | localize" itemType="dxCheckBox"> </dxi-item>
+                                </dxo-form>
+                            </dxo-editing>
+
+                            <div *dxTemplate="let item of 'actionsCellTemplate'">
+                                <dx-button
+                                    stylingMode="contained"
+                                    icon="edit"
+                                    hint="Edit"
+                                    type="normal"
+                                    [width]="100"
+                                    (click)="editCustomer(item)"
+                                    class="dx-button-ml"
+                                    style="height: 26px; border: none"
+                                >
+                                </dx-button>
+                            </div>
+                            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+                            <dxi-column
+                                [fixed]="true"
+                                fixedPosition="right"
+                                [caption]="''"
+                                dataField="id"
+                                cellTemplate="actionsCellTemplate"
+                                [width]="130"
+                            ></dxi-column>
+                            <dxi-column caption="ID" dataField="densoCustomerId" alignment="center" [width]="90" sortOrder="asc"></dxi-column>
+                            <dxi-column [caption]="'Name' | localize" dataField="name" [width]="300"></dxi-column>
+                            <dxi-column [caption]="'AddressLine1' | localize" dataField="addressLine1" [width]="220"></dxi-column>
+                            <dxi-column [caption]="'AddressLine2' | localize" dataField="addressLine2" [width]="220"></dxi-column>
+                            <dxi-column [caption]="'AddressLine3' | localize" dataField="addressLine3" [width]="160"></dxi-column>
+                            <dxi-column [caption]="'AddressLine4' | localize" dataField="addressLine4" [width]="160"></dxi-column>
+                            <dxi-column [caption]="'RFC' | localize" dataField="rfc" [width]="130"></dxi-column>
+                            <dxi-column [caption]="'State' | localize" dataField="state" [width]="160"></dxi-column>
+                            <dxi-column [caption]="'Country' | localize" dataField="country" [width]="160"></dxi-column>
+                            <dxi-column [caption]="'TaxId' | localize" dataField="taxId" [width]="160"></dxi-column>
+                            <dxi-column [caption]="'Contact' | localize" dataField="contact" [width]="160"></dxi-column>
+                            <dxi-column [caption]="'FedexCta' | localize" dataField="fedexCta" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'Phone' | localize" dataField="phone" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'Zip' | localize" dataField="zipCode" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'Payment' | localize" dataField="payment" [width]="90"></dxi-column>
+                            <dxi-column [caption]="'Active' | localize" dataField="isActive" [width]="90"></dxi-column>
+                        </dx-data-grid>
+                    </div>
+                    <div class="card-footer table-card-footer bg-light border-top">
+                        <div class="row">
+                            <div class="col-sm-4 col-12 text-sm-left text-center">
+                                <button class="btn btn-sm btn-secondary" (click)="refresh()">
+                                    <i class="fas fa-redo-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

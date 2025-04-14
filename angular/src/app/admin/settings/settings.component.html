@@ -1,0 +1,142 @@
+<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1 class="denso-page-title"><i class="fas fa-laptop-house"></i>&nbsp;{{ 'Settings' | localize }}</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body grid-content" [busy]="isTableLoading">
+                        <tabset>
+                            <tab [heading]="'General' | localize" id="generalTab">
+                                <form autocomplete="off" #generalSettingsForm="ngForm" (ngSubmit)="saveGeneralSettings()" class="tab-content-form">
+                                    <div class="form-group required">
+                                        <label for="daysInAdvanceForNonWorkDaysNotification">{{ 'DaysInAdvanceForNonWorkDaysNotification' | localize }}</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="daysInAdvanceForNonWorkDaysNotification"
+                                            placeholder="Dias"
+                                            required
+                                            [(ngModel)]="general.daysInAdvanceForNonWorkDaysNotification"
+                                            [ngModelOptions]="{ standalone: true }"
+                                        />
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary" [disabled]="!generalSettingsForm.form.valid || isSaving">
+                                        <i class="fas fa-save"></i>&nbsp; {{ 'SaveSettings' | localize }}
+                                    </button>
+                                </form>
+                            </tab>
+                            <tab heading="AS/400" id="as400Tab">
+                                <form autocomplete="off" #densoAS400SettingsForm="ngForm" (ngSubmit)="saveAS400()" class="tab-content-form col-md-10">
+                                    <div class="form-group required">
+                                        <label for="inputDataSource">DataSource</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="inputDataSource"
+                                            placeholder="Data Source"
+                                            required
+                                            [(ngModel)]="as400.dataSource"
+                                            [ngModelOptions]="{ standalone: true }"
+                                        />
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group required col-md-6">
+                                            <label for="inputUserID">User ID</label>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                id="inputUserID"
+                                                placeholder="User ID"
+                                                required
+                                                [(ngModel)]="as400.userID"
+                                                [ngModelOptions]="{ standalone: true }"
+                                            />
+                                        </div>
+                                        <div class="form-group required col-md-6">
+                                            <label for="inputPassword">Password</label>
+                                            <input
+                                                type="password"
+                                                class="form-control"
+                                                id="inputPassword"
+                                                placeholder="Password"
+                                                required
+                                                [(ngModel)]="as400.password"
+                                                [ngModelOptions]="{ standalone: true }"
+                                            />
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" [disabled]="!densoAS400SettingsForm.form.valid">Save AS/400 Changes</button>
+                                </form>
+                            </tab>
+                            <tab [heading]="'Email' | localize" id="emailTab">
+                                <form autocomplete="off" #emailSettingsForm="ngForm" (ngSubmit)="sendTestEmail()" class="tab-content-form">
+                                    <div class="form-group required">
+                                        <label for="testEmailAddress">{{ 'EmailAddress' | localize }}</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="testEmailAddress"
+                                            placeholder="Email Address"
+                                            required
+                                            [(ngModel)]="testEmailAddress"
+                                            [ngModelOptions]="{ standalone: true }"
+                                        />
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary" [disabled]="!emailSettingsForm.form.valid || sendingTestEmail">
+                                        <i class="fas fa-paper-plane"></i>&nbsp; {{ 'SendTestEmail' | localize }}
+                                    </button>
+                                </form>
+                            </tab>
+                            <tab [heading]="'Interfaces' | localize" id="tab3">
+                                <form
+                                    autocomplete="off"
+                                    #densoInterfacesSettingsForm="ngForm"
+                                    (ngSubmit)="saveInterfacesSettings()"
+                                    class="tab-content-form col-md-10"
+                                >
+                                    <div class="form-group required">
+                                        <label for="inputDataSource">Days for Reminders</label>
+                                        <input
+                                            type="number"
+                                            class="form-control col-md-6"
+                                            id="inputDaysForReminders"
+                                            placeholder="Days for Reminders"
+                                            required
+                                            [(ngModel)]="interfaces.daysForReminders"
+                                            [ngModelOptions]="{ standalone: true }"
+                                        />
+                                    </div>
+                                    <div class="form-group required">
+                                        <label for="inputEmailsAddressToNotify">Emails Address to Notify</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="inputEmailsAddressToNotify"
+                                            placeholder="Emails Address to Notify"
+                                            required
+                                            [(ngModel)]="interfaces.emailsAddressToNotify"
+                                            [ngModelOptions]="{ standalone: true }"
+                                        />
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" [disabled]="!densoInterfacesSettingsForm.form.valid">
+                                        Save Interfaces Changes
+                                    </button>
+                                </form>
+                            </tab>
+                        </tabset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

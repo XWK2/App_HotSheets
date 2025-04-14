@@ -1,0 +1,255 @@
+<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1 class="denso-page-title"><i class="fas fa-users"></i>&nbsp;{{ 'Employees' | localize }}</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body grid-content" [busy]="isTableLoading">
+                        <dx-data-grid
+                            keyExpr="id"
+                            [dataSource]="employees"
+                            [allowColumnReordering]="false"
+                            [allowColumnResizing]="false"
+                            [columnAutoWidth]="true"
+                            [showBorders]="true"
+                            [noDataText]="'NoDataText' | localize"
+                            [rowAlternationEnabled]="true"
+                            (onEditingStart)="onEditingStart($event)"
+                            (onInitNewRow)="onInitNewRow($event)"
+                            (onSaving)="onSaving($event)"
+                        >
+                            <dxo-scrolling mode="none"></dxo-scrolling>
+                            <dxo-paging [pageSize]="20"></dxo-paging>
+                            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100, 150]" displayMode="compact"></dxo-pager>
+                            <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+                            <dxo-header-filter [visible]="true"></dxo-header-filter>
+
+                            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+                            <dxi-column caption="ID" dataField="densoEmployeeId" alignment="center" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'Credential' | localize" dataField="credential" [width]="120"></dxi-column>
+                            <dxi-column [caption]="'Name' | localize" dataField="name" [width]="300" cellTemplate="nameCellTemplate"></dxi-column>
+                            <div *dxTemplate="let info of 'nameCellTemplate'">
+                                <span>{{ info.data.name }} {{ info.data.surnames }}</span>
+                            </div>
+                            <dxi-column [caption]="'EmployeeType' | localize" dataField="employeeType"></dxi-column>
+                            <dxi-column [caption]="'EmailAddress' | localize" dataField="emailAddress"></dxi-column>
+                            <dxi-column [caption]="'BirthDate' | localize" dataField="birthDate" dataType="date" format="MM-dd-yyyy"></dxi-column>
+                            <dxi-column [caption]="'NSS' | localize" dataField="nss"></dxi-column>
+                            <dxi-column [caption]="'CURP' | localize" dataField="curp"></dxi-column>
+                            <dxi-column [caption]="'EntryDate' | localize" dataField="entryDate" [width]="120" dataType="date" format="MM-dd-yyyy"></dxi-column>
+                            <dxi-column [caption]="'Active' | localize" dataField="isActive" [width]="120"></dxi-column>
+
+                            <dxo-editing mode="popup" [allowUpdating]="true" [useIcons]="true" [allowAdding]="true" [allowDeleting]="false">
+                                <dxo-popup [title]="'Employee' | localize" [showTitle]="true" [width]="900" [height]="popupHeight">
+                                    <dxi-toolbar-item
+                                        widget="dxButton"
+                                        toolbar="bottom"
+                                        location="after"
+                                        [options]="{
+                                            text: 'Save' | localize,
+                                            onClick: onSaveChanges,
+                                            icon: 'save',
+                                            type: 'default'
+                                        }"
+                                    >
+                                    </dxi-toolbar-item>
+                                    <dxi-toolbar-item
+                                        widget="dxButton"
+                                        toolbar="bottom"
+                                        location="after"
+                                        [options]="{ text: 'Cancel' | localize, onClick: onClosePopup, icon: 'close' }"
+                                    >
+                                    </dxi-toolbar-item>
+                                </dxo-popup>
+                                <dxo-form>
+                                    <dxi-item dataField="densoEmployeeId" [label]="{ text: 'Denso ID' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-number-box [(value)]="employeeChanges.densoEmployeeId"></dx-number-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'Credential' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-number-box [(value)]="employeeChanges.credential"></dx-number-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+
+                                    <dxi-item [label]="{ text: 'Name' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-text-box [(value)]="employeeChanges.name"></dx-text-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'Surname' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-text-box [(value)]="employeeChanges.surnames"></dx-text-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+
+                                    <dxi-item [label]="{ text: 'Rfc' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-text-box [(value)]="employeeChanges.rfc"></dx-text-box>
+                                        </div>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'BirthDate' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-date-box type="date" [(value)]="employeeChanges.birthDate" showClearButton="true"> </dx-date-box>
+                                        </div>
+                                    </dxi-item>
+
+                                    <dxi-item [label]="{ text: 'Nss' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-text-box [(value)]="employeeChanges.nss"></dx-text-box>
+                                        </div>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'Curp' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-text-box [(value)]="employeeChanges.curp"></dx-text-box>
+                                        </div>
+                                    </dxi-item>
+
+                                    <dxi-item [label]="{ text: 'Department' | localize }" [colSpan]="2">
+                                        <div *dxTemplate>
+                                            <dx-select-box
+                                                displayExpr="fullName"
+                                                valueExpr="id"
+                                                [(value)]="employeeChanges.departmentId"
+                                                [items]="employeeOptions.departments"
+                                                [searchEnabled]="true"
+                                            >
+                                            </dx-select-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'Position' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-select-box
+                                                displayExpr="name"
+                                                valueExpr="id"
+                                                [(value)]="employeeChanges.positionId"
+                                                [items]="employeeOptions.positions"
+                                                [searchEnabled]="true"
+                                            >
+                                            </dx-select-box>
+                                        </div>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'Type' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-select-box
+                                                displayExpr="name"
+                                                valueExpr="id"
+                                                [(value)]="employeeChanges.typeId"
+                                                [items]="employeeOptions.types"
+                                                [searchEnabled]="true"
+                                            >
+                                            </dx-select-box>
+                                        </div>
+                                    </dxi-item>
+
+                                    <dxi-item [label]="{ text: 'Plant' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-select-box
+                                                displayExpr="name"
+                                                valueExpr="id"
+                                                [(value)]="employeeChanges.plantId"
+                                                [items]="employeeOptions.plants"
+                                                [searchEnabled]="true"
+                                            >
+                                            </dx-select-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'EntryDate' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-date-box type="date" [(value)]="employeeChanges.entryDate" showClearButton="true"> </dx-date-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+
+                                    <dxi-item [label]="{ text: 'Extras' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-check-box [(value)]="employeeChanges.extras"> </dx-check-box>
+                                        </div>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'NotRequiredAHE' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-check-box [(value)]="employeeChanges.notRequiredAHE"> </dx-check-box>
+                                        </div>
+                                    </dxi-item>
+
+                                    <dxi-item [label]="{ text: 'Supervisor' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-check-box [(value)]="employeeChanges.supervisor"> </dx-check-box>
+                                        </div>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'Subsidy' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-check-box [(value)]="employeeChanges.subsidy"> </dx-check-box>
+                                        </div>
+                                    </dxi-item>
+
+                                    <dxi-item [label]="{ text: 'PositionLevel' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-check-box [(value)]="employeeChanges.positionLevel"> </dx-check-box>
+                                        </div>
+                                    </dxi-item>
+
+                                    <dxi-item [label]="{ text: 'Email' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-text-box [(value)]="employeeChanges.emailAddress"></dx-text-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+
+                                    <dxi-item [label]="{ text: 'AddressLine1' | localize }" [colSpan]="2">
+                                        <div *dxTemplate>
+                                            <dx-text-box [(value)]="employeeChanges.addressLine1"></dx-text-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+
+                                    <dxi-item [label]="{ text: 'AddressLine2' | localize }" [colSpan]="2">
+                                        <div *dxTemplate>
+                                            <dx-text-box [(value)]="employeeChanges.addressLine2"></dx-text-box>
+                                        </div>
+                                    </dxi-item>
+
+                                    <dxi-item [label]="{ text: 'AddressLine3' | localize }" [colSpan]="2">
+                                        <div *dxTemplate>
+                                            <dx-text-box [(value)]="employeeChanges.addressLine3"></dx-text-box>
+                                        </div>
+                                    </dxi-item>
+
+                                    <dxi-item [label]="{ text: 'AddressLine4' | localize }" [colSpan]="2">
+                                        <div *dxTemplate>
+                                            <dx-text-box [(value)]="employeeChanges.addressLine4"></dx-text-box>
+                                        </div>
+                                    </dxi-item>
+                                </dxo-form>
+                            </dxo-editing>
+                        </dx-data-grid>
+                    </div>
+                    <div class="card-footer table-card-footer bg-light border-top">
+                        <div class="row">
+                            <div class="col-sm-4 col-12 text-sm-left text-center">
+                                <button class="btn btn-sm btn-secondary" (click)="refresh()">
+                                    <i class="fas fa-redo-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

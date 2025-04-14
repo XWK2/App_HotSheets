@@ -1,0 +1,171 @@
+<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1 class="denso-page-title"><i class="fas fa-parking"></i>&nbsp;{{ 'PartNumbersInternal' | localize }}</h1>
+                </div>
+                <div class="col-5 text-right">
+                    <dx-button
+                        stylingMode="contained"
+                        [text]="'UpdateInformation' | localize"
+                        icon="refresh"
+                        type="default"
+                        [width]="220"
+                        class="dx-button-ml"
+                        (click)="wsPortalShippingUpdateParts()"
+                        [disabled]="isTableLoading"
+                    >
+                    </dx-button>
+                </div>
+                <!-- <div class="col-6 text-right">
+                    <input
+                        #inputFile
+                        type="file"
+                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                        style="width: 100%"
+                        (change)="onFileChange($event)"
+                    />
+                    <dx-button
+                        stylingMode="contained"
+                        [text]="'SaveDataXLSX' | localize"
+                        icon="add"
+                        type="default"
+                        [width]="200"
+                        class="dx-button-ml"
+                        (click)="onSaveDataXlsx($event)"
+                        *ngIf="FileSelected == true"
+                    >
+                    </dx-button>
+                </div> -->
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body grid-content" [busy]="isTableLoading">
+                        <dx-data-grid
+                            keyExpr="id"
+                            [dataSource]="partNumbers"
+                            [allowColumnReordering]="false"
+                            [allowColumnResizing]="false"
+                            [columnAutoWidth]="true"
+                            (onEditCanceling)="onEditCanceling($event)"
+                            (onInitNewRow)="onInitNewRow($event)"
+                            (onEditingStart)="onEditingStart($event)"
+                            (onSaving)="onSavingPartNumber($event)"
+                            [showBorders]="true"
+                            [noDataText]="'NoDataText' | localize"
+                            [rowAlternationEnabled]="true"
+                        >
+                            <dxo-scrolling mode="none"></dxo-scrolling>
+                            <dxo-paging [pageSize]="20"></dxo-paging>
+                            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100]"></dxo-pager>
+                            <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+                            <dxo-header-filter [visible]="true"></dxo-header-filter>
+
+                            <dxo-editing mode="popup" [allowUpdating]="true" [useIcons]="true" [allowAdding]="true" [allowDeleting]="false">
+                                <dxo-popup [title]="'PartNumberInternalInfo' | localize" [showTitle]="true" [width]="700" [height]="500"> </dxo-popup>
+                                <dxo-form colCount="2">
+                                    <dxi-item [label]="{ text: 'Number' | localize }" [colSpan]="2">
+                                        <div *dxTemplate>
+                                            <dx-text-box [(value)]="partNumberChanges.number"></dx-text-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'Description' | localize }" [colSpan]="2">
+                                        <div *dxTemplate>
+                                            <dx-text-box [(value)]="partNumberChanges.description"></dx-text-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'DescriptionSpanish' | localize }" [colSpan]="2">
+                                        <div *dxTemplate>
+                                            <dx-text-box [(value)]="partNumberChanges.descriptionSpanish"></dx-text-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+
+                                    <dxi-item [label]="{ text: 'UnitMeasure' | localize }" [colSpan]="2">
+                                        <div *dxTemplate>
+                                            <dx-select-box
+                                                displayExpr="fullName"
+                                                valueExpr="id"
+                                                [(value)]="partNumberChanges.unitMeasureId"
+                                                [items]="unitMeasures"
+                                                [searchEnabled]="true"
+                                            >
+                                            </dx-select-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+
+                                    <dxi-item [label]="{ text: 'ProductCodeSat' | localize }">
+                                        <div *dxTemplate>
+                                            <dx-select-box
+                                                displayExpr="code"
+                                                valueExpr="id"
+                                                [(value)]="partNumberChanges.productCodeSATId"
+                                                [items]="productCodesSAT"
+                                            ></dx-select-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'Origin' | localize }">
+                                        <div *dxTemplate>
+                                            <dx-select-box
+                                                displayExpr="fullName"
+                                                valueExpr="id"
+                                                [(value)]="partNumberChanges.originCountryId"
+                                                [items]="countries"
+                                            ></dx-select-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'Fraction' | localize }">
+                                        <div *dxTemplate>
+                                            <dx-text-box [(value)]="partNumberChanges.fraction"></dx-text-box>
+                                        </div>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'IsActive' | localize }" [colSpan]="2">
+                                        <div *dxTemplate>
+                                            <dx-check-box [(value)]="partNumberChanges.isActive"> </dx-check-box>
+                                        </div>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'Price' | localize }">
+                                        <div *dxTemplate>
+                                            <dx-number-box [(value)]="partNumberChanges.price" [min]="0" [max]="1000000" format="$ #,##0.##"> </dx-number-box>
+                                        </div>
+                                    </dxi-item>
+                                </dxo-form>
+                            </dxo-editing>
+
+                            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+                            <dxi-column [caption]="'Number' | localize" dataField="number" [width]="180"></dxi-column>
+                            <dxi-column [caption]="'Description' | localize" dataField="description" [width]="300"></dxi-column>
+                            <dxi-column [caption]="'DescriptionSpanish' | localize" dataField="descriptionSpanish" [width]="300"></dxi-column>
+                            <dxi-column [caption]="'UnitMeasure' | localize" dataField="unitMeasure.name" [width]="150"></dxi-column>
+                            <dxi-column [caption]="'ProductCodeSat' | localize" dataField="productCodeSAT.code" [width]="150"></dxi-column>
+                            <dxi-column [caption]="'Origin' | localize" dataField="originCountry.satCode" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'Fraction' | localize" dataField="fraction" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'Active' | localize" dataField="isActive" [width]="120"></dxi-column>
+                            <dxi-column dataField="price" [visible]="false"></dxi-column>
+                            <dxi-column dataField="weight" [visible]="false"></dxi-column>
+                        </dx-data-grid>
+                    </div>
+                    <div class="card-footer table-card-footer bg-light border-top">
+                        <div class="row">
+                            <div class="col-sm-4 col-12 text-sm-left text-center">
+                                <button class="btn btn-sm btn-secondary" (click)="refresh()">
+                                    <i class="fas fa-redo-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

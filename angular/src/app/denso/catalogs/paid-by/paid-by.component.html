@@ -1,0 +1,89 @@
+<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1 class="denso-page-title"><i class="fas fa-user-tie"></i>&nbsp;{{ 'PaidBy' | localize }}</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body grid-content" [busy]="isTableLoading">
+                        <dx-data-grid
+                            keyExpr="id"
+                            [dataSource]="paidPay"
+                            [allowColumnReordering]="false"
+                            [allowColumnResizing]="false"
+                            [columnAutoWidth]="true"
+                            (onSaving)="onSave($event)"
+                            (onEditingStart)="onEditingStart($event)"
+                        >
+                            <dxo-scrolling mode="virtual"></dxo-scrolling>
+
+                            <dxo-editing mode="popup" [allowUpdating]="true" [useIcons]="true" [allowAdding]="true" [allowDeleting]="false">
+                                <dxo-popup title="PaidPay Info" [showTitle]="true" [width]="800" [height]="600"> </dxo-popup>
+                                <dxo-form [formData]="paidPayEdit">
+                                    <dxi-item dataField="name" [colSpan]="2">
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item dataField="isActive" [colSpan]="2" [caption]="'IsActive' | localize" itemType="dxCheckBox"> </dxi-item>
+                                    <dxi-item [label]="{ text: 'PaymentTerms' | localize }" [colSpan]="1">
+                                        <div *dxTemplate style="border: 1px solid #dee1e3">
+                                            <dx-list
+                                                #list
+                                                [dataSource]="paymentTerms"
+                                                [height]="300"
+                                                [selectionMode]="'multiple'"
+                                                [showSelectionControls]="true"
+                                                [searchEnabled]="false"
+                                                displayExpr="name"
+                                                keyExpr="id"
+                                                [selectedItemKeys]="paymentTermsIds"
+                                                (onSelectionChanged)="onSelectionChangedPaymentTerms($event)"
+                                            >
+                                            </dx-list>
+                                        </div>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'ShipmentTerms' | localize }" [colSpan]="1">
+                                        <div *dxTemplate style="border: 1px solid #dee1e3">
+                                            <dx-list
+                                                #list
+                                                [dataSource]="hotSheetTerms"
+                                                [height]="300"
+                                                [selectionMode]="'multiple'"
+                                                [showSelectionControls]="true"
+                                                [searchEnabled]="false"
+                                                displayExpr="name"
+                                                keyExpr="id"
+                                                [selectedItemKeys]="hotSheetTermsIds"
+                                                (onSelectionChanged)="onSelectionChangedHotSheetTerms($event)"
+                                            >
+                                            </dx-list>
+                                        </div>
+                                    </dxi-item>
+                                </dxo-form>
+                            </dxo-editing>
+
+                            <dxi-column caption="ID" dataField="id" alignment="center" [width]="90" sortOrder="asc"></dxi-column>
+                            <dxi-column caption="Name" dataField="name" [width]="220"></dxi-column>
+                            <dxi-column [caption]="'Active' | localize" dataField="isActive" [width]="120"></dxi-column>
+                        </dx-data-grid>
+                    </div>
+                    <div class="card-footer table-card-footer bg-light border-top">
+                        <div class="row">
+                            <div class="col-sm-4 col-12 text-sm-left text-center">
+                                <button class="btn btn-sm btn-secondary" (click)="refresh()">
+                                    <i class="fas fa-redo-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

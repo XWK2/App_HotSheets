@@ -1,0 +1,23 @@
+<dx-select-box
+    valueExpr="id"
+    [(value)]="value"
+    [items]="items"
+    fieldTemplate="unitOfMeasureFieldTemplate"
+    itemTemplate="unitOfMeasureItemTemplate"
+    (onValueChanged)="onUnitMeasureChanged($event)"
+>
+    <!-- Custom Templates -->
+    <div *dxTemplate="let itemData of 'unitOfMeasureItemTemplate'; let itemIndex = index">
+        {{ getUnitMeasureItemText(itemData) }}
+    </div>
+    <div *dxTemplate="let itemData of 'unitOfMeasureFieldTemplate'">
+        <dx-text-box
+            [value]="getUnitMeasureItemText(itemData)"
+            [readOnly]="true"
+            [placeholder]="'SelectAnOption' | localize"
+        ></dx-text-box>
+    </div>
+    <!-- <dx-validator validationGroup="vg1">
+        <dxi-validation-rule type="required" message="required."></dxi-validation-rule>
+    </dx-validator> -->
+</dx-select-box>

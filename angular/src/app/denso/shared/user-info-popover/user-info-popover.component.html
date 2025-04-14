@@ -1,0 +1,54 @@
+<p *ngIf="type === 'shippingInstructionDetails'">
+    <i class="dx-icon-user" style="font-size: 20px"></i>&nbsp;{{ 'Requested By' | localize }}
+    <a id="linkUserInfo" style="color: #0096ff; cursor: pointer">{{ user.name }} {{ user.surname }}</a>
+    on
+    <i class="dx-icon-event" style="font-size: 20px"></i>
+    {{ creationDate | date : 'short' }}
+</p>
+<dx-popover target="#linkUserInfo" showEvent="mouseenter" hideEvent="mouseleave" position="bottom" [width]="350">
+    <div *dxTemplate="let data = model; of: 'content'">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>{{ user.name }} {{ user.surname }}</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <i class="dx-icon-tel" style="font-size: 20px"></i>&nbsp; {{ user.phoneNumber }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <i class="dx-icon-email" style="font-size: 20px"></i>&nbsp; {{ user.emailAddress }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <img
+                    src="../../../../assets/img/user.png"
+                    alt="User Image"
+                    class="user-image img-circle elevation-2"
+                    style="width: 60px"
+                />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row" style="border-top: solid 1px #a9a9a9; margin-top: 6px; padding-top: 6px">
+                    <div class="col-md-12">
+                        <label>{{ 'Plants' | localize }}</label
+                        >: {{ userPlantNames }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>{{ 'Departments' | localize }}</label
+                        >: {{ userDepartmentNames }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</dx-popover>

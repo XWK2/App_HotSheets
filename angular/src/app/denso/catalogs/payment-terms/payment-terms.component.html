@@ -1,0 +1,145 @@
+<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1 class="denso-page-title"><i class="fa-solid fa-file-invoice-dollar"></i>&nbsp;{{ 'PaymentTerms' | localize }}</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body grid-content" [busy]="isTableLoading">
+                        <dx-data-grid
+                            #dataGrid
+                            keyExpr="id"
+                            [dataSource]="paymentTerms"
+                            [allowColumnReordering]="false"
+                            [allowColumnResizing]="false"
+                            [columnAutoWidth]="true"
+                            (onSaving)="onSave($event)"
+                            (onEditingStart)="onEditingStart($event)"
+                        >
+                            <dxo-scrolling mode="none"></dxo-scrolling>
+                            <dxo-paging [pageSize]="20"></dxo-paging>
+                            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100]"></dxo-pager>
+                            <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+                            <dxo-header-filter [visible]="true"></dxo-header-filter>
+
+                            <dxo-editing mode="popup" [allowUpdating]="true" [useIcons]="true" [allowAdding]="true" [allowDeleting]="false">
+                                <dxo-popup title="Payment Term Info" [showTitle]="true" [width]="960" [height]="860">
+                                    <dxi-toolbar-item
+                                        widget="dxButton"
+                                        toolbar="bottom"
+                                        location="after"
+                                        [options]="{
+                                            text: saveLabel,
+                                            onClick: onSaveChanges,
+                                            icon: 'save',
+                                            type: 'default',
+                                            disabled: saving
+                                        }"
+                                    >
+                                    </dxi-toolbar-item>
+                                    <dxi-toolbar-item
+                                        widget="dxButton"
+                                        toolbar="bottom"
+                                        location="after"
+                                        [options]="{ text: 'Cancel' | localize, onClick: onClosePopup, icon: 'close' }"
+                                    >
+                                    </dxi-toolbar-item>
+                                </dxo-popup>
+                                <dxo-form [colCount]="2" [formData]="paymentTermEdit">
+                                    <dxi-item itemType="group" caption="" [colCount]="2" [colSpan]="2">
+                                        <dxi-item dataField="name" [colSpan]="2" isRequired="true" [caption]="'Name' | localize"></dxi-item>
+                                        <dxi-item dataField="description" [colSpan]="2" isRequired="true" [caption]="'Description' | localize"></dxi-item>
+                                        <dxi-item dataField="alwaysDnmx" [colSpan]="1" [caption]="'AlwaysDnmx' | localize" itemType="dxCheckBox"> </dxi-item>
+                                        <dxi-item
+                                            dataField="accountingApprovalRequired"
+                                            [colSpan]="1"
+                                            [caption]="'AccountingApprovalRequired' | localize"
+                                            itemType="dxCheckBox"
+                                        >
+                                        </dxi-item>
+                                        <dxi-item dataField="excludeOnSamples" [colSpan]="1" [caption]="'ExcludeOnSamples' | localize" itemType="dxCheckBox">
+                                        </dxi-item>
+                                        <dxi-item dataField="isActive" [colSpan]="1" [caption]="'IsActive' | localize" itemType="dxCheckBox"> </dxi-item>
+                                    </dxi-item>
+
+                                    <dxi-item itemType="group" caption="Warning parameters for Carrier-Company Names" [colCount]="2" [colSpan]="2">
+                                        <dxi-item [label]="{ text: 'Company Name' | localize }" [colSpan]="2">
+                                            <div *dxTemplate>
+                                                <dx-tag-box
+                                                    displayExpr="fullName"
+                                                    valueExpr="id"
+                                                    [(value)]="paymentTermEdit.warning1CompanyIds"
+                                                    [dataSource]="customersDataSource"
+                                                    [searchEnabled]="true"
+                                                >
+                                                </dx-tag-box>
+                                            </div>
+                                        </dxi-item>
+                                        <dxi-item dataField="warning1Message" [colSpan]="2" [label]="{ text: 'WarningMessage' | localize }"></dxi-item>
+                                        <dxi-item [label]="{ text: 'Carriers' | localize }" [colSpan]="2">
+                                            <div *dxTemplate>
+                                                <dx-tag-box
+                                                    displayExpr="fullName"
+                                                    valueExpr="id"
+                                                    [(value)]="paymentTermCarriers1"
+                                                    [dataSource]="carriersDataSource"
+                                                    [searchEnabled]="true"
+                                                >
+                                                </dx-tag-box>
+                                            </div>
+                                        </dxi-item>
+                                        <dxi-item dataField="poWarning" [colSpan]="2" [label]="{ text: 'PO Warning' | localize }"></dxi-item>
+                                    </dxi-item>
+
+                                    <dxi-item itemType="group" caption="Warning parameters for Big Amounts" [colCount]="2" [colSpan]="2">
+                                        <dxi-item [label]="{ text: 'Company Name' | localize }" [colSpan]="2">
+                                            <div *dxTemplate>
+                                                <dx-tag-box
+                                                    displayExpr="fullName"
+                                                    valueExpr="id"
+                                                    [(value)]="paymentTermEdit.warning2CompanyIds"
+                                                    [dataSource]="customersDataSource"
+                                                    [searchEnabled]="true"
+                                                >
+                                                </dx-tag-box>
+                                            </div>
+                                        </dxi-item>
+                                        <dxi-item dataField="warning2Message" [colSpan]="2" [label]="{ text: 'WarningMessage' | localize }"></dxi-item>
+                                        <dxi-item [label]="{ text: 'Carriers' | localize }" [colSpan]="2">
+                                            <div *dxTemplate>
+                                                <dx-tag-box
+                                                    displayExpr="fullName"
+                                                    valueExpr="id"
+                                                    [(value)]="paymentTermCarriers2"
+                                                    [dataSource]="carriersDataSource"
+                                                    [searchEnabled]="true"
+                                                >
+                                                </dx-tag-box>
+                                            </div>
+                                        </dxi-item>
+                                    </dxi-item>
+                                </dxo-form>
+                            </dxo-editing>
+                            
+                            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+                            <dxi-column caption="ID" dataField="id" alignment="center" [width]="90"></dxi-column>
+                            <dxi-column [caption]="'Name' | localize" dataField="name" [width]="150"></dxi-column>
+                            <dxi-column [caption]="'Description' | localize" dataField="description" [width]="400"></dxi-column>
+                            <dxi-column [caption]="'AlwaysDnmx' | localize" dataField="alwaysDnmx" [width]="120"></dxi-column>
+                            <dxi-column [caption]="'AccountingApprovalRequired' | localize" dataField="accountingApprovalRequired" [width]="200"></dxi-column>
+                            <dxi-column [caption]="'ExcludeOnSamples' | localize" dataField="excludeOnSamples" [width]="150"></dxi-column>
+                            <dxi-column [caption]="'Active' | localize" dataField="isActive" [width]="120"></dxi-column>
+                        </dx-data-grid>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

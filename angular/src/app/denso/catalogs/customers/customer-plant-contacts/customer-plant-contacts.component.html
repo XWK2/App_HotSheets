@@ -1,0 +1,35 @@
+<dx-data-grid
+    #dataGridCustomerPlantContacts
+    id="dataGridCustomerPlantContacts"
+    keyExpr="id"
+    [dataSource]="plantContacts"
+    [allowColumnReordering]="false"
+    [allowColumnResizing]="false"
+    [columnAutoWidth]="true"
+    [showBorders]="true"
+    [noDataText]="'NoDataText' | localize"
+    [rowAlternationEnabled]="true"
+>
+    <dxi-column [caption]="'ID' | localize" dataField="id" alignment="center" [width]="110"></dxi-column>
+    <dxi-column [caption]="'ContactName' | localize" dataField="contactName" [width]="350"></dxi-column>
+    <dxi-column [caption]="'PhoneNumber' | localize" dataField="phoneNumber" [width]="180"></dxi-column>
+    <dxi-column [caption]="'DepartmentOrSection' | localize" dataField="departmentOrSection" [width]="250"></dxi-column>
+    <dxi-column [caption]="'NetNumber' | localize" dataField="netNumber" [width]="150"></dxi-column>
+    <dxi-column [caption]="'IsActive' | localize" dataField="isActive" [width]="120"></dxi-column>
+
+    <dxo-editing mode="popup" [allowUpdating]="true" [allowAdding]="true" [allowDeleting]="false">
+        <dxo-popup [title]="'CustomerPlantContactInfo' | localize" [showTitle]="true" [width]="700" [height]="400"> </dxo-popup>
+        <dxo-form>
+            <dxi-item [caption]="'ContactName' | localize" dataField="contactName" [colSpan]="2">
+                <dxi-validation-rule type="required"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item [caption]="'PhoneNumber' | localize" dataField="phoneNumber" [colSpan]="1"> </dxi-item>
+            <dxi-item [caption]="''" [colSpan]="1">
+                <div *dxTemplate>&nbsp;</div>
+            </dxi-item>
+            <dxi-item [caption]="'DepartmentOrSection' | localize" dataField="departmentOrSection" [colSpan]="2"> </dxi-item>
+            <dxi-item dataField="netNumber" [colSpan]="1" [caption]="'NetNumber' | localize"> </dxi-item>
+            <dxi-item dataField="isActive" [colSpan]="1" [caption]="'IsActive' | localize" editorType="dxCheckBox"> </dxi-item>
+        </dxo-form>
+    </dxo-editing>
+</dx-data-grid>

@@ -1,0 +1,53 @@
+﻿<form class="form-horizontal" autocomplete="off">
+    <abp-modal-header [title]="dialogTitle" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body">
+        <div class="card">
+            <!-- <div class="card-header">{{ 'IEStaffResponsesPerformance' | localize }}</div> -->
+            <div class="card-body">
+                <!-- pendingApprovalByIE -->
+                <dx-pie-chart id="pie" palette="bright" [dataSource]="pendingApprovalByIE" [size]="{ height: 620 }" *ngIf="chartType === 'pendingApprovalByIE'">
+                    <dxi-series argumentField="ieStaffName" valueField="count">
+                        <dxo-label [visible]="true">
+                            <dxo-connector [visible]="true" [width]="1"></dxo-connector>
+                        </dxo-label>
+                    </dxi-series>
+                    <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltipPendingApprovalByIE"> </dxo-tooltip>
+                </dx-pie-chart>
+
+                <!-- ieStaffResponsesPerformance -->
+                <dx-chart
+                    id="chart"
+                    [dataSource]="ieStaffResponsesPerformanceItems"
+                    palette="soft"
+                    [size]="{ height: 620 }"
+                    *ngIf="chartType === 'ieStaffResponsesPerformance'"
+                >
+                    <dxo-common-series-settings argumentField="ieStaffName" type="bar" valueField="number" [ignoreEmptyPoints]="true">
+                    </dxo-common-series-settings>
+                    <dxo-series-template nameField="ieStaffName"></dxo-series-template>
+                    <dxo-legend [visible]="false"> </dxo-legend>
+                    <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltipResponsesPerformance"> </dxo-tooltip>
+                </dx-chart>
+
+                <!-- statusIndicator -->
+                <dx-pie-chart
+                    id="pie"
+                    palette="bright"
+                    [dataSource]="statusIndicatorChartData"
+                    [size]="{ height: 620 }"
+                    *ngIf="chartType === 'statusIndicator'"
+                >
+                    <dxi-series argumentField="propName" valueField="count">
+                        <dxo-label [visible]="true">
+                            <dxo-connector [visible]="true"></dxo-connector>
+                        </dxo-label>
+                    </dxi-series>
+                    <dxo-tooltip [enabled]="true" [shared]="true" [customizeTooltip]="customizeTooltipStatusIndicator"> </dxo-tooltip>
+                </dx-pie-chart>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Close</button>
+    </div> -->
+</form>

@@ -1,0 +1,216 @@
+<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1 class="denso-page-title"><i class="fa-solid fa-circle-info"></i>&nbsp;{{ 'HelpInfo' | localize }}</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body grid-content" [busy]="isTableLoading">
+                        <dx-data-grid
+                            #dataGrid
+                            keyExpr="id"
+                            [dataSource]="helpInfoItems"
+                            [allowColumnReordering]="false"
+                            [allowColumnResizing]="false"
+                            [columnAutoWidth]="true"
+                            (onInitNewRow)="onInitNewRow($event)"
+                            (onSaving)="onSave($event)"
+                            (onEditingStart)="onEditingStart($event)"
+                            [showBorders]="true"
+                            [noDataText]="'NoDataText' | localize"
+                            [rowAlternationEnabled]="true"
+                        >
+                            <dxo-scrolling mode="virtual"></dxo-scrolling>
+
+                            <dxo-editing mode="popup" [allowUpdating]="true" [useIcons]="true" [allowAdding]="true" [allowDeleting]="false">
+                                <dxo-popup #popup [title]="'HelpInfo' | localize" [showTitle]="true" [width]="960" [height]="800">
+                                    <dxi-toolbar-item
+                                        widget="dxButton"
+                                        toolbar="bottom"
+                                        location="after"
+                                        [options]="{
+                                            text: 'Save' | localize,
+                                            onClick: onSaveChanges,
+                                            icon: 'save',
+                                            type: 'default'
+                                        }"
+                                    >
+                                    </dxi-toolbar-item>
+                                    <dxi-toolbar-item
+                                        widget="dxButton"
+                                        toolbar="bottom"
+                                        location="after"
+                                        [options]="{ text: 'Cancel' | localize, onClick: onClosePopup, icon: 'close' }"
+                                    >
+                                    </dxi-toolbar-item>
+                                </dxo-popup>
+                                <dxo-form labelLocation="top">
+                                    <dxi-item [colSpan]="2" dataField="helpInfoFieldId" [caption]="'FieldName' | localize">
+                                        <div *dxTemplate>
+                                            <dx-select-box
+                                                displayExpr="fieldName"
+                                                valueExpr="id"
+                                                [(value)]="helpInfoChanges.helpInfoFieldId"
+                                                [items]="helpInfoFields"
+                                                [searchEnabled]="true"
+                                                [disabled]="helpInfoChanges.id > 0"
+                                            >
+                                            </dx-select-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [colSpan]="2">
+                                        <div *dxTemplate>
+                                            <dx-tab-panel>
+                                                <dxi-item [title]="'HelpTextEnglish' | localize" class="tab-content">
+                                                    <div *dxTemplate>
+                                                        <dx-html-editor height="400px" [(value)]="helpInfoChanges.helpTextEnglish">
+                                                            <dxo-toolbar [multiline]="true">
+                                                                <dxi-item name="undo"></dxi-item>
+                                                                <dxi-item name="redo"></dxi-item>
+                                                                <dxi-item name="separator"></dxi-item>
+                                                                <dxi-item
+                                                                    name="size"
+                                                                    [acceptedValues]="['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt']"
+                                                                    [options]="{ inputAttr: { 'aria-label': 'Font size' } }"
+                                                                ></dxi-item>
+                                                                <dxi-item
+                                                                    name="font"
+                                                                    [acceptedValues]="[
+                                                                        'Arial',
+                                                                        'Courier New',
+                                                                        'Georgia',
+                                                                        'Impact',
+                                                                        'Lucida Console',
+                                                                        'Tahoma',
+                                                                        'Times New Roman',
+                                                                        'Verdana'
+                                                                    ]"
+                                                                    [options]="{ inputAttr: { 'aria-label': 'Font family' } }"
+                                                                ></dxi-item>
+                                                                <dxi-item name="separator"></dxi-item>
+                                                                <dxi-item name="bold"></dxi-item>
+                                                                <dxi-item name="italic"></dxi-item>
+                                                                <dxi-item name="strike"></dxi-item>
+                                                                <dxi-item name="underline"></dxi-item>
+                                                                <dxi-item name="separator"></dxi-item>
+                                                                <dxi-item name="orderedList"></dxi-item>
+                                                                <dxi-item name="bulletList"></dxi-item>
+                                                                <dxi-item name="separator"></dxi-item>
+                                                                <dxi-item name="separator"></dxi-item>
+                                                                <dxi-item name="color"></dxi-item>
+                                                                <dxi-item name="background"></dxi-item>
+                                                                <dxi-item name="separator"></dxi-item>
+                                                                <dxi-item name="link"></dxi-item>
+                                                                <dxi-item name="image"></dxi-item>
+                                                                <dxi-item name="separator"></dxi-item>
+                                                            </dxo-toolbar>
+                                                            <dxo-media-resizing [enabled]="true"> </dxo-media-resizing>
+                                                            <dxo-image-upload [tabs]="['file', 'url']" fileUploadMode="base64"> </dxo-image-upload>
+                                                        </dx-html-editor>
+                                                    </div>
+                                                    <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                </dxi-item>
+                                                <dxi-item [title]="'HelpTextSpanish' | localize" class="tab-content">
+                                                    <div *dxTemplate>
+                                                        <dx-html-editor height="400px" [(value)]="helpInfoChanges.helpTextSpanish">
+                                                            <dxo-toolbar [multiline]="true">
+                                                                <dxi-item name="undo"></dxi-item>
+                                                                <dxi-item name="redo"></dxi-item>
+                                                                <dxi-item name="separator"></dxi-item>
+                                                                <dxi-item
+                                                                    name="size"
+                                                                    [acceptedValues]="['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt']"
+                                                                    [options]="{ inputAttr: { 'aria-label': 'Font size' } }"
+                                                                ></dxi-item>
+                                                                <dxi-item
+                                                                    name="font"
+                                                                    [acceptedValues]="[
+                                                                        'Arial',
+                                                                        'Courier New',
+                                                                        'Georgia',
+                                                                        'Impact',
+                                                                        'Lucida Console',
+                                                                        'Tahoma',
+                                                                        'Times New Roman',
+                                                                        'Verdana'
+                                                                    ]"
+                                                                    [options]="{ inputAttr: { 'aria-label': 'Font family' } }"
+                                                                ></dxi-item>
+                                                                <dxi-item name="separator"></dxi-item>
+                                                                <dxi-item name="bold"></dxi-item>
+                                                                <dxi-item name="italic"></dxi-item>
+                                                                <dxi-item name="strike"></dxi-item>
+                                                                <dxi-item name="underline"></dxi-item>
+                                                                <dxi-item name="separator"></dxi-item>
+                                                                <dxi-item name="orderedList"></dxi-item>
+                                                                <dxi-item name="bulletList"></dxi-item>
+                                                                <dxi-item name="separator"></dxi-item>
+                                                                <dxi-item name="separator"></dxi-item>
+                                                                <dxi-item name="color"></dxi-item>
+                                                                <dxi-item name="background"></dxi-item>
+                                                                <dxi-item name="separator"></dxi-item>
+                                                                <dxi-item name="link"></dxi-item>
+                                                                <dxi-item name="image"></dxi-item>
+                                                                <dxi-item name="separator"></dxi-item>
+                                                            </dxo-toolbar>
+                                                            <dxo-media-resizing [enabled]="true"> </dxo-media-resizing>
+                                                            <dxo-image-upload [tabs]="['file', 'url']" fileUploadMode="base64"> </dxo-image-upload>
+                                                        </dx-html-editor>
+                                                    </div>
+                                                    <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                </dxi-item>
+                                            </dx-tab-panel>
+                                        </div>
+                                    </dxi-item>
+                                    <dxi-item dataField="isActive" [label]="{ text: 'IsActive' | localize }" [colSpan]="2">
+                                        <div *dxTemplate>
+                                            <dx-check-box [(value)]="helpInfoChanges.isActive"> </dx-check-box>
+                                        </div>
+                                    </dxi-item>
+                                </dxo-form>
+                            </dxo-editing>
+
+                            <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+                            <dxi-column caption="ID" dataField="id" alignment="center" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'FieldName' | localize" dataField="helpInfoField.fieldName" [width]="200"></dxi-column>
+                            <dxi-column
+                                [caption]="'HelpTextEnglish' | localize"
+                                dataField="helpTextEnglish"
+                                cellTemplate="helpTextEnglishCellTemplate"
+                                [width]="500"
+                            >
+                            </dxi-column>
+                            <div *dxTemplate="let info of 'helpTextEnglishCellTemplate'"><div [innerHtml]="info.data.helpTextEnglish | safeComment"></div></div>
+                            <dxi-column
+                                [caption]="'HelpTextSpanish' | localize"
+                                dataField="helpTextSpanish"
+                                cellTemplate="helpTextSpanishCellTemplate"
+                                [width]="500"
+                            >
+                            </dxi-column>
+                            <div *dxTemplate="let info of 'helpTextSpanishCellTemplate'"><div [innerHtml]="info.data.helpTextSpanish | safeComment"></div></div>
+                            <dxi-column [caption]="'Active' | localize" dataField="isActive" [width]="120"></dxi-column>
+                        </dx-data-grid>
+                    </div>
+                    <div class="card-footer table-card-footer bg-light border-top">
+                        <div class="row">
+                            <div class="col-sm-4 col-12 text-sm-left text-center">
+                                <button class="btn btn-sm btn-secondary" (click)="refresh()">
+                                    <i class="fas fa-redo-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

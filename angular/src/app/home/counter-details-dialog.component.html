@@ -1,0 +1,49 @@
+﻿<form class="form-horizontal" autocomplete="off">
+    <abp-modal-header [title]="'ShippingsDetails' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body">
+        <dx-data-grid
+            id="shippingInstructions"
+            keyExpr="shippingInstructionId"
+            
+            [allowColumnReordering]="false"
+            [allowColumnResizing]="false"
+            [columnAutoWidth]="true"
+            [showBorders]="true"
+            [noDataText]="'NoDataText' | localize"
+            [rowAlternationEnabled]="true"
+        >
+            <dxi-column [caption]="'Staff IE' | localize" dataField="ieStaffName"> </dxi-column>
+
+            <dxi-column [caption]="'Shipping' | localize" dataField="shippingInstructionId" alignment="center" cellTemplate="shippingLink"></dxi-column>
+            <div *dxTemplate="let item of 'shippingLink'">
+                <a [routerLink]="['/app/shipping/instructions-details/view', getIdEncrypted(item.data.shippingInstructionId)]" target="_blank">
+                    {{ item.data.shippingInstructionId }}
+                </a>
+            </div>
+
+            <dxi-column [caption]="'TimeElapsed' | localize" dataField="daysLateApproval" alignment="center" [width]="130"></dxi-column>
+            <dxi-column [caption]="'Depto' | localize" dataField="departmentId" alignment="center"></dxi-column>
+            <dxi-column [caption]="'Author' | localize" dataField="creatorUser"></dxi-column>
+            <dxi-column [caption]="'SentForApprovalDate' | localize" dataField="sentForApprovalDate" dataType="date" format="yyyy-MM-dd HH:mm"></dxi-column>
+            <dxi-column [caption]="'Carrier' | localize" dataField="carrierName"></dxi-column>
+            <dxi-column [caption]="'Customer' | localize" dataField="customerName"></dxi-column>
+            <dxi-column [caption]="'ShipTo' | localize" dataField="plantName"></dxi-column>
+            <dxi-column [caption]="'Reason' | localize" dataField="shipmentReason"></dxi-column>
+            <dxi-column [caption]="'Service' | localize" dataField="serviceName"></dxi-column>
+
+            <dxo-paging [pageSize]="30"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="true"
+                displayMode="compact"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+        </dx-data-grid>
+    </div>
+    <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Close</button>
+    </div>
+</form>

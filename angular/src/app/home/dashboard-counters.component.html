@@ -1,0 +1,62 @@
+﻿<div class="row">
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3><ngx-animated-counter [params]="animatedCounterParamsPendingApprovalByIE"></ngx-animated-counter></h3>
+                <p>{{ 'PendingApprovalByIE' | localize }}</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-star"></i>
+            </div>
+            <a href="javascript:;" (click)="showMoreInfo('pendingApprovalByIE')" class="small-box-footer">
+                {{ 'MoreInfo' | localize }}
+                <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3><ngx-animated-counter [params]="animatedCounterParamsPendingForApproval"></ngx-animated-counter></h3>
+                <p>{{ 'PendingForApproval' | localize }}</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <a href="javascript:;" (click)="showMoreInfo('pendingForApproval')" class="small-box-footer">
+                {{ 'MoreInfo' | localize }}
+                <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3><ngx-animated-counter [params]="animatedCounterParamsPendingForProformaInvoice"></ngx-animated-counter></h3>
+                <p>{{ 'PendingForProformaInvoice' | localize }}</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-tools"></i>
+            </div>
+            <a href="javascript:;" (click)="showMoreInfo('pendingForProformaInvoice')" class="small-box-footer">
+                {{ 'MoreInfo' | localize }}
+                <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3><ngx-animated-counter [params]="animatedCounterParamsPendingForPayment"></ngx-animated-counter></h3>
+                <p>{{ 'PendingForPayment' | localize }}</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-code"></i>
+            </div>
+            <a href="javascript:;" (click)="showMoreInfo('pendingForPayment')" class="small-box-footer">
+                {{ 'MoreInfo' | localize }}
+                <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>

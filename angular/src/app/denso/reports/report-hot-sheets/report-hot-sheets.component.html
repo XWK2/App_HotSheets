@@ -1,0 +1,514 @@
+<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-2">
+                    <h1 class="denso-page-title"><i class="fa-solid fa-square-poll-vertical"></i>&nbsp;{{ 'HotSheets' | localize }}</h1>
+                </div>
+                <div class="col-10 text-right">
+                    <dx-form colCount="12">
+                        <!-- <dxi-item [label]="{ text: 'User' | localize }" [colSpan]="3">
+                            <div *dxTemplate>
+                                <dx-select-box
+                                    displayExpr="fullName"
+                                    valueExpr="userId"
+                                    [(value)]="userIdSelected"
+                                    [dataSource]="usersDataSource"
+                                    [placeholder]="'SelectAUser' | localize"
+                                    [searchEnabled]="true"
+                                    searchMode="contains"
+                                    [width]="280"
+                                    showClearButton="true"
+                                >
+                                </dx-select-box>
+                            </div>
+                        </dxi-item>
+                        <dxi-item [label]="{ text: 'ShippingInstructionCode' | localize }" [colSpan]="3">
+                            <div *dxTemplate>
+                                <dx-text-box [(value)]="shippingCode" showClearButton="true"></dx-text-box>
+                            </div>
+                        </dxi-item>
+                        <dxi-item [label]="{ text: 'Date' | localize }" [colSpan]="2">
+                            <div *dxTemplate>
+                                <dx-date-box type="date" [(value)]="creationDate" showClearButton="true"> </dx-date-box>
+                            </div>
+                        </dxi-item>                         -->
+                        <dxi-item label="" [colSpan]="2">
+                            <div *dxTemplate>
+                                <dx-button
+                                    stylingMode="contained"
+                                    [text]="'Search' | localize"
+                                    icon="search"
+                                    type="normal"
+                                    [width]="120"
+                                    (click)="refresh()"
+                                    class="dx-button-ml"
+                                >
+                                </dx-button>
+                            </div>
+                        </dxi-item>
+                    </dx-form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body grid-content" [busy]="isTableLoading">
+                        <dx-data-grid
+                            keyExpr="hotSheetId"
+                            [dataSource]="hotSheets"
+                            [allowColumnReordering]="false"
+                            [allowColumnResizing]="false"
+                            [columnAutoWidth]="true"
+                            
+                            (onEditCanceling)="onEditCanceling($event)"
+                            (onInitNewRow)="onInitNewRow($event)"
+                            (onEditingStart)="onEditingStart($event)"
+                            (onSaving)="onSavingHotSheet($event)"
+
+                            [showBorders]="true"
+                            [noDataText]="'NoDataText' | localize"
+                            [rowAlternationEnabled]="true"
+                            (onExporting)="exportGrid($event)"
+                        >
+                            <dxo-scrolling mode="none"></dxo-scrolling>
+                            <dxo-paging [pageSize]="20"></dxo-paging>
+                            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100]"></dxo-pager>
+                            <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+                            <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+
+                             
+                            <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']"> </dxo-export>                            
+                            
+
+                            <dxo-editing mode="popup" [allowUpdating]="true" [useIcons]="true" [allowAdding]="true" [allowDeleting]="false">
+                                <dxo-popup [title]="'HotSheetInfo' | localize" [showTitle]="true" [width]="1050" [height]="700"> </dxo-popup>                                
+                                <dxo-form colCount="1">
+                                  
+                                    <dxi-item [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-tab-panel  
+                                            [animationEnabled]="true"                                            
+                                            [swipeEnabled]="true">
+                                                
+                                                <dxi-item [title]="'HotSheet' | localize" > 
+                                                    <div class="tab-content">                                       
+                                                        <dx-form labelLocation="top" colCount="2">
+                                                            <dxi-item [label]="{ text: 'DeliveryOrder' | localize }" [colSpan]="2">                                                        
+                                                                <div *dxTemplate>
+                                                                    <dx-text-box [(value)]="hotSheetChanges.deliveryOrder"></dx-text-box>
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+
+                                                            <dxi-item [label]="{ text: 'TrafficContainerFX' | localize }" [colSpan]="2">
+                                                                <div *dxTemplate>
+                                                                    <dx-text-box [(value)]="hotSheetChanges.trafficContainerFX"></dx-text-box>
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+                                                            <dxi-item [label]="{ text: 'UnitNumber' | localize }" [colSpan]="2">
+                                                                <div *dxTemplate>
+                                                                    <dx-text-box [(value)]="hotSheetChanges.unitNumber"></dx-text-box>
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+                        
+                                                            <dxi-item [label]="{ text: 'TransportMode' | localize }" [colSpan]="1">
+                                                                <div *dxTemplate>
+                                                                    <dx-select-box
+                                                                        displayExpr="description"
+                                                                        valueExpr="id"
+                                                                        [(value)]="hotSheetChanges.transportModeId"
+                                                                        [items]="transportMode"
+                                                                        [searchEnabled]="true"
+                                                                    >
+                                                                    </dx-select-box>
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+                        
+                                                            <dxi-item [label]="{ text: 'ShortageShift' | localize }" [colSpan]="1">
+                                                                <div *dxTemplate>
+                                                                    <dx-select-box
+                                                                        displayExpr="description"
+                                                                        valueExpr="id"
+                                                                        [(value)]="hotSheetChanges.shortageShiftId"
+                                                                        [items]="shortageShift"
+                                                                        [searchEnabled]="true"
+                                                                        searchMode="contains"
+                                                                    ></dx-select-box>
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>                                    
+                                                            <dxi-item [label]="{ text: 'EtaDNMX' | localize }" [colSpan]="1">
+                                                                <div *dxTemplate>
+                                                                    <dx-date-box type="date" [(value)]="hotSheetChanges.etaDNMX" showClearButton="true"> </dx-date-box>
+                                                                </div>
+                                                            </dxi-item>
+                                                            <dxi-item [label]="{ text: 'RealShortageDate' | localize }" [colSpan]="1">
+                                                                <div *dxTemplate>
+                                                                    <dx-date-box type="date" [(value)]="hotSheetChanges.realShortageDate" showClearButton="true"> </dx-date-box>
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+                        
+                                                            <dxi-item [label]="{ text: 'Shortage' | localize }" [colSpan]="2">
+                                                                <div *dxTemplate>
+                                                                    <dx-date-box
+                                                                        placeholder="0:00:00"
+                                                                        type="time"
+                                                                        [showClearButton]="true"
+                                                                        [useMaskBehavior]="true"
+                                                                        [value]="timeShortage"
+                                                                        (onValueChanged)="onReasonChanged($event)"
+                                                                        displayFormat="HH:mm:ss"
+                                                                        [inputAttr]="{ 'aria-label': 'Time' }"
+                                                                    >
+                                                                    </dx-date-box>
+                                                                </div>
+                                                            </dxi-item>
+
+                                                        </dx-form>
+                                                    </div>       
+                                                </dxi-item>
+                                                <dxi-item [title]="'Comments' | localize">
+                                                    <div class="tab-content">
+                                                        <dx-form colCount="2">
+                                                            <dxi-item [label]="{ text: '' | localize }" [colSpan]="2">                                    
+                                                                <div *dxTemplate>
+                                                                    <table class="table table-striped table-sm">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th width="25%">{{ 'Author' | localize }}</th>
+                                                                                <th>{{ 'CreationDate' | localize }}</th>
+                                                                                <th>{{ 'Department' | localize }}</th>
+                                                                                <th>{{ 'Comments' | localize }}</th>
+                                                                                <th>&nbsp;</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr *ngFor="let commentItem of hotSheetComments">
+                                                                                <td>
+                                                                                    <strong>{{ commentItem.creatorFullName }}</strong>
+                                                                                </td>
+                                                                                <td style="white-space: nowrap;">{{ commentItem.creationTime | date:'yyyy-MM-dd' }}</td>
+                                                                                <td nowrap>{{ commentItem.department }}</td>
+                                                                                <!-- <td nowrap>{{ commentItem.comments }}</td>                                                                                 -->
+                                                                                <td nowrap [innerHtml]="commentItem.comments | safeComment"></td>                                                                                  
+                                                                                <td nowrap>
+                                                                                   
+                                                                                    <!-- <dx-button
+                                                                                        stylingMode="contained"
+                                                                                        [text]="'View' | localize"
+                                                                                        icon="search"
+                                                                                        type="success"
+                                                                                        [width]="130"
+                                                                                        [height]="28"
+                                                                                        class="dx-button-ml"
+                                                                                        (click)="viewFile(fileItem)"
+                                                                                        *ngIf="documentViewerExtensionsSupported.includes(fileItem.extension)"
+                                                                                    >
+                                                                                    </dx-button> -->
+                                                                                    <!-- <dx-button
+                                                                                        stylingMode="contained"
+                                                                                        [text]="'Delete' | localize"
+                                                                                        icon="trash"
+                                                                                        type="default"
+                                                                                        [width]="130"
+                                                                                        [height]="28"
+                                                                                        class="dx-button-ml"
+                                                                                        (click)="deleteFile(fileItem)"                                                                                >
+                                                                                    </dx-button> -->
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>    
+                                                            </dxi-item>
+                                                        </dx-form>
+                                                    </div>
+                                                </dxi-item>
+                                                <dxi-item [title]="'Comments' | localize">
+                                                    <div class="tab-content">
+                                                        <dx-form colCount="2">
+                                                        <dxi-item [label]="{ text: 'Comments' | localize }" [colSpan]="2">                                    
+                                                            <div *dxTemplate>
+                                                                <dx-html-editor height="400px" [(value)]="hotSheetChanges.pcComments">
+                                                                    <dxo-toolbar [multiline]="true">
+                                                                        <dxi-item name="undo"></dxi-item>
+                                                                        <dxi-item name="redo"></dxi-item>
+                                                                        <dxi-item name="separator"></dxi-item>
+                                                                        <dxi-item
+                                                                            name="size"
+                                                                            [acceptedValues]="['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt']"
+                                                                            [options]="{ inputAttr: { 'aria-label': 'Font size' } }"
+                                                                        ></dxi-item>
+                                                                        <dxi-item
+                                                                            name="font"
+                                                                            [acceptedValues]="[
+                                                                                'Arial',
+                                                                                'Courier New',
+                                                                                'Georgia',
+                                                                                'Impact',
+                                                                                'Lucida Console',
+                                                                                'Tahoma',
+                                                                                'Times New Roman',
+                                                                                'Verdana'
+                                                                            ]"
+                                                                            [options]="{ inputAttr: { 'aria-label': 'Font family' } }"
+                                                                        ></dxi-item>
+                                                                        <dxi-item name="separator"></dxi-item>
+                                                                        <dxi-item name="bold"></dxi-item>
+                                                                        <dxi-item name="italic"></dxi-item>
+                                                                        <dxi-item name="strike"></dxi-item>
+                                                                        <dxi-item name="underline"></dxi-item>
+                                                                        <dxi-item name="separator"></dxi-item>
+                                                                        <dxi-item name="orderedList"></dxi-item>
+                                                                        <dxi-item name="bulletList"></dxi-item>
+                                                                        <dxi-item name="separator"></dxi-item>
+                                                                        <dxi-item name="separator"></dxi-item>
+                                                                        <dxi-item name="color"></dxi-item>
+                                                                        <dxi-item name="background"></dxi-item>
+                                                                        <dxi-item name="separator"></dxi-item>
+                                                                        <dxi-item name="link"></dxi-item>
+                                                                        <dxi-item name="image"></dxi-item>
+                                                                        <dxi-item name="separator"></dxi-item>
+                                                                    </dxo-toolbar>
+                                                                    <dxo-media-resizing [enabled]="true"> </dxo-media-resizing>
+                                                                    <dxo-image-upload [tabs]="['file', 'url']" fileUploadMode="base64"> </dxo-image-upload>
+                                                                </dx-html-editor>
+                                                            </div>
+                                                            <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                        </dxi-item>
+                                                        </dx-form>
+                                                    </div>
+                                                </dxi-item>
+                                                <dxi-item [title]="'Documents' | localize" >
+                                                    <div class="tab-content">   
+                                                        <dx-form colCount="2">
+                                                            <dxi-item [label]="{ text: '' | localize }" [colSpan]="2">                                    
+                                                            
+                                                            <div *dxTemplate>
+                                                                <table class="table table-striped table-sm">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th width="50%">{{ 'FileName' | localize }}</th>
+                                                                            <th>{{ 'FileSize' | localize }}</th>
+                                                                            <th>{{ 'UploadedBy' | localize }}</th>
+                                                                            <th>&nbsp;</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr *ngFor="let fileItem of hotSheetFiles">
+                                                                            <td>
+                                                                                <strong>{{ fileItem.name }}</strong>
+                                                                            </td>
+                                                                            <td nowrap>{{ fileItem.length / 1024 / 1024 | number : '.2' }} MB</td>
+                                                                            <td nowrap>{{ fileItem.uploadedBy }}</td>
+                                                                            <td nowrap>
+                                                                                <dx-button
+                                                                                    stylingMode="contained"
+                                                                                    [text]="'Download' | localize"
+                                                                                    icon="download"
+                                                                                    type="success"
+                                                                                    [width]="130"
+                                                                                    [height]="28"
+                                                                                    class="dx-button-ml"
+                                                                                    (click)="downloadFile(fileItem)"
+                                                                                >
+                                                                                </dx-button>
+                                                                                <dx-button
+                                                                                    stylingMode="contained"
+                                                                                    [text]="'View' | localize"
+                                                                                    icon="search"
+                                                                                    type="success"
+                                                                                    [width]="130"
+                                                                                    [height]="28"
+                                                                                    class="dx-button-ml"
+                                                                                    (click)="viewFile(fileItem)"
+                                                                                    *ngIf="documentViewerExtensionsSupported.includes(fileItem.extension)"
+                                                                                >
+                                                                                </dx-button>
+                                                                                <dx-button
+                                                                                    stylingMode="contained"
+                                                                                    [text]="'Delete' | localize"
+                                                                                    icon="trash"
+                                                                                    type="default"
+                                                                                    [width]="130"
+                                                                                    [height]="28"
+                                                                                    class="dx-button-ml"
+                                                                                    (click)="deleteFile(fileItem)"                                                                                >
+                                                                                </dx-button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <div class="row uploader-buttons-section">
+                                                                    <div class="col-md-1"></div>
+                                                                    <div class="col-md-5">
+                                                                        <input
+                                                                            type="file"
+                                                                            ng2FileSelect
+                                                                            [uploader] ="uploaderHotSheet"                                                                            
+                                                                        />
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <dx-button
+                                                                            stylingMode="contained"
+                                                                            [text]="'UploadDocuments' | localize"
+                                                                            icon="upload"
+                                                                            type="default"
+                                                                            [width]="230"
+                                                                            class="dx-button-ml"
+                                                                            (click)="saveDocuments()"                                                                            
+                                                                            [disabled]="uploaderHotSheet.queue.length === 0"
+                                                                        >
+                                                                        </dx-button>
+                                                                    </div>
+                                                                </div>
+                                                                <table class="table table-sm">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th width="50%">{{ 'FileName' | localize }}</th>
+                                                                            <th>{{ 'FileSize' | localize }}</th>
+                                                                            <th>{{ 'Actions' | localize }}</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr *ngFor="let item of uploaderHotSheet.queue">
+                                                                            <td>
+                                                                                <strong>{{ item?.file?.name }}</strong>
+                                                                            </td>
+                                                                            <td *ngIf="uploaderHotSheet.options.isHTML5" nowrap>
+                                                                                {{ item?.file?.size / 1024 / 1024 | number : '.2' }} MB
+                                                                            </td>
+                                                                            <td nowrap>
+                                                                                <button type="button" class="btn btn-danger btn-xs" (click)="item.remove()">
+                                                                                    <span class="glyphicon glyphicon-trash"></span> {{ 'Remove' | localize }}
+                                                                                </button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            </dxi-item>
+                                                        </dx-form>     
+                                                    </div>
+                                                </dxi-item>
+                                            </dx-tab-panel>
+                                        </div>
+                                    </dxi-item>
+                                </dxo-form>
+                            </dxo-editing>
+
+                            <!-- <dxo-column-fixing [enabled]="true"></dxo-column-fixing> -->
+                           
+                            <dxi-column [caption]="'Planner' | localize" >
+                                <dxi-column [caption]="'PlannerCode' | localize" dataField="plannerCode" [width]="90"></dxi-column>
+                                <dxi-column [caption]="'PlannerName' | localize" dataField="plannerName" [width]="250"></dxi-column>
+                            </dxi-column>
+                            <dxi-column [caption]="'Supplier' | localize">
+                                <dxi-column [caption]="'SupplierCode' | localize" dataField="supplierCode" [width]="90"></dxi-column>
+                                <dxi-column [caption]="'SupplerName' | localize" dataField="supplerName" [width]="250"></dxi-column>
+                            </dxi-column>                            
+                            <dxi-column [caption]="'PartNumberHS' | localize">
+                                <dxi-column [caption]="'PartNumberCodeHS' | localize" dataField="partNumber" [width]="100"></dxi-column>
+                                <dxi-column [caption]="'PartDescriptionHS' | localize" dataField="partDescription" [width]="250"></dxi-column>
+                            </dxi-column>                                                    
+                            <dxi-column [caption]="'InTransitQty' | localize" dataField="inTransitQty" [width]="80"></dxi-column>
+                            <dxi-column [caption]="'DiaStockIn' | localize" dataField="diaStockIn" [width]="80"></dxi-column>
+                            <dxi-column [caption]="'DiaLocation' | localize" dataField="diaLocation" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'CIGMAReceived' | localize" dataField="cIGMAReceived" [width]="150"></dxi-column>
+                            <dxi-column [caption]="'TransportMode' | localize">
+                                <dxi-column [caption]="'TransportModeId' | localize" dataField="transportModeId" [width]="50"></dxi-column>
+                                <dxi-column [caption]="'TransportModeName' | localize" dataField="transportModeName" [width]="250"></dxi-column>
+                            </dxi-column>
+                            
+                            <dxi-column [caption]="'DeliveryOrder' | localize" dataField="deliveryOrder" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'TrafficContainerFX' | localize" dataField="trafficContainerFX" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'UnitNumber' | localize" dataField="unitNumber" [width]="100"></dxi-column>                            
+                            <dxi-column
+                                [caption]="'EtaDNMX' | localize"
+                                dataField="etaDNMX"
+                                [width]="150"
+                                dataType="date"
+                                format="yyyy-MM-dd"
+                            ></dxi-column>
+                            <dxi-column [caption]="'Status' | localize">
+                                <dxi-column [caption]="'StatusId' | localize" dataField="statusId" [width]="50"></dxi-column>
+                                <dxi-column [caption]="'StatusHotSheetName' | localize" dataField="statusHotSheetName" [width]="100"></dxi-column>                            
+                            </dxi-column>
+                            
+                            
+                            <dxi-column [caption]="'Shortage' | localize">
+                                <dxi-column
+                                [caption]="'RealShortageDate' | localize"
+                                dataField="realShortageDate"
+                                [width]="150"
+                                dataType="date"
+                                format="yyyy-MM-dd"
+                                ></dxi-column>
+                                <dxi-column [caption]="'ShortageShiftId' | localize" dataField="shortageShiftId" [width]="50"></dxi-column>
+                                <dxi-column [caption]="'ShortageShiftName' | localize" dataField="shortageShiftName" [width]="150"></dxi-column>                            
+                                <dxi-column [caption]="'ShortageTime' | localize" dataField="shortageVal" [width]="150"></dxi-column>                                                                  
+                            </dxi-column>
+                            <!-- <dxi-column [caption]="'PCComments' | localize" dataField="pcComments" [width]="250"></dxi-column> -->
+                            <dxi-column
+                            [caption]="'Comments' | localize"
+                            dataField="pcComments"
+                            cellTemplate="pcCommentsCellTemplate"
+                            [width]="500"
+                            >
+                            </dxi-column>
+                            <div *dxTemplate="let info of 'pcCommentsCellTemplate'"><div [innerHtml]="info.data.pcComments | safeComment"></div></div>
+
+                            <dxi-column type="buttons">
+                                <!-- Botones por defecto -->
+                                <dxi-button name="edit"></dxi-button>
+                                <dxi-button name="delete"></dxi-button>
+                            
+                                <!-- Botón personalizado para comentarios -->
+                                <dxi-button
+                                  hint="Agregar Comentario"
+                                  icon="comment"
+                                  [onClick]="viewComent.bind(this)">
+                                </dxi-button>                                                           
+                                
+                              </dxi-column>
+
+                           
+                        </dx-data-grid>
+                    </div>
+                    <div class="card-footer table-card-footer bg-light border-top">
+                        <div class="row">
+                            <div class="col-sm-4 col-12 text-sm-left text-center">
+                                <button class="btn btn-sm btn-secondary" (click)="refresh()">
+                                    <i class="fas fa-redo-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <app-hotSheet-document-viewer-popup
+        [showPopup]="showDocumentViewerPopup"
+        [document]="documentViewerFileSelected"
+        (onClose)="showDocumentViewerPopup = false"
+    ></app-hotSheet-document-viewer-popup>
+
+    <app-hotSheet-comments-popup
+        [showPopup]="showCommentsPopup"
+        [comment]="commentSelected"
+        (onClose)="showCommentsPopup = false"
+    ></app-hotSheet-comments-popup>
+
+  
+
+</div>

@@ -1,0 +1,200 @@
+<html lang="en">
+<head>
+	<meta content="text/html" charset="utf-8" http-equiv="Content-Type">
+	<title>
+		Denso - Hot Sheet
+	</title>
+	<style type="text/css">
+		html {
+			background-color: white;
+		}
+
+		.denso-email-table {
+			font-family: verdana;
+			font-size: 12px;
+			padding: 3px;
+			border-collapse: collapse;
+			border-spacing: 0;
+			width: 70%;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.denso-email-table .description {
+			color: #505050;
+		}
+
+		.denso-email-table td {
+			border: 0px solid #D1D1D1;
+			background-color: #F3F3F3;
+			padding: 0 10px;
+		}
+
+		.denso-email-table th {
+			border: 0px solid #424242;
+			color: #FFFFFF;
+			text-align: left;
+			padding: 0 10px;
+		}
+
+        .denso-email-table .header {
+            font-size: 16px;
+            background-color: white;
+            height: 60px;
+            text-align: center;
+            font-weight: bold;
+            padding: 10px;
+            border-top: solid 5px #df6283;
+        }
+
+		.denso-email-table .header svg {
+			fill: #dc0032;
+		}
+
+		.denso-email-table .header h2 {
+			text-align: left;
+		}
+
+        .denso-email-table .content-body {
+            height: 160px;
+            max-height: 350px;
+            background-color: #e8e8e8;
+			padding-top: 16px;
+			padding-bottom: 16px
+        }
+
+        .denso-email-table .link-web-site {
+            font-size: 14px;
+            background-color: #df6283;
+            color: white;
+            height: 160px;
+            text-align: center;
+        }
+
+		.denso-email-table .btn-link {
+			display: inline-block;
+			background-color: #dc0032;
+			color: #FFFFFF;
+			padding: 14px 25px;
+			text-align: center;
+			text-decoration: none;
+			font-size: 16px;
+			margin-left: 20px;
+			opacity: 0.9;
+			margin-top: 10px;
+		}
+
+        .denso-email-table .btn-link:hover {
+            text-decoration: underline;
+        }
+
+		.denso-email-table .bottom {
+			height: 160px;
+			max-height: 350px;
+			background-color: #dc0032;
+			text-align: center;
+		}
+
+        .denso-email-table .bottom a {
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .denso-email-table .bottom a .icon {
+            height: 44px;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            line-height: 44px;
+        }
+
+        .denso-email-table .bottom a p {
+            font-size: 0.80rem;
+            line-height: 1.8;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        .denso-email-table .bottom p:hover {
+            text-decoration: underline;
+        }
+
+        .denso-email-table .header-warning {
+            background-color: #b9d7eb !important;
+            height: 40px;
+            border-bottom: solid white 5px !important;
+            border-top: solid white 5px !important;
+        }
+
+        .denso-email-table .content-bottom {
+            background-color: #b9d7eb !important;
+            padding-bottom: 6px;
+            border-top: solid white 5px;
+            border-bottom: solid white 5px;
+            text-align: center;
+        }
+
+        .denso-email-table .text-blue {               
+            color: #2B709A;
+        }
+	</style>
+</head>
+<body>
+	<table class="denso-email-table">
+		<tbody>
+			<tr>
+				<td class="header">
+					<img src=cid:DensoLogo id="imgDensoLogo" alt="" style="weight: 70px !important; height: 70px !important;" />
+				</td>
+				<td class="header">
+					<h2>Hot Sheet</h2>
+				</td>
+				<td class="header">
+					<img src=cid:DensoTruck id="imgDensoTruck" alt="" style="weight: 60px !important; height: 60px !important;" />
+				</td>
+			</tr>
+			<tr>
+				<td class="header-warning text-blue" colspan="3">
+					Este correo se genera de manera automática, favor de no responder.
+				</td>
+			</tr>
+			<tr>
+				<td class="content-body" colspan="3">
+					{bodyMsg}
+				</td>
+			</tr>
+			<tr>
+				<td class="content-bottom" colspan="3">					
+					<a href="{webAppLink}" class="btn-link">{webAppLinkText}</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="bottom">
+					<a href="https://www.facebook.com/DENSOinNorthAmerica/" target="_blank">
+						<img src=cid:DensoFacebook id="imgDensoFacebook" alt="" style="weight: 40px !important;; height: 40px !important;" />
+						<p class="desc">
+							Obtenga nueva información sobre DENSO en América del Norte
+						</p>
+					</a>
+				</td>
+				<td class="bottom">
+					<a href="https://www.youtube.com/user/DENSOmedia/" target="_blank">
+						<img src=cid:DensoYoutube id="imgDensoYoutube" alt="" style="weight: 40px !important; height: 40px !important;" />
+						<p class="desc">
+							Obtenga más información sobre DENSO Norteamérica a través del video
+						</p>
+					</a>
+				</td>
+				<td class="bottom">
+					<a href="https://www.linkedin.com/company/denso/" target="_blank">
+						<img src=cid:DensoLinkedin id="imgDensoLinkedin" alt="" style="weight: 40px !important; height: 40px !important;" />
+						<p class="desc">
+							Consulte Carreras profesionales de DENSO Norteamérica en LinkedIn
+						</p>
+					</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

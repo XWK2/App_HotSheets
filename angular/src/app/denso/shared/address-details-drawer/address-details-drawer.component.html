@@ -1,0 +1,67 @@
+<dx-drawer
+    [openedStateMode]="drawerConfig.openMode"
+    [position]="drawerConfig.position"
+    [revealMode]="drawerConfig.revealMode"
+    [(opened)]="drawerProps.isDrawerOpen"
+    [closeOnOutsideClick]="true"
+    template="template"
+>
+    <div *dxTemplate="let data of 'template'" class="address-details-section">
+        <div class="row">
+            <div class="col-10">
+                <span *ngIf="drawerProps.companyTypeSelected === 'shippedBy'">{{ 'ShippedBy' | localize }}</span>
+                <span *ngIf="drawerProps.companyTypeSelected === 'soldTo'">{{ 'SoldTo' | localize }}</span>
+                <span *ngIf="drawerProps.companyTypeSelected === 'shipTo'">{{ 'ShipTo' | localize }}</span>
+            </div>
+            <div class="col-2">
+                <i class="dx-icon-close" style="font-size: 18px; cursor: pointer" (click)="onClose()"></i>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h4>
+                    <span
+                        *ngIf="
+                            drawerProps.companyTypeSelected === 'soldTo' || drawerProps.companyTypeSelected === 'shipTo'
+                        "
+                        >{{ drawerProps.companyInfoAddress?.id }}
+                        -
+                    </span>
+                    {{ drawerProps.companyInfoAddress?.name }}
+                </h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <br /><b>{{ 'Address' | localize }}</b>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <span class="address-line" *ngIf="drawerProps.companyInfoAddress?.addressLine1">{{
+                    drawerProps.companyInfoAddress?.addressLine1
+                }}</span>
+                <span class="address-line" *ngIf="drawerProps.companyInfoAddress?.addressLine2">{{
+                    drawerProps.companyInfoAddress?.addressLine2
+                }}</span>
+                <span class="address-line" *ngIf="drawerProps.companyInfoAddress?.addressLine3">{{
+                    drawerProps.companyInfoAddress?.addressLine3
+                }}</span>
+                <span class="address-line" *ngIf="drawerProps.companyInfoAddress?.addressLine4">{{
+                    drawerProps.companyInfoAddress?.addressLine4
+                }}</span>
+            </div>
+        </div>
+        <div class="row" *ngIf="drawerProps.companyInfoAddress?.rfc">
+            <div class="col-12"><br /><b>R.F.C.</b></div>
+        </div>
+        <div class="row" *ngIf="drawerProps.companyInfoAddress?.rfc">
+            <div class="col-12">
+                {{ drawerProps.companyInfoAddress?.rfc }}
+            </div>
+        </div>
+    </div>
+    <div id="content" class="dx-theme-background-color">
+        <ng-content></ng-content>
+    </div>
+</dx-drawer>

@@ -1,0 +1,148 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-10">
+                    <h1>{{ 'HotSheetsPerformanceDashboard' | localize }}</h1>
+                </div>
+                <div class="col-2">
+                    <!-- <app-survey-popup pageName="Dashboard"></app-survey-popup> -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <!-- <app-dashboard-counters [items]="items"></app-dashboard-counters> -->
+
+            <div class="row">
+                <div class="col-lg-5 col-6">
+                    <div class="card">
+                        <div class="card-header">
+                            {{ 'PendingApprovalByIE' | localize }}
+                            <a href="javascript:;" (click)="showChartDetails('pendingApprovalByIE')" class="small-box-footer">
+                                {{ 'Full View' | localize }}
+                                <i class="fas fa-maximize"></i>
+                            </a>
+                        </div>
+                        <div class="card-body" [busy]="isDataLoading">
+                            <dx-pie-chart id="pie" palette="bright" [dataSource]="pendingByIEGrouped">
+                                <dxi-series argumentField="ieStaffName" valueField="count">
+                                    <dxo-label [visible]="true">
+                                        <dxo-connector [visible]="true" [width]="1"></dxo-connector>
+                                    </dxo-label>
+                                </dxi-series>
+                            </dx-pie-chart>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7 col-6">
+                    <div class="card">
+                        <div class="card-header">
+                            {{ 'StatusIndicator' | localize }}
+                            <a href="javascript:;" (click)="showChartDetails('statusIndicator')" class="small-box-footer">
+                                {{ 'Full View' | localize }}
+                                <i class="fas fa-maximize"></i>
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-7 col-7">
+                                    <dx-pie-chart id="pie" palette="bright" [dataSource]="statusIndicatorChartData">
+                                        <dxi-series argumentField="propName" valueField="count">
+                                            <dxo-label [visible]="true">
+                                                <dxo-connector [visible]="true"></dxo-connector>
+                                            </dxo-label>
+                                        </dxi-series>
+                                        <!-- <dxo-tooltip [enabled]="true"> </dxo-tooltip> -->
+                                    </dx-pie-chart>
+                                </div>
+                                <div class="col-lg-5 col-5">
+                                    <div class="dx-field">
+                                        <div class="dx-field-label dx-field-item-label-location-top">{{ 'Indicator' | localize }}</div>
+                                        <div class="dx-field-value">
+                                            <dx-select-box
+                                                class="form-control"
+                                                displayExpr="label"
+                                                valueExpr="name"
+                                                [items]="statusIndicatorOptions"
+                                                [(value)]="statusIndicatorSelected"
+                                                [placeholder]="'SelectAnOption' | localize"
+                                                searchEnabled="true"
+                                            ></dx-select-box>
+                                        </div>
+                                    </div>
+
+                                    <div class="dx-field">
+                                        <div class="dx-field-label">{{ 'RangeDates' | localize }}</div>
+                                        <div class="dx-field-value">
+                                            <dx-date-range-box (onValueChanged)="onRangeDatesChanged($event)"></dx-date-range-box>
+                                        </div>
+                                    </div>
+
+                                    <dx-button
+                                        stylingMode="contained"
+                                        [text]="'RefreshData' | localize"
+                                        type="default"
+                                        [width]="200"
+                                        class="dx-button-ml"
+                                        (click)="refresStatusIndicatorData()"
+                                        [disabled]="!statusIndicatorSelected"
+                                    >
+                                    </dx-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-5 col-6">
+                    <div class="card">
+                        <div class="card-header">
+                            {{ 'IEStaffResponsesPerformance' | localize }}
+                            <a href="javascript:;" (click)="showChartDetails('ieStaffResponsesPerformance')" class="small-box-footer">
+                                {{ 'Full View' | localize }}
+                                <i class="fas fa-maximize"></i>
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <dx-chart id="chart" [dataSource]="ieStaffResponsesPerformanceItems" palette="soft">
+                                <dxo-common-series-settings argumentField="ieStaffName" type="bar" valueField="number" [ignoreEmptyPoints]="true">
+                                </dxo-common-series-settings>
+                                <dxo-series-template nameField="ieStaffName"></dxo-series-template>
+                                <dxo-legend horizontalAlignment="right" columnCount="2" position="outside">
+                                    <dxo-border [visible]="true"></dxo-border>
+                                </dxo-legend>
+                            </dx-chart>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7 col-6">
+                    <div class="card">
+                        <div class="card-header">{{ 'SummaryImplementationsResponsible' | localize }}</div>
+                        <div class="card-body">
+                            <dx-data-grid
+                                id="statusIndicatorDataItems"
+                                [dataSource]="statusIndicatorDataItems"
+                                [allowColumnReordering]="false"
+                                [allowColumnResizing]="false"
+                                [columnAutoWidth]="true"
+                                [showBorders]="true"
+                                [noDataText]="'NoDataText' | localize"
+                                [rowAlternationEnabled]="true"
+                            >
+                                <dxi-column [caption]="'Responsable' | localize" dataField="propName"></dxi-column>
+                                <dxi-column [caption]="'Assigned' | localize" dataField="count" alignment="center"></dxi-column>
+                                <dxi-column [caption]="'PendingForApproval' | localize" dataField="pendingForApproval" alignment="center"></dxi-column>
+                                <dxi-column [caption]="'Completed' | localize" dataField="completed" alignment="center"></dxi-column>
+                                <dxi-column [caption]="'Approved' | localize" dataField="approved" alignment="center"></dxi-column>
+                            </dx-data-grid>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

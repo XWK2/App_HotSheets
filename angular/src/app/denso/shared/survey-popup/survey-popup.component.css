@@ -1,0 +1,32 @@
+.ml-btn {
+    margin-left: 10px;
+}
+
+.surver-option {
+    text-align: center;
+    margin-top: 6px;
+}
+.surver-option a {    
+    color: black;
+}
+
+.surver-option img {
+    width: 46px;
+    opacity: 0.7;
+}
+
+.surver-option-active {
+    font-weight: bold;
+}
+
+.surver-option-active a {
+    color: #2B709A;
+}
+
+.surver-option-active img {
+    opacity: 1;
+}
+
+.surver-option:hover img {
+    opacity: 0.5;
+}

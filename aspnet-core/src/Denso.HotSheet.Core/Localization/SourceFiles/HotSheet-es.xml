@@ -1,0 +1,550 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<localizationDictionary culture="es-MX">
+  <texts>
+    <text name="HomePage" value="Página de inicio" />
+    <text name="About" value="Acerca de" />
+    <text name="WelcomeMessage" value="Bienvenido a WMS!" />
+    <text name="FormIsNotValidMessage" value="Formulario no es válido. Por favor, compruebe y corrija los errores." />
+    <text name="TenantNameCanNotBeEmpty" value="Nombre de la empresa no puede estar vacío" />
+    <text name="InvalidUserNameOrPassword" value="Usuario o contraseña invalido" />
+    <text name="ThereIsNoTenantDefinedWithName{0}" value="No hay empresa definida con el nombre {0}" />
+    <text name="TenantIsNotActive" value="La empresa {0} no está activa." />
+    <text name="UserIsNotActiveAndCanNotLogin" value="El usuario {0} no está activo y no puede conectarse." />
+    <text name="UserEmailIsNotConfirmedAndCanNotLogin">Su dirección de correo electrónico no está confirmada. No puede iniciar sesión.</text>
+    <text name="UserLockedOutMessage">La cuenta de usuario ha sido bloqueada. Por favor, inténtelo de nuevo más tarde.</text>
+    <text name="PleaseEnterLoginInformation" value="Por favor, introduzca la información de inicio de sesión" />
+    <text name="TenancyName" value="Nombre de la empresa" />
+    <text name="UserNameOrEmail" value="Nombre de usuario o correo electrónico" />
+    <text name="Password" value="Contraseña" />
+    <text name="ResetPassword" value="Restablecer la contraseña" />
+    <text name="UpdatePassword" value="Actualiza contraseña" />
+    <text name="RememberMe" value="Recuérdame" />
+    <text name="LogIn" value="Iniciar sesión" />
+    <text name="LoginFailed" value="¡Error de inicio de sesión!" />
+    <text name="NameSurname" value="Nombre Apellido" />
+    <text name="UserName" value="Nombre de usuario" />
+    <text name="Name" value="Nombre" />
+    <text name="Surname" value="Apellido" />
+    <text name="EmailAddress" value="Dirección de correo electrónico" />
+    <text name="Tenants" value="Empresas" />
+    <text name="SavedSuccessfully" value="Guardado correctamente" />
+    <text name="CreateNewTenant" value="Crear nueva empresa" />
+    <text name="AdminEmailAddress" value="Dirección de correo electrónico del administrador" />
+    <text name="AdminPassword" value="Clave de administrador" />
+    <text name="Save" value="Guardar" />
+    <text name="Cancel" value="Cancelar" />
+    <text name="TenantName_Regex_Description" value="El nombre de la empresa debe ser de al menos 2 caracteres, empieza con una letra y continua con una letra, número, guión o un guión bajo." />
+    <text name="DefaultPasswordIs" value="La contraseña por defecto es {0}" />
+    <text name="CanBeEmptyToLoginAsHost" value="Puede estar vacía para iniciar la sesión como anfitrión." />
+    <text name="Register" value="Registro" />
+    <text name="OrLoginWith" value="o iniciar sesión con" />
+    <text name="WaitingForActivationMessage" value="Su cuenta está en espera de ser activada por el administrador del sistema." />
+    <text name="TenantSelection" value="Selección de Empresa" />
+    <text name="TenantSelection_Detail" value="Por favor seleccione una de las siguientes empresas." />
+    <text name="Logout" value="Cerrar sesión" />
+    <text name="RegisterFormUserNameInvalidMessage">No ingrese una dirección de correo electrónico para el nombre de usuario.</text>
+    <text name="DatabaseConnectionString" value="Cadena de conexión de base de datos" />
+    <text name="Users" value="Usuarios" />
+    <text name="IsActive" value="Está activo" />
+    <text name="FullName" value="Nombre completo" />
+    <text name="CreateNewUser" value="Crear nuevo usuario" />
+    <text name="Yes" value="Si" />
+    <text name="No" value="No" />
+    <text name="Optional" value="Opcional" />
+    <text name="LeaveEmptyToSwitchToHost">Dejar vacío para cambiar al anfitrion</text>
+    <text name="CurrentTenant">Inquilino actual</text>
+    <text name="NotSelected">No seleccionado</text>
+    <text name="Change">Cambio</text>
+    <text name="ChangeTenant">Cambiar inquilino</text>
+    <text name="MultiLevelMenu">Menú multinivel</text>
+    <text name="Back">Atras</text>
+    <text name="SuccessfullyRegistered">Registrado exitosamente</text>
+    <text name="WaitingForEmailActivation">Su dirección de correo electrónico debe estar activada</text>
+    <text name="Roles">Roles</text>
+    <text name="DisplayName">Nombre para mostrar</text>
+    <text name="Edit">Editar</text>
+    <text name="Delete">Eliminar</text>
+    <text name="CreateNewRole">Crear nuevo rol</text>
+    <text name="RoleName">Nombre de rol</text>
+    <text name="Actions">Acciones</text>
+    <text name="CouldNotCompleteLoginOperation">No se pudo completar la operación de inicio de sesión. Por favor, inténtelo de nuevo más tarde.</text>
+    <text name="CouldNotValidateExternalUser">No se pudo validar el usuario externo</text>
+    <text name="EditRole">Editar rol</text>
+    <text name="EditTenant">Editar inquilino</text>
+    <text name="EditUser">Editar usuario</text>
+    <text name="TenantIdIsNotActive{0}">Identificación del inquilino {0} no está activo</text>
+    <text name="UnknownTenantId{0}">TenantId {0} desconocido</text>
+    <text name="ThisFieldIsRequired">este campo es requerido</text>
+    <text name="PleaseWait">Por favor espera...</text>
+    <text name="Administration">Administración</text>
+    <text name="ClearAll">Borrar tdo</text>
+    <text name="ClearOthers">Borrar otros</text>
+    <text name="LabelOptions">Opciones de etiqueta</text>
+    <text name="Permissions">Permisos</text>
+    <text name="RoleDescription">Descripción del rol</text>
+    <text name="Refresh">Actualizar</text>
+    <text name="Create">Crear</text>
+    <text name="UserDetails">Detalles de usuario</text>
+    <text name="UserRoles">Roles del usuario</text>
+    <text name="ConfirmPassword">Confirmar contraseña</text>
+    <text name="Version">Versión</text>
+    <text name="On">Activo</text>
+    <text name="Off">Inactivo</text>
+    <text name="AreYouSureWantToDelete">¿Estás seguro de que quieres eliminar {0}?</text>
+    <text name="SuccessfullyDeleted">Eliminado con éxito</text>
+    <text name="StartTyping">Empiece a escribir</text>
+    <text name="Skins">Pieles</text>
+    <text name="Settings">Configuracion</text>
+    <text name="Filter">Filtrar</text>
+    <text name="CurrentPassword">contraseña actual</text>
+    <text name="NewPassword">Nueva contraseña</text>
+    <text name="ConfirmNewPassword">Confirmar nueva contraseña</text>
+    <text name="PasswordsDoNotMatch">Las contraseñas no coinciden</text>
+    <text name="PasswordsMustBeAtLeast8CharactersContainLowercaseUppercaseNumber">Las contraseñas deben tener al menos 8 caracteres, contener minúsculas, mayúsculas y números.</text>
+    <text name="UserDeleteWarningMessage">El usuario {0} será eliminado.</text>
+    <text name="RoleDeleteWarningMessage">La función {0} se eliminará y se anulará la asignación de todos los usuarios asignados.</text>
+    <text name="TenantDeleteWarningMessage">El inquilino {0} será eliminado.</text>
+    <text name="SearchWithThreeDot">Buscar...</text>
+    <text name="PleaseEnterAtLeastNCharacter">Ingrese al menos {0} caracteres.</text>
+    <text name="PleaseEnterNoMoreThanNCharacter">Por favor ingrese no más de {0} caracteres.</text>
+    <text name="InvalidEmailAddress">Dirección de correo electrónico inválida.</text>
+    <text name="InvalidPattern">Inválido</text>
+    <text name="PairsDoNotMatch">No coinciden</text>
+    <text name="All">Todas</text>
+    <text name="TotalRecordsCount">Total: {0}</text>
+    <text name="Search">Buscar</text>
+    <text name="Clear">Borrar</text>
+    <text name="ResetPasswordStepOneInfo">1. Ingrese su contraseña de administrador</text>
+    <text name="ResetPasswordStepTwoInfo">2. Copie esta contraseña aleatoria para poder enviársela al usuario</text>
+
+    <!--Denso - Hot Sheet-->
+    <text name="HotSheet" value="Hoja Caliente" />
+    <text name="Catalogs" value="Catálogos" />
+    <text name="Carriers" value="Transportistas" />
+    <text name="CarrierInfo" value="Información del Transportista" />
+    <text name="DivisorNumber" value="Número Divisor" />
+    <text name="Plants" value="Plantas" />
+    <text name="Plant" value="Planta" />
+    <text name="Departments" value="Departamentos" />
+    <text name="DocumentTypes" value="Tipo Documentos" />
+    <text name="ProductCodeSat" value="Codigo de Producto SAT" />
+
+    
+    <text name="ShortageShift" value="Cambio Escasez" />
+    <text name="StatusHotsheet" value="Status" />
+    
+    <text name="ProductCodesSat" value="Codigos de Producto SAT" />
+    <text name="UnitMeasures" value="Unidades de Medidas" />
+    <text name="UnitMeasure" value="Unidad de Medida" />
+    <text name="UnitMeasuresSAT" value="Unidades de Medidas SAT" />
+    <text name="UserDepartmentsAndPlants" value="Plantas y Departamentos" />    
+    <text name="HotSheetCreate" value="Crear Hoja Informativa" />    
+    <text name="HotSheetEdit" value="Editar Hoja Informativa" />
+    <text name="HotSheetCancel" value="Cancelar Hoja Informativa" />
+    <text name="HotSheetApprovals" value="Aprobaciones de Hoja Informativa" />
+    <text name="HotSheetExportToAS400" value="Exportar Hoja Informativa a AS400" />
+    <text name="HotSheetPendingForApproval" value="Hoja Informativa pendientes por Aprobar" />
+    <text name="HotSheetTemplates" value="Plantillas de Hoja Informativa" />
+    <text name="HotSheetsGenerated" value="Envíos Generados" />
+    <text name="FolioToAssign" value="Por Asignar" />
+    <text name="Author" value="Autor" />
+    <text name="CreatedBy" value="Creado Por" />
+    <text name="StatusDraft" value="Borrador" />
+    <text name="StatusCirculating" value="En Circulación" />
+    <text name="StatusApproved" value="Aprobado" />
+    <text name="StatusPendingForApproval" value="Pendiente de Aprobación" />
+    <text name="StatusRejected" value="Rechazado" />
+
+    <text name="SaveDataXLSX" value="Guardar Info de XLSX" />
+    <text name="PackingInformation" value="Información del Empaque" />
+    <text name="Approval" value="Aprobación" />
+    <text name="ShippedBy" value="Enviado Por" />
+    <text name="SoldTo" value="Vendido A" />
+    <text name="ShipTo" value="Envia A" />
+    <text name="Address" value="Dirección" />
+    <text name="DocumentType" value="Tipo de Documento" />
+    <text name="Carrier" value="Transportista" />
+    <text name="SelectACarrier" value="Selecciona un Transportista..." />
+    <text name="Service" value="Servicio" />
+    <text name="Services" value="Servicios" />
+    <text name="ServicesIsNational" value="Es Nacional" />
+    <text name="ServicesIsInternational" value="Es Internacional" />
+    <text name="ServicesShowHigestCostWarning" value="Mostrar advertencia de mayor costo" />
+    <text name="ServicesGround" value="Terrestre" />
+    <text name="ServicesAir" value="Aéreo" />
+    <text name="ServicesSea" value="Marítimo" />
+    <text name="SelectACarrierAndService" value="Selecciona un Transportista y un Servicio..." />
+    <text name="ServiceCoverageAreaNational" value="Área de cobertura del Servicio Nacional" />
+    <text name="ServiceCoverageAreaInternational" value="Área de cobertura del Servicio Internacional" />
+    <text name="ServiceCoverageAreaNationalInternational" value="Área de cobertura del Servicio Nacional e Internacional" />        
+    <text name="FullTruckLoad" value="Camión con Carga Llena" />
+    <text name="Reason" value="Razón" />
+    <text name="AdditionalExplanation" value="Explicación Adicional" />
+    <text name="SpecialExpeditedReason" value="Razón Especial Expedida" />
+    <text name="TermOfPayment" value="Término de Pago" />
+    <text name="TermsOfPayment" value="Términos de Pago" />
+    <text name="SelectAnOption" value="Seleccione una Opción..." />
+    <text name="SelectAnPaymentTerm" value="Seleccione una Termino de Pago..." />
+    <text name="SaveAsTemplate" value="Guardar como Plantilla" />
+    <text name="SaveTemplate" value="Guardar Plantilla" />
+    <text name="GenerateCopy" value="Generar Copia" />
+    <text name="SendForApproval" value="Enviar para Aprobación" />
+    <text name="SupervisorOfDepartments" value="Supervisor de Departamentos" />
+    <text name="SupervisorOfPlants" value="Supervisor de Plantas" />
+    <text name="SelectACustomer" value="Seleccione un Cliente..." />
+    <text name="SelectACustomerPlant" value="Seleccione una Planta del Cliente..." />
+    <text name="CostOfMerchandisePaidBy" value="Costo de la Mercancía Pagado Por" />
+    <text name="FreightCostPaidBy" value="Costo de Flete Pagado Por" />
+    <text name="EmbarkedTo" value="Embarcado A" />
+    <text name="TermOfHotSheet" value="Término del Embarque" />
+    <text name="HotSheetTerms" value="Término del Embarque"/>
+    <text name="HotSheetDetails" value="Detalles del Embarque (LLenado por Depot. PQ)" />
+    <text name="HotSheetReasons" value="Razones  del Envío"/>
+    <text name="Description" value="Descripción"/>
+    <text name="HotSheetReasonBNoticeRMARequired" value="Campos B-Notice y RMA Obligatorio"/>
+    <text name="HotSheetReasonPictureTechnicalInfoMakerModelSerialNumber" value="Agregue los campos Imagen, Información técnica, Fabricante, Modelo y Número de serie"/>
+    <text name="HotSheetReasonAttachPurchaseOrder" value="Adjuntar orden de compra"/>
+    <text name="HotSheetReasonTechnicalInfoPicture" value="Agregar información técnica e imagen"/>
+    <text name="HotSheetReasonAccountingApprovalRequired" value="Aprobación Contable Requerida"/>
+    <text name="HotSheetReasonExcludeTermOfPayment" value="Excluir opción de Termino de Pago"/>
+    
+    <text name="RmaAssigned" value="RMA Asignado" />
+    <text name="By" value="Por" />
+    <text name="RmaNumber" value="RMA Número" />
+    <text name="BNotice" value="B-Notice" />
+    <text name="AccountNumber" value="Número de Cuenta" />
+    <text name="CourierAccountNumber" value="Número de Cuenta Mensajería" />
+    <text name="HotSheetCreatedSuccessfully" value="Hoja Informativa creado correctamente" />
+    <text name="HotSheetavedSuccessfully" value="Hoja Informativa guardado correctamente" />
+    <text name="HotSheetUpdatedSuccessfully" value="Hoja Informativa actualizado correctamente" />
+    <text name="PaymentStatus" value="Estado del Pago" />
+    <text name="Paid" value="Pagado" />
+    <text name="PaidBy" value="Pagado Por" />
+    <text name="NotPaid" value="No Pagado" />
+    <text name="PartiallyPaid" value="Pagado Parcialmente" />    
+    <text name="RequestedBy" value="Solicitado Por" />
+    <text name="Payment" value="Pago" />
+    
+    <text name="SentForApproval" value="Enviado para Aprobación" />
+    <text name="SentForApprovalDate" value="Fecha de Envio para Aprobación" />
+    <text name="Date" value="Fecha" />
+    <text name="Estimated" value="Estimado" />
+    <text name="Shipping" value="Envio" />
+    <text name="DNMXSupplier" value="DNMX Proveedor" />
+    <text name="Export" value="Exportar" />
+    <text name="ExportedToCigma" value="Exportado a Cigma" />
+    
+    <text name="UnitOfMeasure" value="Unidad de Medida" />
+    <text name="MerchandiseDescription" value="Descripción de la Mercancía" />
+    <text name="ShippedQuantity" value="Cantidad Envio" />
+    <text name="UnitPrice" value="Precio Unitario" />
+    <text name="AdditionalInformation" value="Información Adicional" />
+    <text name="Model" value="Modelo" />
+    <text name="Serial" value="Serie #" />
+    <text name="Maker" value="Fabricante" />
+    <text name="TechInfo" value="Tecnical Info." />
+    <text name="PONumber" value="P.O. Numero" />
+    <text name="Attachments" value="Archivos" />
+    <text name="OriginCountry" value="Pais Origen" />
+    <text name="Total" value="Total" />
+    <text name="AddProduct" value="Agregar un Producto" />
+    <text name="CommercialValue" value="Valor Comercial" />
+    <text name="EditProduct" value="Editar Producto" />
+    <text name="SaveAndNew" value="Guardar y Nuevo" />
+    <text name="SaveAndClose" value="Guardar y Cerrar" />
+    <text name="Close" value="Cerrar" />
+    <text name="NoDataText" value="Sin datos" />
+    <text name="PackagingDescription" value="Descripción del Empaque" />
+    <text name="DimentionsLWH" value="Dimensiones L - A - A" />
+    <text name="Dimentions" value="Dimensiones (CM)" />
+    <text name="PalletsQuantity" value="Cantidad" />
+    <text name="NetWeight" value="Peso Neto (KG)" />
+    <text name="GrossWeight" value="Peso Bruto (KG)" />
+    <text name="WeightPerBox" value="Peso por Caja" />
+    <text name="DimensionalWeightPerBox" value="Peso dimensional por Caja" />
+    <text name="BoxQuantity" value="Cantidad de Cajas" />
+    <text name="PackagingInstructions" value="Favor de agregar la Información de cada Paquete del Embarque" />
+    <text name="AddPackaging" value="Agregar Empaque" />
+    <text name="EditPackaging" value="Editar Empaque" />
+    <text name="MerchandiseDescriptionSpanish" value="Descripción de la Mercancía Español" />
+    <text name="PlantInfo" value="Información de la Planta" />
+    <text name="DepartmentInfo" value="Información del Departamento" />
+    <text name="PartNumberInfo" value="Información de Número de Parte" />
+    <text name="ProductCodeSATInfo" value="Información del Codigo de Producto del SAT" />
+    <text name="RmaAssignedInfo" value="Información del Asignado RMA" />
+    <text name="HotSheetReasonInfo" value="Información de la Razón del Envio" />
+    <text name="HotSheetTermInfo" value="Información del Termino de Envio" />
+    <text name="UnitMeasureInfo" value="Información de la Unidad de Medida" />
+    <text name="DensoCode" value="Código de Denso" />
+    <text name="SatCode" value="Código del SAT" />
+    <text name="SegroveCode" value="Código de Segrove" />
+    <text name="PaidByInfo" value="Información de Pagado Por" />
+    <text name="DocumentTypeInfo" value="Información del Tipo de Documento" />
+    <text name="DescriptionSpanish" value="Descripción en Español" />
+    <text name="Fraction" value="Fracción" />
+    <text name="Code" value="Código" />
+    <text name="Active" value="Activo" />
+    <text name="TotalUsers" value="Total de Usuarios" />
+    <text name="Reports" value="Reportes" />
+    <text name="Customers" value="Clientes" />
+    <text name="Customer" value="Cliente" />
+    <text name="AddressLine1" value="Dirección Line 1" />
+    <text name="AddressLine2" value="Dirección Line 2" />
+    <text name="AddressLine3" value="Dirección Line 3" />
+    <text name="AddressLine4" value="Dirección Line 4" />
+    <text name="State" value="State" />
+    <text name="TaxId" value="TaxId" />
+    <text name="Country" value="Country" />
+    <text name="Contact" value="Contacto" />
+    <text name="FedexCta" value="Cuenta Fedex" />
+    <text name="Phone" value="Teléfono" />
+    <text name="Zip" value="Zip" />
+    <text name="CustomerInfo" value="Información del Cliente" />    
+    <text name="Divisions" value="Divisiones" />
+    <text name="PaymentTerms" value="Términos de Pago" />
+    <text name="PaymentTerm" value="Término de Pago" />
+    <text name="ExportToAS400" value="Exportar a AS/400" />
+    <text name="AreYouSureWantToCancel">¿Estás seguro de que quieres cancelar {0}?</text>
+    <text name="AreYouSure">¿Esta seguro?</text>
+    <text name="AreYouSureWantToExportToAS400">¿Estás seguro de que quieres Exportar {0} a AS/400?</text>
+    <text name="CancelledSuccessfully" value="Cancelado correctamente" />
+    <text name="ExportedToAS400Successfully" value="Exportado a AS/400 correctamente" />
+    <text name="StatusCancelled" value="Cancelado" />
+    <text name="View" value="Ver" />
+    <text name="ProformaInvoice" value="Factura Proforma" />
+    <text name="TrackingNumber" value="Número de Rastreo" />
+    <text name="SelectAnApprover" value="Selecciona un Aprobador" />
+    <text name="ManagerApproval" value="Aprobación Gerencial" />
+    <text name="AccountingApproval" value="Aprobación Contable" />
+    <text name="IEStaffApproval" value="Aprobación Impo/Expo Staff" />
+    <text name="ShippersInfo" value="Información del Remitente" />
+    <text name="ImportExportDepto" value="Departamento de Importación/Exportación" />
+    <text name="TelephoneExt" value="Telefono Extensión" />
+    
+    <text name="ApprovedDate" value="Fecha de Aprobación" />
+    <text name="ShowBehalfFields" value="Mostrar en nombre de los campos" />
+    <text name="Department" value="Departamento" />
+    <text name="Approve" value="Aprobar" />
+    <text name="SentForApprovalBy" value="Enviado para aprobación por" />
+    <text name="ApprovedBy" value="Aprobado por" />
+    <text name="AreYouSureWantToSendForApproval">¿Estás seguro de que quieres Enviar {0} para Aprobación?</text>
+    <text name="AreYouSureWantToApproveShipping">¿Estás seguro de que quieres Aprobar el Envío {0}?</text>
+    <text name="ApprovalSentDate" value="Fecha de Envió de Aprobación" />
+    <text name="NoFilter" value="Sin Filtro" />
+    <text name="FilteredBy" value="Filtrado por" />
+    <text name="CreationDate" value="Fecha de Creación" />
+    <text name="TemplateName" value="Nombre de Plantilla" />
+    <text name="HotSheetCreateFromTemplate" value="Crear Hoja Informativa desde Plantilla" />
+    <text name="OptionWithoutTemplate" value="Sin Plantilla" />
+    <text name="AreYouSureWantToGenerateCopy">¿Estás seguro de que quieres Generar una Copia?</text>
+    <text name="ConfirmApprove" value="Confirmar Aprobación" />
+    <text name="ConfirmReject" value="Confirmar Rechazo" />
+    <text name="PendingForApproval" value="Pendientes por Aprobación" />
+    <text name="Templates" value="Plantillas" />
+    <text name="CreateTemplate" value="Crear Plantilla" />
+    <text name="NotificationSentSuccessfully" value="Notificación enviado correctamente" />
+    <text name="ApprovedSuccessfully" value="Aprobado correctamente" />
+    <text name="VerifyApproval" value="Verificar Aprobación" />
+    <text name="Reject" value="Rechazar" />
+    <text name="EmailNotificationSent" value="Notificación de Email enviado" />
+    <text name="Reseted" value="Reiniciado" />
+    <text name="ApproverChanged" value="Aprobador cambiado" />
+    <text name="TextOn" value="el" />
+    <text name="ApproverChangedBy" value="Aprobador cambiado por" />
+    <text name="RejectBy" value="Rechazado por" />
+    <text name="Reset" value="Reiniciar" />
+    <text name="AreYouSureWantToReset" value="¿Estás seguro de que quieres Reiniciar el Envío {0}?" />
+    <text name="UpdatedBy" value="Actualizado por" />
+    <text name="ResetedBy" value="Reiniciado por" />
+    <text name="History" value="Historial" />
+    <text name="ChangeApprovers" value="Cambiar Aprovadores" />
+    <text name="ImportExportStaff" value="Staff Importación/Exportación" />
+    <text name="UpdateApprovers" value="Actualizar Aprovadores" />
+    <text name="DeptoOrSection" value="Depto o Sección" />
+    <text name="NetNumber" value="Num. Red" />
+    <text name="HelpInfo" value="Información de Ayuda" />
+    <text name="HelpText" value="Texto de Ayuda" />
+    <text name="LastNotificationDate" value="Fecha de Notificación" />
+    <text name="DaysLateApproval" value="Días de Retraso" />
+    <text name="EmployeeId" value="Id del Empleado" />
+    <text name="Responsible" value="Responsable" />
+    <text name="Employees" value="Empleados" />
+    <text name="Credential" value="Credencial" />
+    <text name="EmployeeType" value="Tipo de Empleado" />
+    <text name="BirthDate" value="Birth Date" />
+    <text name="EntryDate" value="Entry Date" />
+    <text name="Currencies" value="Monedas" />
+    <text name="Currency" value="Moneda" />
+    <text name="Survey" value="Encuesta" />
+    <text name="Surveys" value="Encuestas" />
+    <text name="HotSheets" value="Hojas Calientes" />
+    <text name="AnswerSurvey" value="Contestar Encuesta" />
+    <text name="SurveyTitle" value="Encuesta de satisfacción del usuario" />
+    <text name="SurveySubTitle" value="Por favor ayúdenos a mejorar nuestro servicio respondiendo esta breve encuesta" />     
+    <text name="SurveyQuestion1" value="1. El servicio brindado por personal de ie al usuario fué:" />
+    <text name="SurveyQuestion2" value="2. ¿Como evalúas la comunicación con respecto al seguimiento de tu requerimiento?" />
+    <text name="SurveyQuestion3" value="3. ¿Como consideras el tiempo de respuesta del personal de IE a tu solicitud?" />
+    <text name="SurveyQuestion4" value="4. ¿El personal de IE ofreció ayuda o soporte adicional?" />
+    <text name="SurveyQuestion5" value="5. ¿Como evalúas el nuevo Sistema Web de Hot Sheet?" />
+    <text name="SurveyQuestion6" value="6. ¿Tienes algún otro comentario o solicitud adicional?" />
+    <text name="SurveyQuestion6_6" value="Cuéntanos cómo mejorar nuestros servicios" />
+    <text name="SurveyQuestion6_7" value="7. Por favor envíe sus comentarios generales" />
+    <text name="SurveyQuestion1Answer1" value="Excelente" />
+    <text name="SurveyQuestion1Answer2" value="Bueno" />
+    <text name="SurveyQuestion1Answer3" value="Regular" />
+    <text name="SurveyQuestion1Answer4" value="Insatisfactorio" />
+    <text name="SurveyQuestion1Answer5" value="Muy Insatisfactorio" />
+    <text name="SurveyQuestion2Answer1" value="Excelente" />
+    <text name="SurveyQuestion2Answer2" value="Bueno" />
+    <text name="SurveyQuestion2Answer3" value="Regular" />
+    <text name="SurveyQuestion2Answer4" value="Insatisfactorio" />
+    <text name="SurveyQuestion2Answer5" value="Muy Insatisfactorio" />
+    <text name="SurveyQuestion3Answer1" value="Bueno" />
+    <text name="SurveyQuestion3Answer2" value="Regular" />
+    <text name="SurveyQuestion3Answer3" value="Malo" />
+    <text name="SurveyQuestion4Answer1" value="Si" />
+    <text name="SurveyQuestion4Answer2" value="No" />
+    <text name="SurveyQuestion5Answer1" value="Excelente" />
+    <text name="SurveyQuestion5Answer2" value="Bueno" />
+    <text name="SurveyQuestion5Answer3" value="Regular" />
+    <text name="SurveyQuestion5Answer4" value="Insatisfactorio" />
+    <text name="SurveyQuestion5Answer5" value="Muy Insatisfactorio" />
+    <text name="AreYouSureWantToSendSurvey" value="¿Estás seguro de que quieres enviar las respuestas de la encuesta?" />
+    <text name="Send" value="Enviar" />
+    <text name="SendAnswers" value="Enviar Respuestas" />
+    <text name="SentSuccessfully" value="Enviado correctamente" />
+    <text name="Qualification" value="Calificación" />
+    <text name="HotSheetCode" value="Código de Envío" />
+    <text name="SelectAUser" value="Selecciona un Usuario" />
+    <text name="TotalHotSheets" value="Total de Envíos" />
+    <text name="Documents" value="Documentos" />
+    <text name="Download" value="Descargar" />
+    <text name="FileName" value="Nombre del Archivo" />
+    <text name="FileSize" value="Tamaño" />
+    <text name="UploadedBy" value="Subido Por" />
+    <text name="Remove" value="Remover" />
+    <text name="UploadDocuments" value="Subir Documentos" />
+    <text name="PartNumberPrices" value="Precios de Números de Parte" />
+    <text name="PartNumberPricesMenu" value="Precios de Num. de Parte" />
+    <text name="PartNumberPriceInfo" value="Información del Precio de Número de Parte" />
+    <text name="PublishDate" value="Fecha Publicación" />
+    <text name="HotSheetsReports" value="Reporte de Hoja Informativa" />
+    <text name="GenerateReport" value="Generar Reporte" />
+    <text name="ClearFilters" value="Limpiar Filtros" />
+    <text name="RangeDates" value="Rango de Fechas" />
+    <text name="EmptyGroupPanelText" value="Arrastre el encabezado de una columna aquí para agruparla por esa columna." />
+    <text name="TotalDaysPassed" value="Total de días Transcurridos" />
+    <text name="CreateCustomer" value="Crear Cliente" />
+    <text name="EditCustomer" value="Editar Cliente" />
+    <text name="HotSheetsPerformanceDashboard" value="Panel de Rendimiento de Envíos" />
+    <text name="Saving" value="Guardando..." />
+    <text name="PartNumbersInternal" value="Números de Parte Internal" />
+    <text name="PartNumbersInternalMenu" value="Num. Part. Internal" />
+    <text name="PartNumberInternalInfo" value="Número de Parte Internal Info" />
+    <text name="PartNumberPricesInternal" value="Precios de Números de Parte Internal" />
+    <text name="PartNumberPricesInternalMenu" value="Precios Num. P. Internal" />
+    <text name="PartNumberPriceInternalInfo" value="Precio de Número de Parte Internal Info" />
+    <text name="DaysInAdvanceForNonWorkDaysNotification" value="Dias de Anticipación Para Aviso de Dias no Laborables" />
+    <text name="NotificationCarrierNonWorkingDays" value="Transportistas con Dias no Laborables" />
+    <text name="NonWorkingDay" value="Dia no Laborable" />
+    <text name="SaveSettings" value="Guardar Configuración" />
+    <text name="ServiceHightCostWarning" value="¡Advertencia! Ha seleccionado el coste más alto. Debe ser autorizado por el Gerente" />
+    <text name="ChargeTo" value="Cargar A" />
+    <text name="HotSheetFolio" value="Folio de Hoja Informativa" />
+    <text name="Notices" value="Avisos" />
+    <text name="EditNotice" value="Editar Aviso" />
+    <text name="ShippingHaveChangesAreYouSureWantToContinueSendForApproval" value="Las Hoja Informativa {0} tienen cambios. ¿Está seguro de que desea continuar con Enviar para aprobación?" />
+    <text name="MsgPackagingOp1" value="El peso cobrable será dimensional." />
+    <text name="MsgPackagingOp2" value="El peso cobrable será el peso bruto" />
+    <text name="PendingApprover" value="Aprobador Pendiente" />
+    <text name="ProductConfirmDeleteMessage" value="¿Estás seguro que deseas eliminar este Producto?" />
+    <text name="FreightPrePaidExplanation" value="Si DNMX paga el flete explique el motivo" />
+    <text name="ViewProduct" value="Ver Producto" />
+    <text name="ProductDetails" value="Detalles del Producto" />
+    <text name="DownloadTemplateNP" value="Para números de parte nuevos(a exportación) dar click para descargar formato y llenarlo, una vez lleno lo puedes adjuntar en la sección de Documentos de esta shipping o enviarlo via email a IE, para agregarlo al catálogo de NP"/>
+    <text name="Manifest" value="Manifiesto(s)"/>
+    <text name="RejectedBy" value="Rechazado por" />
+    <text name="Print" value="Imprimir" />
+    <text name="ReasonHotSheet" value="Razón del Embarque" />
+    <text name="UpdateInformation" value="Actualizar Información" />
+    <text name="UpdateShippingInfoUpdated" value="Información de {0} Actualizado" />
+    <text name="AreYouSureWantToUpdateShippingInfo">¿Estás seguro de que quieres actualizar la información de los {0}?</text>
+
+    <text name="PendingApprovalByIE">Pendiente de Aprobación por IE</text>
+    <text name="PendingForProformaInvoice">Pendiente de Proforma</text>
+    <text name="PendingForPayment">Pendiente de Pago</text>
+    <text name="MoreInfo">Mas info</text>
+    <text name="TimeElapsed">Tiempo transcurrido</text>
+    <text name="HotSheetsDetails">Detalles de envios</text>
+
+    <text name="StatusIndicator">Indicador de Status</text>
+    <text name="SummaryImplementationsResponsible">Resumen de Implementaciones por Responsable</text>
+    <text name="RefreshData">Actualizar Datos</text>
+    <text name="Indicator">Indicador</text>    
+    <text name="Assigned">Asignado</text>
+    <text name="InProgress">En Progreso</text>
+    <text name="Completed">Completado</text>
+    <text name="Approved">Aprobado</text>
+    <text name="IEStaffResponsesPerformance">Desempeño de las respuestas de IE Staff</text>
+    <text name="TrackingScrapSales">Proceso de Seguimiento Scrap Sales</text>
+    <text name="Manifests" value="Manifiestos"/>
+    <text name="ManifestsInfo" value="Información de Manifiestos"/>
+    <text name="HotSheetDate" value="Fecha de Envío"/>
+    <text name="ReportDate" value="Fecha Informe"/>
+    <text name="ReportDateStart" value="Fecha Inicio Informe"/>
+    <text name="ReportDateEnd" value="Fecha Final Informe"/>
+    <text name="ReportDateStartValidation" value="Fecha Inicio Informe debe ser menor o igual que Fecha Final Informe"/>
+    <text name="ReportDateEndValidation" value="Fecha Final Informe debe ser mayor o igual que Fecha Inicio Informe"/>
+    
+    <text name="GuideReference" value="Referencia Guía"/>
+    <text name="GuideStatusDetail" value="Detalle Status Guía"/>
+    <text name="GuideStatus" value="Status Guía"/>
+    <text name="GuideCost" value="Costo Guía"/>
+    <text name="GuideCurrency" value="Moneda Guía"/>
+    <text name="TrackingGuidesReports">Reporte de Seguimiento de Guía</text>
+    <text name="TrackingGuidesInfo">Información de Seguimiento de Guía</text>
+
+    <text name="ManagerApprovalDate" value="Fecha de aprobación del gerente"/>
+    <text name="IEStaffApprovalDateTitle" value="Aprobación Shipping Instruction"/>
+    <text name="InvoiceEmissionDate" value="Emisión de Factura"/>
+    <text name="Amount" value="Monto"/>
+    <text name="PaymentDate" value="Fecha de Pago"/>
+    <text name="RecyclerName" value="Nombre Reciclador"/>
+    <text name="ImportationRequest" value="Pedimento Importación"/>
+
+    <text name="Comments" value="Comentarios" />
+    <text name="HotSheetInfo" value="Información Hoja Caliente" />
+    <text name="HotSheetFile" value="Documento de Hoja Caliente" />
+    <text name="PartNumbers" value="Número de Partes" />
+    <text name="Planner" value="Planificador"/>
+    <text name="PlannerCode" value="Codigo"/>
+    <text name="PlannerName" value="Nombre"/>
+    <text name="Supplier" value="Proveedor"/>
+    <text name="SupplierCode" value="Codigo"/>
+    <text name="SupplerName" value="Nombre"/>
+    <text name="PartNumber" value="Número de Parte"/>
+    <text name="PartNumberHS" value="Número de Parte"/>
+    <text name="PartNumberCodeHS" value="Codigo"/>
+    <text name="PartDescriptionHS" value="Descripcion"/>
+    <text name="InTransitQty" value="Cantidad en Transito"/>
+    <text name="DiaStockIn" value="Inventario Diario"/>
+    <text name="DiaLocation" value="Ubicacion"/>
+    <text name="CIGMAReceived" value="Recibido por CIGMA"/>
+    <text name="TransportMode" value="Modo Transporte"/>
+    <text name="TransportModeId" value="Id"/>
+    <text name="TransportModeName" value="Nombre"/>
+    <text name="DeliveryOrder" value="Orden Entrega"/>
+    <text name="TrafficContainerFX" value="Contenedor Trafico FX"/>
+    <text name="UnitNumber" value="Numbero Unidad"/>
+    <text name="EtaDNMX" value="ETA DNMX"/>
+    <text name="Status" value="Status" />
+    <text name="StatusId" value="Id"/>
+    <text name="StatusHotSheetName" value="Nombre"/>
+    <text name="Shortage" value="Escasez"/>
+    <text name="RealShortageDate" value="Fecha Real"/>
+    <text name="ShortageShiftId" value="Id"/>
+    <text name="ShortageShiftName" value="Nombre"/>
+    <text name="ShortageTime" value="Hora"/>
+    
+  </texts>
+</localizationDictionary>

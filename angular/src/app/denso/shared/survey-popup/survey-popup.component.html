@@ -1,0 +1,67 @@
+<dx-button
+    stylingMode="contained"
+    [text]="'AnswerSurvey' | localize"
+    icon="description"
+    type="normal"
+    [width]="200"
+    class="dx-button-ml"
+    (click)="showSurvey()"
+>
+</dx-button>
+
+<dx-popup #popup [width]="750" [height]="600" [showTitle]="true" [dragEnabled]="false" [(visible)]="showSurveyPopup" titleTemplate="title">
+    <div *dxTemplate="let data of 'title'" style="background-color: #c2b280 !important; color: white !important">
+        <h4>{{ 'SurveyTitle' | localize }}</h4>
+        <span>{{ 'SurveySubTitle' | localize }}</span>
+    </div>
+    <div *dxTemplate="let data of 'content'">
+        <form (submit)="onSurveyFormSubmit($event)">
+            <dx-form labelLocation="top" colCount="2">
+                <dxi-item label="" [colSpan]="2" isRequired="true">
+                    <div *dxTemplate>
+                        <span class="dx-field-item-label-text" style="font-weight: 700">{{ 'SurveyQuestion1' | localize }}</span>
+                        <div class="row">
+                            <div class="col-3 surver-option" [ngClass]="{ 'surver-option-active': surveyAnswers.answerQuestion1 === '1' }">
+                                <a href="javascript: void(0);" (click)="onSelectAnswer1('1')"
+                                    ><img src="assets/survey-images/survey-option-1.png" /><br />{{ 'SurveyQuestion1Answer1' | localize }}</a
+                                >
+                            </div>
+                            <div class="col-3 surver-option" [ngClass]="{ 'surver-option-active': surveyAnswers.answerQuestion1 === '2' }">
+                                <a href="javascript: void(0);" (click)="onSelectAnswer1('2')"
+                                    ><img src="assets/survey-images/survey-option-2.png" /><br />{{ 'SurveyQuestion1Answer2' | localize }}</a
+                                >
+                            </div>
+                            <div class="col-3 surver-option" [ngClass]="{ 'surver-option-active': surveyAnswers.answerQuestion1 === '3' }">
+                                <a href="javascript: void(0);" (click)="onSelectAnswer1('3')"
+                                    ><img src="assets/survey-images/survey-option-3.png" /><br />{{ 'SurveyQuestion1Answer3' | localize }}</a
+                                >
+                            </div>
+                            <div class="col-3 surver-option" [ngClass]="{ 'surver-option-active': surveyAnswers.answerQuestion1 === '4' }">
+                                <a href="javascript: void(0);" (click)="onSelectAnswer1('4')"
+                                    ><img src="assets/survey-images/survey-option-4.png" /><br />{{ 'SurveyQuestion1Answer4' | localize }}</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </dxi-item>
+                <dxi-item [label]="{ text: 'SurveyQuestion2' | localize }" [colSpan]="2" isRequired="true">
+                    <dx-text-area [height]="70" [(value)]="surveyAnswers.answerQuestion2" [inputAttr]="{ 'aria-label': 'Comments' }"> </dx-text-area>
+                </dxi-item>
+                <dxi-item [label]="{ text: 'SurveyQuestion3' | localize }" [colSpan]="2" isRequired="true">
+                    <dx-text-area [height]="70" [(value)]="surveyAnswers.answerQuestion3" [inputAttr]="{ 'aria-label': 'Comments' }"> </dx-text-area>
+                </dxi-item>
+                <dxi-item [label]="{ text: 'SurveyQuestion4' | localize }" [colSpan]="2">
+                    <dx-text-box [(value)]="surveyAnswers.hotSheetShipId"></dx-text-box>
+                </dxi-item>
+                <dxi-item itemType="button" horizontalAlignment="left" [buttonOptions]="{ text: 'Cancel' | localize, onClick: onPopupClose, icon: 'close' }">
+                </dxi-item>
+                <dxi-item
+                    itemType="button"
+                    horizontalAlignment="right"
+                    [buttonOptions]="{ text: 'Send', useSubmitBehavior: true, type: 'default', icon: 'save' }"
+                >
+                </dxi-item>
+            </dx-form>
+        </form>
+    </div>
+</dx-popup>

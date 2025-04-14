@@ -1,0 +1,101 @@
+<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1 class="denso-page-title"><i class="fa-solid fa-circle-info"></i>&nbsp;{{ 'Notices' | localize }}</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body grid-content" [busy]="isTableLoading">
+                        <dx-data-grid
+                            #dataGrid
+                            keyExpr="id"
+                            [dataSource]="notices"
+                            [allowColumnReordering]="false"
+                            [allowColumnResizing]="false"
+                            [columnAutoWidth]="true"
+                            (onInitNewRow)="onInitNewRow($event)"
+                            (onSaving)="onSave($event)"
+                            (onEditingStart)="onEditingStart($event)"
+                            [showBorders]="true"
+                            [noDataText]="'NoDataText' | localize"
+                            [rowAlternationEnabled]="true"
+                        >
+                            <dxo-scrolling mode="virtual"></dxo-scrolling>
+
+                            <dxo-editing mode="popup" [allowUpdating]="true" [useIcons]="true" [allowAdding]="true" [allowDeleting]="false">
+                                <dxo-popup #popup [title]="'Notices' | localize" [showTitle]="true" [width]="650" [height]="450">
+                                    <dxi-toolbar-item
+                                        widget="dxButton"
+                                        toolbar="bottom"
+                                        location="after"
+                                        [options]="{
+                                            text: 'Save' | localize,
+                                            onClick: onSaveChanges,
+                                            icon: 'save',
+                                            type: 'default'
+                                        }"
+                                    >
+                                    </dxi-toolbar-item>
+                                    <dxi-toolbar-item
+                                        widget="dxButton"
+                                        toolbar="bottom"
+                                        location="after"
+                                        [options]="{ text: 'Cancel' | localize, onClick: onClosePopup, icon: 'close' }"
+                                    >
+                                    </dxi-toolbar-item>
+                                </dxo-popup>
+                                <dxo-form labelLocation="top">
+                                    <dxi-item [colSpan]="2" [label]="{ text: 'Message' | localize }">
+                                        <div *dxTemplate>
+                                            <dx-text-area [(value)]="noticeChanges.message"></dx-text-area>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [colSpan]="1" [label]="{ text: 'Date' | localize }">
+                                        <div *dxTemplate>
+                                            <dx-date-box [(value)]="noticeChanges.noticeDay" type="date" displayFormat="yyyy-MM-dd"> </dx-date-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: 'AnticipationDays' | localize }" [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-number-box [(value)]="noticeChanges.anticipationDays"></dx-number-box>
+                                        </div>
+                                        <dxi-validation-rule type="required"></dxi-validation-rule>
+                                    </dxi-item>
+                                    <dxi-item dataField="isActive" [label]="{ text: 'IsActive' | localize }" [colSpan]="2">
+                                        <div *dxTemplate>
+                                            <dx-check-box [(value)]="noticeChanges.isActive"> </dx-check-box>
+                                        </div>
+                                    </dxi-item>
+                                </dxo-form>
+                            </dxo-editing>
+
+                            <dxi-column caption="ID" dataField="id" alignment="center" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'Message' | localize" dataField="message" [width]="600"></dxi-column>
+                            <dxi-column [caption]="'Date' | localize" dataField="noticeDay" [width]="150" dataType="date" format="yyyy-MM-dd"> </dxi-column>
+                            <dxi-column [caption]="'AnticipationDays' | localize" dataField="anticipationDays" [width]="150"> </dxi-column>
+                            <dxi-column [caption]="'Active' | localize" dataField="isActive" [width]="120"></dxi-column>
+                        </dx-data-grid>
+                    </div>
+                    <div class="card-footer table-card-footer bg-light border-top">
+                        <div class="row">
+                            <div class="col-sm-4 col-12 text-sm-left text-center">
+                                <button class="btn btn-sm btn-secondary" (click)="refresh()">
+                                    <i class="fas fa-redo-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

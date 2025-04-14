@@ -1,0 +1,15 @@
+.address-details-section {
+    width: 370px !important;
+    border: solid 1px #D3D3D3;
+    height: 550px;
+    padding: 14px;      
+    background-color: white;
+    z-index: 1000;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.address-line {
+    display: block;
+}
+  
