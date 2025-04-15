@@ -57,6 +57,8 @@ namespace Denso.HotSheet.HotSheet
         public ShortageShift ShortageShift { get; set; }
         public string Shortage { get; set; }
 
+        public int? ASN { get; set; }
+
         [StringLength(1000)]
         public string PCComments { get; set; }
 

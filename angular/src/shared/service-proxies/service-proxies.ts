@@ -11195,6 +11195,7 @@ export class HotSheetsDto implements IHotSheetsDto {
     shortageShiftId: number | undefined;
     shortageShift: ShortageShiftDto;
     shortage: string | undefined;
+    asn: number;
     pcComments: string | undefined;
 
     constructor(data?: IHotSheetsDto) {
@@ -11231,6 +11232,7 @@ export class HotSheetsDto implements IHotSheetsDto {
             this.shortageShiftId = _data["shortageShiftId"];
             this.shortageShift = _data["shortageShift"] ? ShortageShiftDto.fromJS(_data["shortageShift"]) : <any>undefined;
             this.shortage = _data["shortage"];
+            this.asn = _data["asn"];
             this.pcComments = _data["pcComments"];
         }
     }
@@ -11267,6 +11269,7 @@ export class HotSheetsDto implements IHotSheetsDto {
         data["shortageShiftId"] = this.shortageShiftId;
         data["shortageShift"] = this.shortageShift ? this.shortageShift.toJSON() : <any>undefined;
         data["shortage"] = this.shortage;
+        data["asn"] = this.asn;
         data["pcComments"] = this.pcComments;
         return data;
     }
@@ -11303,6 +11306,7 @@ export interface IHotSheetsDto {
     shortageShiftId: number | undefined;
     shortageShift: ShortageShiftDto;
     shortage: string | undefined;
+    asn: number;
     pcComments: string | undefined;
 }
 
@@ -11482,6 +11486,7 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
     shortageShiftName: string | undefined;
     shortage: string | undefined;
     shortageVal: string | undefined;
+    asn: string | undefined;
     pcComments: string | undefined;
 
     constructor(data?: IHotSheetsItemDto) {
@@ -11519,6 +11524,7 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
             this.shortageShiftName = _data["shortageShiftName"];
             this.shortage = _data["shortage"];
             this.shortageVal = _data["shortageVal"];
+            this.asn = _data["asn"];
             this.pcComments = _data["pcComments"];
         }
     }
@@ -11556,6 +11562,7 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
         data["shortageShiftName"] = this.shortageShiftName;
         data["shortage"] = this.shortage;
         data["shortageVal"] = this.shortageVal;
+        data["asn"] = this.asn;
         data["pcComments"] = this.pcComments;
         return data;
     }
@@ -11593,6 +11600,7 @@ export interface IHotSheetsItemDto {
     shortageShiftName: string | undefined;
     shortage: string | undefined;
     shortageVal: string | undefined;
+    asn: string | undefined;
     pcComments: string | undefined;
 }
 

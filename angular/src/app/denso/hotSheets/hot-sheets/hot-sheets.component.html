@@ -456,13 +456,14 @@
                                 <dxi-column [caption]="'ShortageShiftName' | localize" dataField="shortageShiftName" [width]="150"></dxi-column>                            
                                 <dxi-column [caption]="'ShortageTime' | localize" dataField="shortageVal" [width]="150"></dxi-column>                                                                  
                             </dxi-column>
+                            <dxi-column [caption]="'ASN' | localize" dataField="asn" [width]="70"></dxi-column>
                             <!-- <dxi-column [caption]="'PCComments' | localize" dataField="pcComments" [width]="250"></dxi-column> -->
                             <dxi-column
-                            [caption]="'Comments' | localize"
-                            dataField="pcComments"
-                            cellTemplate="pcCommentsCellTemplate"
-                            [width]="500"
-                            >
+                                [caption]="'Comments' | localize"
+                                dataField="pcComments"
+                                cellTemplate="pcCommentsCellTemplate"
+                                [width]="500"
+                                >
                             </dxi-column>
                             <div *dxTemplate="let info of 'pcCommentsCellTemplate'"><div [innerHtml]="info.data.pcComments | safeComment"></div></div>
 

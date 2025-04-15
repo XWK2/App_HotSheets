@@ -34,6 +34,8 @@ namespace Denso.HotSheet.Sheets.Dto
         public string Shortage { get; set; }
 
         public string ShortageVal { get; set; }
+
+        public string ASN { get; set; }
         public string PCComments { get; set; }
 
 
