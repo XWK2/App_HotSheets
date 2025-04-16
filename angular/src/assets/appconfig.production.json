@@ -1,6 +1,6 @@
 {
   "remoteServiceBaseUrl": "http://nsmx136:81",
-  "appBaseUrl": "http://nsmx136:80/shipping-instructions",
+  "appBaseUrl": "http://nsmx136:80/hot-sheets",
   "localeMappings": [
     {
       "from": "pt-BR",
@@ -15,8 +15,8 @@
       "to": "he"
     }
   ],
-  "helpDocumentUrl": "http://nsmx136:80/shipping-instructions/assets/documents/Shipping Web Manual de Usuario.docx",
-  "templateNPUrl": "http://nsmx136:80/shipping-instructions/assets/documents/NP Nacionales.xlsx",
-  "shippingPrintUrl": "http://nsmx136:80/shipping-instructions/app/shipping/instructions-details/print/{id}/false",
-  "wsPortalShippingUrl": "http://localhost:55688/WSPortalShipping.asmx"
+  "helpDocumentUrl": "http://nsmx136:80/hot-sheets/assets/documents/Shipping Web Manual de Usuario.docx",
+  "templateNPUrl": "http://nsmx136:80/hot-sheets/assets/documents/NP Nacionales.xlsx",
+  "hotSheetsPrintUrl": "http://nsmx136:80/hot-sheets/app/shipping/instructions-details/print/{id}/false",
+  "wsPortalHotSheetsUrl": "http://localhost:55688/WSPortalHotSheets.asmx"
 }

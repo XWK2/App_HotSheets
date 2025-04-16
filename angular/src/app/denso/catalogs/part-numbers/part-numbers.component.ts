@@ -293,8 +293,8 @@ export class PartNumbersComponent extends AppComponentBase implements OnInit {
     }
 
     public wsPortalShippingUpdateParts(): void {
-        let wsPortalShippingUrls: string[] = [AppConsts.wsPortalShippingUrl + '/UpdatePartsShipping'];
+        let wsPortalHotSheetsUrls: string[] = [AppConsts.wsPortalHotSheetsUrl + '/UpdatePartsShipping'];
 
-        this._wsPortalShippingService.UpdateShippingInfo(wsPortalShippingUrls, this.l('PartNumbersInternal'), this);
+        this._wsPortalShippingService.UpdateShippingInfo(wsPortalHotSheetsUrls, this.l('PartNumbersInternal'), this);
     }
 }

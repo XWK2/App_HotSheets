@@ -96,11 +96,11 @@ export class CustomersComponent extends AppComponentBase implements OnInit {
     }
 
     public wsPortalShippingUpdateCustomers(): void {
-        let wsPortalShippingUrls: string[] = [
-            AppConsts.wsPortalShippingUrl + '/UpdateCustomerShipping',
-            AppConsts.wsPortalShippingUrl + '/UpdateCustomerShiptoShipping',
+        let wsPortalHotSheetsUrls: string[] = [
+            AppConsts.wsPortalHotSheetsUrl + '/UpdateCustomerShipping',
+            AppConsts.wsPortalHotSheetsUrl + '/UpdateCustomerShiptoShipping',
         ];
 
-        this._wsPortalShippingService.UpdateShippingInfo(wsPortalShippingUrls, this.l('Customers'), this);
+        this._wsPortalShippingService.UpdateShippingInfo(wsPortalHotSheetsUrls, this.l('Customers'), this);
     }
 }

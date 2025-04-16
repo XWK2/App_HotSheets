@@ -4,8 +4,8 @@ export class AppConsts {
     static appBaseHref: string; // returns angular's base-href parameter value if used during the publish
     static helpDocumentUrl: string;
     static templateNPUrl: string;
-    static shippingPrintUrl: string;
-    static wsPortalShippingUrl: string;
+    static hotSheetsPrintUrl: string;
+    static wsPortalHotSheetsUrl: string;
 
     static localeMappings: any = [];
 

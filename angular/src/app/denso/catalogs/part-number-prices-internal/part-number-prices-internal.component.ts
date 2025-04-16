@@ -133,8 +133,8 @@ export class PartNumberPricesInternalComponent extends AppComponentBase implemen
     }
 
     public wsPortalShippingUpdatePrices(): void {
-        let wsPortalShippingUrls: string[] = [AppConsts.wsPortalShippingUrl + '/UpdatePricesShipping'];
+        let wsPortalHotSheetsUrls: string[] = [AppConsts.wsPortalHotSheetsUrl + '/UpdatePricesShipping'];
 
-        this._wsPortalShippingService.UpdateShippingInfo(wsPortalShippingUrls, this.l('PartNumberPricesInternal'), this);
+        this._wsPortalShippingService.UpdateShippingInfo(wsPortalHotSheetsUrls, this.l('PartNumberPricesInternal'), this);
     }
 }

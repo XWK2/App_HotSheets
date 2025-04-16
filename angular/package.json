@@ -1,5 +1,5 @@
 {
-  "name": "denso-shipping-instructions",
+  "name": "denso-hot-sheets",
   "version": "4.8.0",
   "private": true,
   "license": "MIT",
@@ -11,7 +11,7 @@
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --port 4200",
     "test": "ng test",
-    "build:prod": "ng build --watch --deploy-url /shipping-instructions/ --base-href /shipping-instructions/ --configuration=production --output-hashing=all"    
+    "build:prod": "ng build --watch --deploy-url /hot-sheets/ --base-href /hot-sheets/ --configuration=production --output-hashing=all"    
   },
   "dependencies": {
     "@angular/animations": "^15.0.3",

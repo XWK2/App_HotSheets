@@ -142,8 +142,8 @@ export class AppInitializer {
                 AppConsts.localeMappings = response.localeMappings;
                 AppConsts.helpDocumentUrl = response.helpDocumentUrl;
                 AppConsts.templateNPUrl = response.templateNPUrl;
-                AppConsts.shippingPrintUrl = response.shippingPrintUrl;
-                AppConsts.wsPortalShippingUrl = response.wsPortalShippingUrl;
+                AppConsts.hotSheetsPrintUrl = response.hotSheetsPrintUrl;
+                AppConsts.wsPortalHotSheetsUrl = response.wsPortalHotSheetsUrl;
 
                 callback();
             });
