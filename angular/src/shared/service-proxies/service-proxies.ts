@@ -4808,26 +4808,26 @@ export class HotSheetServiceProxy {
     }
 
     /**
-     * @param statusHS (optional) 
+     * @param body (optional) 
      * @return Success
      */
-    getHotSheets(statusHS: number | undefined): Observable<HotSheetsItemDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/HotSheet/GetHotSheets?";
-        if (statusHS === null)
-            throw new Error("The parameter 'statusHS' cannot be null.");
-        else if (statusHS !== undefined)
-            url_ += "StatusHS=" + encodeURIComponent("" + statusHS) + "&";
+    getHotSheets(body: GetHotSheetInput | undefined): Observable<HotSheetsItemDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/HotSheet/GetHotSheets";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_ : any = {
+            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
                 "Accept": "text/plain"
             })
         };
 
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processGetHotSheets(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -4856,6 +4856,132 @@ export class HotSheetServiceProxy {
                 result200 = [] as any;
                 for (let item of resultData200)
                     result200.push(HotSheetsItemDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    getPurchaseOrders(body: GetPurchaseOrdersInput | undefined): Observable<PurchaseOrdersItemDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/HotSheet/GetPurchaseOrders";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPurchaseOrders(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPurchaseOrders(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PurchaseOrdersItemDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PurchaseOrdersItemDto[]>;
+        }));
+    }
+
+    protected processGetPurchaseOrders(response: HttpResponseBase): Observable<PurchaseOrdersItemDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(PurchaseOrdersItemDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    getStarSheets(body: GetStarSheetInput | undefined): Observable<StarSheetsItemDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/HotSheet/GetStarSheets";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStarSheets(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStarSheets(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StarSheetsItemDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StarSheetsItemDto[]>;
+        }));
+    }
+
+    protected processGetStarSheets(response: HttpResponseBase): Observable<StarSheetsItemDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(StarSheetsItemDto.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -4916,6 +5042,118 @@ export class HotSheetServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = HotSheetsItemDetailDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param purchaseOrderId (optional) 
+     * @return Success
+     */
+    getPurchaseOrderById(purchaseOrderId: number | undefined): Observable<PurchaseOrdersItemDto> {
+        let url_ = this.baseUrl + "/api/services/app/HotSheet/GetPurchaseOrderById?";
+        if (purchaseOrderId === null)
+            throw new Error("The parameter 'purchaseOrderId' cannot be null.");
+        else if (purchaseOrderId !== undefined)
+            url_ += "PurchaseOrderId=" + encodeURIComponent("" + purchaseOrderId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPurchaseOrderById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPurchaseOrderById(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PurchaseOrdersItemDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PurchaseOrdersItemDto>;
+        }));
+    }
+
+    protected processGetPurchaseOrderById(response: HttpResponseBase): Observable<PurchaseOrdersItemDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PurchaseOrdersItemDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param starSheetId (optional) 
+     * @return Success
+     */
+    getStarSheetById(starSheetId: number | undefined): Observable<StarSheetsItemDetailDto> {
+        let url_ = this.baseUrl + "/api/services/app/HotSheet/GetStarSheetById?";
+        if (starSheetId === null)
+            throw new Error("The parameter 'starSheetId' cannot be null.");
+        else if (starSheetId !== undefined)
+            url_ += "StarSheetId=" + encodeURIComponent("" + starSheetId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStarSheetById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStarSheetById(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StarSheetsItemDetailDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StarSheetsItemDetailDto>;
+        }));
+    }
+
+    protected processGetStarSheetById(response: HttpResponseBase): Observable<StarSheetsItemDetailDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StarSheetsItemDetailDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -4990,6 +5228,126 @@ export class HotSheetServiceProxy {
     }
 
     /**
+     * @param starSheetId (optional) 
+     * @return Success
+     */
+    getStarSheetFiles(starSheetId: number | undefined): Observable<FileDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/HotSheet/GetStarSheetFiles?";
+        if (starSheetId === null)
+            throw new Error("The parameter 'starSheetId' cannot be null.");
+        else if (starSheetId !== undefined)
+            url_ += "StarSheetId=" + encodeURIComponent("" + starSheetId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStarSheetFiles(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStarSheetFiles(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileDto[]>;
+        }));
+    }
+
+    protected processGetStarSheetFiles(response: HttpResponseBase): Observable<FileDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(FileDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    updateStartSheetToHotSheet(body: StarSheetsItemDto[] | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/HotSheet/UpdateStartSheetToHotSheet";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateStartSheetToHotSheet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateStartSheetToHotSheet(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processUpdateStartSheetToHotSheet(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -5023,6 +5381,110 @@ export class HotSheetServiceProxy {
     }
 
     protected processCreateOrUpdateHotSheet(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrUpdatePurchaseOrder(body: PurchaseOrdersDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/HotSheet/CreateOrUpdatePurchaseOrder";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrUpdatePurchaseOrder(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrUpdatePurchaseOrder(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateOrUpdatePurchaseOrder(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrUpdateStarSheet(body: StarSheetsDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/HotSheet/CreateOrUpdateStarSheet";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrUpdateStarSheet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrUpdateStarSheet(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateOrUpdateStarSheet(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -5105,6 +5567,69 @@ export class HotSheetServiceProxy {
     }
 
     /**
+     * @param hotSheetId (optional) 
+     * @return Success
+     */
+    getStarSheetComments(hotSheetId: number | undefined): Observable<StarSheetsCommetsDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/HotSheet/GetStarSheetComments?";
+        if (hotSheetId === null)
+            throw new Error("The parameter 'hotSheetId' cannot be null.");
+        else if (hotSheetId !== undefined)
+            url_ += "HotSheetId=" + encodeURIComponent("" + hotSheetId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStarSheetComments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStarSheetComments(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StarSheetsCommetsDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StarSheetsCommetsDto[]>;
+        }));
+    }
+
+    protected processGetStarSheetComments(response: HttpResponseBase): Observable<StarSheetsCommetsDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(StarSheetsCommetsDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -5150,6 +5675,62 @@ export class HotSheetServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = HotSheetsCommetsDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrUpdateStarSheetComments(body: StarSheetsCommetsDto | undefined): Observable<StarSheetsCommetsDto> {
+        let url_ = this.baseUrl + "/api/services/app/HotSheet/CreateOrUpdateStarSheetComments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrUpdateStarSheetComments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrUpdateStarSheetComments(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StarSheetsCommetsDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StarSheetsCommetsDto>;
+        }));
+    }
+
+    protected processCreateOrUpdateStarSheetComments(response: HttpResponseBase): Observable<StarSheetsCommetsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StarSheetsCommetsDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -10704,6 +11285,156 @@ export interface IGetCurrentLoginInformationsOutput {
     tenant: TenantLoginInfoDto;
 }
 
+export class GetHotSheetInput implements IGetHotSheetInput {
+    userId: number | undefined;
+    plannerCode: string | undefined;
+    supplierCode: string | undefined;
+    partNumber: string | undefined;
+    transportModeId: number | undefined;
+    statusId: number | undefined;
+    shortageShiftId: number | undefined;
+    startDate: moment.Moment | undefined;
+    endDate: moment.Moment | undefined;
+    statusHS: number;
+
+    constructor(data?: IGetHotSheetInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userId = _data["userId"];
+            this.plannerCode = _data["plannerCode"];
+            this.supplierCode = _data["supplierCode"];
+            this.partNumber = _data["partNumber"];
+            this.transportModeId = _data["transportModeId"];
+            this.statusId = _data["statusId"];
+            this.shortageShiftId = _data["shortageShiftId"];
+            this.startDate = _data["startDate"] ? moment(_data["startDate"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? moment(_data["endDate"].toString()) : <any>undefined;
+            this.statusHS = _data["statusHS"];
+        }
+    }
+
+    static fromJS(data: any): GetHotSheetInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetHotSheetInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userId"] = this.userId;
+        data["plannerCode"] = this.plannerCode;
+        data["supplierCode"] = this.supplierCode;
+        data["partNumber"] = this.partNumber;
+        data["transportModeId"] = this.transportModeId;
+        data["statusId"] = this.statusId;
+        data["shortageShiftId"] = this.shortageShiftId;
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["statusHS"] = this.statusHS;
+        return data;
+    }
+
+    clone(): GetHotSheetInput {
+        const json = this.toJSON();
+        let result = new GetHotSheetInput();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetHotSheetInput {
+    userId: number | undefined;
+    plannerCode: string | undefined;
+    supplierCode: string | undefined;
+    partNumber: string | undefined;
+    transportModeId: number | undefined;
+    statusId: number | undefined;
+    shortageShiftId: number | undefined;
+    startDate: moment.Moment | undefined;
+    endDate: moment.Moment | undefined;
+    statusHS: number;
+}
+
+export class GetPurchaseOrdersInput implements IGetPurchaseOrdersInput {
+    userId: number | undefined;
+    plannerCode: string | undefined;
+    supplierCode: string | undefined;
+    partNumber: string | undefined;
+    statusId: number | undefined;
+    startDate: moment.Moment | undefined;
+    endDate: moment.Moment | undefined;
+    statusHS: number;
+
+    constructor(data?: IGetPurchaseOrdersInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userId = _data["userId"];
+            this.plannerCode = _data["plannerCode"];
+            this.supplierCode = _data["supplierCode"];
+            this.partNumber = _data["partNumber"];
+            this.statusId = _data["statusId"];
+            this.startDate = _data["startDate"] ? moment(_data["startDate"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? moment(_data["endDate"].toString()) : <any>undefined;
+            this.statusHS = _data["statusHS"];
+        }
+    }
+
+    static fromJS(data: any): GetPurchaseOrdersInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPurchaseOrdersInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userId"] = this.userId;
+        data["plannerCode"] = this.plannerCode;
+        data["supplierCode"] = this.supplierCode;
+        data["partNumber"] = this.partNumber;
+        data["statusId"] = this.statusId;
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["statusHS"] = this.statusHS;
+        return data;
+    }
+
+    clone(): GetPurchaseOrdersInput {
+        const json = this.toJSON();
+        let result = new GetPurchaseOrdersInput();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetPurchaseOrdersInput {
+    userId: number | undefined;
+    plannerCode: string | undefined;
+    supplierCode: string | undefined;
+    partNumber: string | undefined;
+    statusId: number | undefined;
+    startDate: moment.Moment | undefined;
+    endDate: moment.Moment | undefined;
+    statusHS: number;
+}
+
 export class GetRoleForEditOutput implements IGetRoleForEditOutput {
     role: RoleEditDto;
     permissions: FlatPermissionDto[] | undefined;
@@ -10769,6 +11500,85 @@ export interface IGetRoleForEditOutput {
     role: RoleEditDto;
     permissions: FlatPermissionDto[] | undefined;
     grantedPermissionNames: string[] | undefined;
+}
+
+export class GetStarSheetInput implements IGetStarSheetInput {
+    userId: number | undefined;
+    plannerCode: string | undefined;
+    supplierCode: string | undefined;
+    partNumber: string | undefined;
+    transportModeId: number | undefined;
+    statusId: number | undefined;
+    shortageShiftId: number | undefined;
+    startDate: moment.Moment | undefined;
+    endDate: moment.Moment | undefined;
+    statusHS: number;
+
+    constructor(data?: IGetStarSheetInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userId = _data["userId"];
+            this.plannerCode = _data["plannerCode"];
+            this.supplierCode = _data["supplierCode"];
+            this.partNumber = _data["partNumber"];
+            this.transportModeId = _data["transportModeId"];
+            this.statusId = _data["statusId"];
+            this.shortageShiftId = _data["shortageShiftId"];
+            this.startDate = _data["startDate"] ? moment(_data["startDate"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? moment(_data["endDate"].toString()) : <any>undefined;
+            this.statusHS = _data["statusHS"];
+        }
+    }
+
+    static fromJS(data: any): GetStarSheetInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetStarSheetInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userId"] = this.userId;
+        data["plannerCode"] = this.plannerCode;
+        data["supplierCode"] = this.supplierCode;
+        data["partNumber"] = this.partNumber;
+        data["transportModeId"] = this.transportModeId;
+        data["statusId"] = this.statusId;
+        data["shortageShiftId"] = this.shortageShiftId;
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["statusHS"] = this.statusHS;
+        return data;
+    }
+
+    clone(): GetStarSheetInput {
+        const json = this.toJSON();
+        let result = new GetStarSheetInput();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetStarSheetInput {
+    userId: number | undefined;
+    plannerCode: string | undefined;
+    supplierCode: string | undefined;
+    partNumber: string | undefined;
+    transportModeId: number | undefined;
+    statusId: number | undefined;
+    shortageShiftId: number | undefined;
+    startDate: moment.Moment | undefined;
+    endDate: moment.Moment | undefined;
+    statusHS: number;
 }
 
 export class HelpInfoDto implements IHelpInfoDto {
@@ -11176,7 +11986,7 @@ export class HotSheetsDto implements IHotSheetsDto {
     plannerCode: string | undefined;
     plannerName: string | undefined;
     supplierCode: string | undefined;
-    supplerName: string | undefined;
+    supplierName: string | undefined;
     partNumber: string | undefined;
     partDescription: string | undefined;
     inTransitQty: number | undefined;
@@ -11213,7 +12023,7 @@ export class HotSheetsDto implements IHotSheetsDto {
             this.plannerCode = _data["plannerCode"];
             this.plannerName = _data["plannerName"];
             this.supplierCode = _data["supplierCode"];
-            this.supplerName = _data["supplerName"];
+            this.supplierName = _data["supplierName"];
             this.partNumber = _data["partNumber"];
             this.partDescription = _data["partDescription"];
             this.inTransitQty = _data["inTransitQty"];
@@ -11250,7 +12060,7 @@ export class HotSheetsDto implements IHotSheetsDto {
         data["plannerCode"] = this.plannerCode;
         data["plannerName"] = this.plannerName;
         data["supplierCode"] = this.supplierCode;
-        data["supplerName"] = this.supplerName;
+        data["supplierName"] = this.supplierName;
         data["partNumber"] = this.partNumber;
         data["partDescription"] = this.partDescription;
         data["inTransitQty"] = this.inTransitQty;
@@ -11287,7 +12097,7 @@ export interface IHotSheetsDto {
     plannerCode: string | undefined;
     plannerName: string | undefined;
     supplierCode: string | undefined;
-    supplerName: string | undefined;
+    supplierName: string | undefined;
     partNumber: string | undefined;
     partDescription: string | undefined;
     inTransitQty: number | undefined;
@@ -11466,7 +12276,7 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
     plannerCode: string | undefined;
     plannerName: string | undefined;
     supplierCode: string | undefined;
-    supplerName: string | undefined;
+    supplierName: string | undefined;
     partNumber: string | undefined;
     partDescription: string | undefined;
     inTransitQty: number;
@@ -11488,6 +12298,8 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
     shortageVal: string | undefined;
     asn: string | undefined;
     pcComments: string | undefined;
+    creationDate: moment.Moment | undefined;
+    existComment: number;
 
     constructor(data?: IHotSheetsItemDto) {
         if (data) {
@@ -11504,7 +12316,7 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
             this.plannerCode = _data["plannerCode"];
             this.plannerName = _data["plannerName"];
             this.supplierCode = _data["supplierCode"];
-            this.supplerName = _data["supplerName"];
+            this.supplierName = _data["supplierName"];
             this.partNumber = _data["partNumber"];
             this.partDescription = _data["partDescription"];
             this.inTransitQty = _data["inTransitQty"];
@@ -11526,6 +12338,8 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
             this.shortageVal = _data["shortageVal"];
             this.asn = _data["asn"];
             this.pcComments = _data["pcComments"];
+            this.creationDate = _data["creationDate"] ? moment(_data["creationDate"].toString()) : <any>undefined;
+            this.existComment = _data["existComment"];
         }
     }
 
@@ -11542,7 +12356,7 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
         data["plannerCode"] = this.plannerCode;
         data["plannerName"] = this.plannerName;
         data["supplierCode"] = this.supplierCode;
-        data["supplerName"] = this.supplerName;
+        data["supplierName"] = this.supplierName;
         data["partNumber"] = this.partNumber;
         data["partDescription"] = this.partDescription;
         data["inTransitQty"] = this.inTransitQty;
@@ -11564,6 +12378,8 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
         data["shortageVal"] = this.shortageVal;
         data["asn"] = this.asn;
         data["pcComments"] = this.pcComments;
+        data["creationDate"] = this.creationDate ? this.creationDate.toISOString() : <any>undefined;
+        data["existComment"] = this.existComment;
         return data;
     }
 
@@ -11580,7 +12396,7 @@ export interface IHotSheetsItemDto {
     plannerCode: string | undefined;
     plannerName: string | undefined;
     supplierCode: string | undefined;
-    supplerName: string | undefined;
+    supplierName: string | undefined;
     partNumber: string | undefined;
     partDescription: string | undefined;
     inTransitQty: number;
@@ -11602,6 +12418,8 @@ export interface IHotSheetsItemDto {
     shortageVal: string | undefined;
     asn: string | undefined;
     pcComments: string | undefined;
+    creationDate: moment.Moment | undefined;
+    existComment: number;
 }
 
 export class Int64EntityDto implements IInt64EntityDto {
@@ -13330,6 +14148,196 @@ export interface IProductCodeSATDto {
     isActive: boolean;
 }
 
+export class PurchaseOrdersDto implements IPurchaseOrdersDto {
+    id: number | undefined;
+    plannerCode: string | undefined;
+    plannerName: string | undefined;
+    purchaseOrder: string | undefined;
+    line: number | undefined;
+    partNumber: string | undefined;
+    partDescription: string | undefined;
+    supplierCode: string | undefined;
+    supplierName: string | undefined;
+    qty: number | undefined;
+    requiredDate: moment.Moment | undefined;
+    statusId: number | undefined;
+    ticket: string | undefined;
+
+    constructor(data?: IPurchaseOrdersDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.plannerCode = _data["plannerCode"];
+            this.plannerName = _data["plannerName"];
+            this.purchaseOrder = _data["purchaseOrder"];
+            this.line = _data["line"];
+            this.partNumber = _data["partNumber"];
+            this.partDescription = _data["partDescription"];
+            this.supplierCode = _data["supplierCode"];
+            this.supplierName = _data["supplierName"];
+            this.qty = _data["qty"];
+            this.requiredDate = _data["requiredDate"] ? moment(_data["requiredDate"].toString()) : <any>undefined;
+            this.statusId = _data["statusId"];
+            this.ticket = _data["ticket"];
+        }
+    }
+
+    static fromJS(data: any): PurchaseOrdersDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PurchaseOrdersDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["plannerCode"] = this.plannerCode;
+        data["plannerName"] = this.plannerName;
+        data["purchaseOrder"] = this.purchaseOrder;
+        data["line"] = this.line;
+        data["partNumber"] = this.partNumber;
+        data["partDescription"] = this.partDescription;
+        data["supplierCode"] = this.supplierCode;
+        data["supplierName"] = this.supplierName;
+        data["qty"] = this.qty;
+        data["requiredDate"] = this.requiredDate ? this.requiredDate.toISOString() : <any>undefined;
+        data["statusId"] = this.statusId;
+        data["ticket"] = this.ticket;
+        return data;
+    }
+
+    clone(): PurchaseOrdersDto {
+        const json = this.toJSON();
+        let result = new PurchaseOrdersDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPurchaseOrdersDto {
+    id: number | undefined;
+    plannerCode: string | undefined;
+    plannerName: string | undefined;
+    purchaseOrder: string | undefined;
+    line: number | undefined;
+    partNumber: string | undefined;
+    partDescription: string | undefined;
+    supplierCode: string | undefined;
+    supplierName: string | undefined;
+    qty: number | undefined;
+    requiredDate: moment.Moment | undefined;
+    statusId: number | undefined;
+    ticket: string | undefined;
+}
+
+export class PurchaseOrdersItemDto implements IPurchaseOrdersItemDto {
+    purchaseOrderId: number | undefined;
+    plannerCode: string | undefined;
+    plannerName: string | undefined;
+    purchaseOrder: string | undefined;
+    line: number | undefined;
+    partNumber: string | undefined;
+    partDescription: string | undefined;
+    supplierCode: string | undefined;
+    supplierName: string | undefined;
+    qty: number | undefined;
+    requiredDate: moment.Moment | undefined;
+    statusId: number | undefined;
+    statusPO: string | undefined;
+    ticket: string | undefined;
+    creationDate: moment.Moment | undefined;
+
+    constructor(data?: IPurchaseOrdersItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.purchaseOrderId = _data["purchaseOrderId"];
+            this.plannerCode = _data["plannerCode"];
+            this.plannerName = _data["plannerName"];
+            this.purchaseOrder = _data["purchaseOrder"];
+            this.line = _data["line"];
+            this.partNumber = _data["partNumber"];
+            this.partDescription = _data["partDescription"];
+            this.supplierCode = _data["supplierCode"];
+            this.supplierName = _data["supplierName"];
+            this.qty = _data["qty"];
+            this.requiredDate = _data["requiredDate"] ? moment(_data["requiredDate"].toString()) : <any>undefined;
+            this.statusId = _data["statusId"];
+            this.statusPO = _data["statusPO"];
+            this.ticket = _data["ticket"];
+            this.creationDate = _data["creationDate"] ? moment(_data["creationDate"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): PurchaseOrdersItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PurchaseOrdersItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["purchaseOrderId"] = this.purchaseOrderId;
+        data["plannerCode"] = this.plannerCode;
+        data["plannerName"] = this.plannerName;
+        data["purchaseOrder"] = this.purchaseOrder;
+        data["line"] = this.line;
+        data["partNumber"] = this.partNumber;
+        data["partDescription"] = this.partDescription;
+        data["supplierCode"] = this.supplierCode;
+        data["supplierName"] = this.supplierName;
+        data["qty"] = this.qty;
+        data["requiredDate"] = this.requiredDate ? this.requiredDate.toISOString() : <any>undefined;
+        data["statusId"] = this.statusId;
+        data["statusPO"] = this.statusPO;
+        data["ticket"] = this.ticket;
+        data["creationDate"] = this.creationDate ? this.creationDate.toISOString() : <any>undefined;
+        return data;
+    }
+
+    clone(): PurchaseOrdersItemDto {
+        const json = this.toJSON();
+        let result = new PurchaseOrdersItemDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPurchaseOrdersItemDto {
+    purchaseOrderId: number | undefined;
+    plannerCode: string | undefined;
+    plannerName: string | undefined;
+    purchaseOrder: string | undefined;
+    line: number | undefined;
+    partNumber: string | undefined;
+    partDescription: string | undefined;
+    supplierCode: string | undefined;
+    supplierName: string | undefined;
+    qty: number | undefined;
+    requiredDate: moment.Moment | undefined;
+    statusId: number | undefined;
+    statusPO: string | undefined;
+    ticket: string | undefined;
+    creationDate: moment.Moment | undefined;
+}
+
 export class RegisterInput implements IRegisterInput {
     name: string;
     surname: string;
@@ -14258,6 +15266,518 @@ export interface IStaffDto {
     isActive: boolean;
 }
 
+export class StarSheetsCommetsDto implements IStarSheetsCommetsDto {
+    id: number | undefined;
+    starSheetId: number;
+    departmentId: number;
+    department: string | undefined;
+    comments: string | undefined;
+    creatorUserId: number;
+    creationTime: moment.Moment | undefined;
+    creatorFullName: string | undefined;
+
+    constructor(data?: IStarSheetsCommetsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.starSheetId = _data["starSheetId"];
+            this.departmentId = _data["departmentId"];
+            this.department = _data["department"];
+            this.comments = _data["comments"];
+            this.creatorUserId = _data["creatorUserId"];
+            this.creationTime = _data["creationTime"] ? moment(_data["creationTime"].toString()) : <any>undefined;
+            this.creatorFullName = _data["creatorFullName"];
+        }
+    }
+
+    static fromJS(data: any): StarSheetsCommetsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StarSheetsCommetsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["starSheetId"] = this.starSheetId;
+        data["departmentId"] = this.departmentId;
+        data["department"] = this.department;
+        data["comments"] = this.comments;
+        data["creatorUserId"] = this.creatorUserId;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["creatorFullName"] = this.creatorFullName;
+        return data;
+    }
+
+    clone(): StarSheetsCommetsDto {
+        const json = this.toJSON();
+        let result = new StarSheetsCommetsDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStarSheetsCommetsDto {
+    id: number | undefined;
+    starSheetId: number;
+    departmentId: number;
+    department: string | undefined;
+    comments: string | undefined;
+    creatorUserId: number;
+    creationTime: moment.Moment | undefined;
+    creatorFullName: string | undefined;
+}
+
+export class StarSheetsDto implements IStarSheetsDto {
+    id: number | undefined;
+    plannerCode: string | undefined;
+    plannerName: string | undefined;
+    supplierCode: string | undefined;
+    supplierName: string | undefined;
+    partNumber: string | undefined;
+    partDescription: string | undefined;
+    inTransitQty: number | undefined;
+    diaStockIn: number | undefined;
+    diaLocation: string | undefined;
+    cigmaReceived: number | undefined;
+    transportModeId: number | undefined;
+    transportMode: TransportModeDto;
+    deliveryOrder: number | undefined;
+    trafficContainerFX: string | undefined;
+    unitNumber: string | undefined;
+    etaDNMX: moment.Moment | undefined;
+    statusId: number | undefined;
+    statusHotSheet: StatusHotSheetDto;
+    realShortageDate: moment.Moment | undefined;
+    shortageShiftId: number | undefined;
+    shortageShift: ShortageShiftDto;
+    shortage: string | undefined;
+    asn: number;
+    pcComments: string | undefined;
+
+    constructor(data?: IStarSheetsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.plannerCode = _data["plannerCode"];
+            this.plannerName = _data["plannerName"];
+            this.supplierCode = _data["supplierCode"];
+            this.supplierName = _data["supplierName"];
+            this.partNumber = _data["partNumber"];
+            this.partDescription = _data["partDescription"];
+            this.inTransitQty = _data["inTransitQty"];
+            this.diaStockIn = _data["diaStockIn"];
+            this.diaLocation = _data["diaLocation"];
+            this.cigmaReceived = _data["cigmaReceived"];
+            this.transportModeId = _data["transportModeId"];
+            this.transportMode = _data["transportMode"] ? TransportModeDto.fromJS(_data["transportMode"]) : <any>undefined;
+            this.deliveryOrder = _data["deliveryOrder"];
+            this.trafficContainerFX = _data["trafficContainerFX"];
+            this.unitNumber = _data["unitNumber"];
+            this.etaDNMX = _data["etaDNMX"] ? moment(_data["etaDNMX"].toString()) : <any>undefined;
+            this.statusId = _data["statusId"];
+            this.statusHotSheet = _data["statusHotSheet"] ? StatusHotSheetDto.fromJS(_data["statusHotSheet"]) : <any>undefined;
+            this.realShortageDate = _data["realShortageDate"] ? moment(_data["realShortageDate"].toString()) : <any>undefined;
+            this.shortageShiftId = _data["shortageShiftId"];
+            this.shortageShift = _data["shortageShift"] ? ShortageShiftDto.fromJS(_data["shortageShift"]) : <any>undefined;
+            this.shortage = _data["shortage"];
+            this.asn = _data["asn"];
+            this.pcComments = _data["pcComments"];
+        }
+    }
+
+    static fromJS(data: any): StarSheetsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StarSheetsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["plannerCode"] = this.plannerCode;
+        data["plannerName"] = this.plannerName;
+        data["supplierCode"] = this.supplierCode;
+        data["supplierName"] = this.supplierName;
+        data["partNumber"] = this.partNumber;
+        data["partDescription"] = this.partDescription;
+        data["inTransitQty"] = this.inTransitQty;
+        data["diaStockIn"] = this.diaStockIn;
+        data["diaLocation"] = this.diaLocation;
+        data["cigmaReceived"] = this.cigmaReceived;
+        data["transportModeId"] = this.transportModeId;
+        data["transportMode"] = this.transportMode ? this.transportMode.toJSON() : <any>undefined;
+        data["deliveryOrder"] = this.deliveryOrder;
+        data["trafficContainerFX"] = this.trafficContainerFX;
+        data["unitNumber"] = this.unitNumber;
+        data["etaDNMX"] = this.etaDNMX ? this.etaDNMX.toISOString() : <any>undefined;
+        data["statusId"] = this.statusId;
+        data["statusHotSheet"] = this.statusHotSheet ? this.statusHotSheet.toJSON() : <any>undefined;
+        data["realShortageDate"] = this.realShortageDate ? this.realShortageDate.toISOString() : <any>undefined;
+        data["shortageShiftId"] = this.shortageShiftId;
+        data["shortageShift"] = this.shortageShift ? this.shortageShift.toJSON() : <any>undefined;
+        data["shortage"] = this.shortage;
+        data["asn"] = this.asn;
+        data["pcComments"] = this.pcComments;
+        return data;
+    }
+
+    clone(): StarSheetsDto {
+        const json = this.toJSON();
+        let result = new StarSheetsDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStarSheetsDto {
+    id: number | undefined;
+    plannerCode: string | undefined;
+    plannerName: string | undefined;
+    supplierCode: string | undefined;
+    supplierName: string | undefined;
+    partNumber: string | undefined;
+    partDescription: string | undefined;
+    inTransitQty: number | undefined;
+    diaStockIn: number | undefined;
+    diaLocation: string | undefined;
+    cigmaReceived: number | undefined;
+    transportModeId: number | undefined;
+    transportMode: TransportModeDto;
+    deliveryOrder: number | undefined;
+    trafficContainerFX: string | undefined;
+    unitNumber: string | undefined;
+    etaDNMX: moment.Moment | undefined;
+    statusId: number | undefined;
+    statusHotSheet: StatusHotSheetDto;
+    realShortageDate: moment.Moment | undefined;
+    shortageShiftId: number | undefined;
+    shortageShift: ShortageShiftDto;
+    shortage: string | undefined;
+    asn: number;
+    pcComments: string | undefined;
+}
+
+export class StarSheetsItemDetailDto implements IStarSheetsItemDetailDto {
+    starSheetId: number | undefined;
+    plannerCode: string | undefined;
+    plannerName: string | undefined;
+    supplierCode: string | undefined;
+    supplerName: string | undefined;
+    partNumber: string | undefined;
+    partDescription: string | undefined;
+    inTransitQty: number;
+    diaStockIn: number;
+    diaLocation: string | undefined;
+    cigmaReceived: number;
+    transportModeId: number | undefined;
+    transportModeName: string | undefined;
+    deliveryOrder: number;
+    trafficContainerFX: string | undefined;
+    unitNumber: string | undefined;
+    etaDNMX: moment.Moment | undefined;
+    statusId: number | undefined;
+    statusHotSheetName: string | undefined;
+    realShortageDate: moment.Moment | undefined;
+    shortageShiftId: number | undefined;
+    shortageShiftName: string | undefined;
+    shortage: string | undefined;
+    shortageVal: string | undefined;
+    pcComments: string | undefined;
+    files: FileDto[] | undefined;
+
+    constructor(data?: IStarSheetsItemDetailDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.starSheetId = _data["starSheetId"];
+            this.plannerCode = _data["plannerCode"];
+            this.plannerName = _data["plannerName"];
+            this.supplierCode = _data["supplierCode"];
+            this.supplerName = _data["supplerName"];
+            this.partNumber = _data["partNumber"];
+            this.partDescription = _data["partDescription"];
+            this.inTransitQty = _data["inTransitQty"];
+            this.diaStockIn = _data["diaStockIn"];
+            this.diaLocation = _data["diaLocation"];
+            this.cigmaReceived = _data["cigmaReceived"];
+            this.transportModeId = _data["transportModeId"];
+            this.transportModeName = _data["transportModeName"];
+            this.deliveryOrder = _data["deliveryOrder"];
+            this.trafficContainerFX = _data["trafficContainerFX"];
+            this.unitNumber = _data["unitNumber"];
+            this.etaDNMX = _data["etaDNMX"] ? moment(_data["etaDNMX"].toString()) : <any>undefined;
+            this.statusId = _data["statusId"];
+            this.statusHotSheetName = _data["statusHotSheetName"];
+            this.realShortageDate = _data["realShortageDate"] ? moment(_data["realShortageDate"].toString()) : <any>undefined;
+            this.shortageShiftId = _data["shortageShiftId"];
+            this.shortageShiftName = _data["shortageShiftName"];
+            this.shortage = _data["shortage"];
+            this.shortageVal = _data["shortageVal"];
+            this.pcComments = _data["pcComments"];
+            if (Array.isArray(_data["files"])) {
+                this.files = [] as any;
+                for (let item of _data["files"])
+                    this.files.push(FileDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): StarSheetsItemDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StarSheetsItemDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["starSheetId"] = this.starSheetId;
+        data["plannerCode"] = this.plannerCode;
+        data["plannerName"] = this.plannerName;
+        data["supplierCode"] = this.supplierCode;
+        data["supplerName"] = this.supplerName;
+        data["partNumber"] = this.partNumber;
+        data["partDescription"] = this.partDescription;
+        data["inTransitQty"] = this.inTransitQty;
+        data["diaStockIn"] = this.diaStockIn;
+        data["diaLocation"] = this.diaLocation;
+        data["cigmaReceived"] = this.cigmaReceived;
+        data["transportModeId"] = this.transportModeId;
+        data["transportModeName"] = this.transportModeName;
+        data["deliveryOrder"] = this.deliveryOrder;
+        data["trafficContainerFX"] = this.trafficContainerFX;
+        data["unitNumber"] = this.unitNumber;
+        data["etaDNMX"] = this.etaDNMX ? this.etaDNMX.toISOString() : <any>undefined;
+        data["statusId"] = this.statusId;
+        data["statusHotSheetName"] = this.statusHotSheetName;
+        data["realShortageDate"] = this.realShortageDate ? this.realShortageDate.toISOString() : <any>undefined;
+        data["shortageShiftId"] = this.shortageShiftId;
+        data["shortageShiftName"] = this.shortageShiftName;
+        data["shortage"] = this.shortage;
+        data["shortageVal"] = this.shortageVal;
+        data["pcComments"] = this.pcComments;
+        if (Array.isArray(this.files)) {
+            data["files"] = [];
+            for (let item of this.files)
+                data["files"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone(): StarSheetsItemDetailDto {
+        const json = this.toJSON();
+        let result = new StarSheetsItemDetailDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStarSheetsItemDetailDto {
+    starSheetId: number | undefined;
+    plannerCode: string | undefined;
+    plannerName: string | undefined;
+    supplierCode: string | undefined;
+    supplerName: string | undefined;
+    partNumber: string | undefined;
+    partDescription: string | undefined;
+    inTransitQty: number;
+    diaStockIn: number;
+    diaLocation: string | undefined;
+    cigmaReceived: number;
+    transportModeId: number | undefined;
+    transportModeName: string | undefined;
+    deliveryOrder: number;
+    trafficContainerFX: string | undefined;
+    unitNumber: string | undefined;
+    etaDNMX: moment.Moment | undefined;
+    statusId: number | undefined;
+    statusHotSheetName: string | undefined;
+    realShortageDate: moment.Moment | undefined;
+    shortageShiftId: number | undefined;
+    shortageShiftName: string | undefined;
+    shortage: string | undefined;
+    shortageVal: string | undefined;
+    pcComments: string | undefined;
+    files: FileDto[] | undefined;
+}
+
+export class StarSheetsItemDto implements IStarSheetsItemDto {
+    starSheetId: number | undefined;
+    plannerCode: string | undefined;
+    plannerName: string | undefined;
+    supplierCode: string | undefined;
+    supplierName: string | undefined;
+    partNumber: string | undefined;
+    partDescription: string | undefined;
+    inTransitQty: number;
+    diaStockIn: number;
+    diaLocation: string | undefined;
+    cigmaReceived: number;
+    transportModeId: number | undefined;
+    transportModeName: string | undefined;
+    deliveryOrder: number;
+    trafficContainerFX: string | undefined;
+    unitNumber: string | undefined;
+    etaDNMX: moment.Moment | undefined;
+    statusId: number | undefined;
+    statusHotSheetName: string | undefined;
+    realShortageDate: moment.Moment | undefined;
+    shortageShiftId: number | undefined;
+    shortageShiftName: string | undefined;
+    shortage: string | undefined;
+    shortageVal: string | undefined;
+    asn: string | undefined;
+    pcComments: string | undefined;
+    creationDate: moment.Moment | undefined;
+    existComment: number;
+
+    constructor(data?: IStarSheetsItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.starSheetId = _data["starSheetId"];
+            this.plannerCode = _data["plannerCode"];
+            this.plannerName = _data["plannerName"];
+            this.supplierCode = _data["supplierCode"];
+            this.supplierName = _data["supplierName"];
+            this.partNumber = _data["partNumber"];
+            this.partDescription = _data["partDescription"];
+            this.inTransitQty = _data["inTransitQty"];
+            this.diaStockIn = _data["diaStockIn"];
+            this.diaLocation = _data["diaLocation"];
+            this.cigmaReceived = _data["cigmaReceived"];
+            this.transportModeId = _data["transportModeId"];
+            this.transportModeName = _data["transportModeName"];
+            this.deliveryOrder = _data["deliveryOrder"];
+            this.trafficContainerFX = _data["trafficContainerFX"];
+            this.unitNumber = _data["unitNumber"];
+            this.etaDNMX = _data["etaDNMX"] ? moment(_data["etaDNMX"].toString()) : <any>undefined;
+            this.statusId = _data["statusId"];
+            this.statusHotSheetName = _data["statusHotSheetName"];
+            this.realShortageDate = _data["realShortageDate"] ? moment(_data["realShortageDate"].toString()) : <any>undefined;
+            this.shortageShiftId = _data["shortageShiftId"];
+            this.shortageShiftName = _data["shortageShiftName"];
+            this.shortage = _data["shortage"];
+            this.shortageVal = _data["shortageVal"];
+            this.asn = _data["asn"];
+            this.pcComments = _data["pcComments"];
+            this.creationDate = _data["creationDate"] ? moment(_data["creationDate"].toString()) : <any>undefined;
+            this.existComment = _data["existComment"];
+        }
+    }
+
+    static fromJS(data: any): StarSheetsItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new StarSheetsItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["starSheetId"] = this.starSheetId;
+        data["plannerCode"] = this.plannerCode;
+        data["plannerName"] = this.plannerName;
+        data["supplierCode"] = this.supplierCode;
+        data["supplierName"] = this.supplierName;
+        data["partNumber"] = this.partNumber;
+        data["partDescription"] = this.partDescription;
+        data["inTransitQty"] = this.inTransitQty;
+        data["diaStockIn"] = this.diaStockIn;
+        data["diaLocation"] = this.diaLocation;
+        data["cigmaReceived"] = this.cigmaReceived;
+        data["transportModeId"] = this.transportModeId;
+        data["transportModeName"] = this.transportModeName;
+        data["deliveryOrder"] = this.deliveryOrder;
+        data["trafficContainerFX"] = this.trafficContainerFX;
+        data["unitNumber"] = this.unitNumber;
+        data["etaDNMX"] = this.etaDNMX ? this.etaDNMX.toISOString() : <any>undefined;
+        data["statusId"] = this.statusId;
+        data["statusHotSheetName"] = this.statusHotSheetName;
+        data["realShortageDate"] = this.realShortageDate ? this.realShortageDate.toISOString() : <any>undefined;
+        data["shortageShiftId"] = this.shortageShiftId;
+        data["shortageShiftName"] = this.shortageShiftName;
+        data["shortage"] = this.shortage;
+        data["shortageVal"] = this.shortageVal;
+        data["asn"] = this.asn;
+        data["pcComments"] = this.pcComments;
+        data["creationDate"] = this.creationDate ? this.creationDate.toISOString() : <any>undefined;
+        data["existComment"] = this.existComment;
+        return data;
+    }
+
+    clone(): StarSheetsItemDto {
+        const json = this.toJSON();
+        let result = new StarSheetsItemDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStarSheetsItemDto {
+    starSheetId: number | undefined;
+    plannerCode: string | undefined;
+    plannerName: string | undefined;
+    supplierCode: string | undefined;
+    supplierName: string | undefined;
+    partNumber: string | undefined;
+    partDescription: string | undefined;
+    inTransitQty: number;
+    diaStockIn: number;
+    diaLocation: string | undefined;
+    cigmaReceived: number;
+    transportModeId: number | undefined;
+    transportModeName: string | undefined;
+    deliveryOrder: number;
+    trafficContainerFX: string | undefined;
+    unitNumber: string | undefined;
+    etaDNMX: moment.Moment | undefined;
+    statusId: number | undefined;
+    statusHotSheetName: string | undefined;
+    realShortageDate: moment.Moment | undefined;
+    shortageShiftId: number | undefined;
+    shortageShiftName: string | undefined;
+    shortage: string | undefined;
+    shortageVal: string | undefined;
+    asn: string | undefined;
+    pcComments: string | undefined;
+    creationDate: moment.Moment | undefined;
+    existComment: number;
+}
+
 export class StatusHotSheetDto implements IStatusHotSheetDto {
     id: number | undefined;
     code: string | undefined;
@@ -15154,6 +16674,7 @@ export class UserLoginInfoDto implements IUserLoginInfoDto {
     departments: BaseDepartmentDto[] | undefined;
     isAdmin: boolean;
     isImpoExpo: boolean;
+    isPC: boolean;
 
     constructor(data?: IUserLoginInfoDto) {
         if (data) {
@@ -15184,6 +16705,7 @@ export class UserLoginInfoDto implements IUserLoginInfoDto {
             }
             this.isAdmin = _data["isAdmin"];
             this.isImpoExpo = _data["isImpoExpo"];
+            this.isPC = _data["isPC"];
         }
     }
 
@@ -15214,6 +16736,7 @@ export class UserLoginInfoDto implements IUserLoginInfoDto {
         }
         data["isAdmin"] = this.isAdmin;
         data["isImpoExpo"] = this.isImpoExpo;
+        data["isPC"] = this.isPC;
         return data;
     }
 
@@ -15236,6 +16759,7 @@ export interface IUserLoginInfoDto {
     departments: BaseDepartmentDto[] | undefined;
     isAdmin: boolean;
     isImpoExpo: boolean;
+    isPC: boolean;
 }
 
 export interface FileParameter {

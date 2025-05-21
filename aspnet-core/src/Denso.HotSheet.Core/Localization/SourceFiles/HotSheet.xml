@@ -119,6 +119,7 @@
     <text name="UsersActivation">Users activation</text>
     
     <!--Denso - Hot Sheet-->
+    <text name="StarSheet" value="Star Sheet" />
     <text name="HotSheet" value="Hot Sheet" />
     <text name="Catalogs" value="Catalogs" />
     <text name="Carriers" value="Carriers" />
@@ -380,6 +381,7 @@
     <text name="Survey" value="Survey" />
     <text name="Surveys" value="Surveys" />
     <text name="HotSheets" value="HotSheets" />
+    <text name="StarSheets" value="StarSheets" />
     <text name="AnswerSurvey" value="Answer Survey" />
     <text name="SurveyTitle" value="User Satisfaction Survey" />
     <text name="SurveySubTitle" value="Please help us to improve our service answering this brief surver" />
@@ -515,6 +517,9 @@
     <text name="ImportationRequest" value="Importation Request"/>
 
     <text name="Comments" value="Comments" />
+    <text name="StarSheetInfo" value="StarSheet Information" />
+    <text name="StarSheetFile" value="StarSheet Document" />
+    
     <text name="HotSheetInfo" value="HotSheet Information" />
     <text name="HotSheetFile" value="HotSheet Document" />
     <text name="PartNumbers" value="Part Numbers" />    
@@ -523,13 +528,13 @@
     <text name="PlannerName" value="Name"/>
     <text name="Supplier" value="Supplier"/>
     <text name="SupplierCode" value="Code"/>
-    <text name="SupplerName" value="Name"/>
+    <text name="SupplierName" value="Name"/>
     <text name="PartNumber" value="Part Number"/>
     <text name="PartNumberHS" value="Part Number"/>
     <text name="PartNumberCodeHS" value="Code"/>
     <text name="PartDescriptionHS" value="Description"/>
     <text name="InTransitQty" value="InTransitQty"/>
-    <text name="DiaStockIn" value="InTransitQty"/>
+    <text name="DiaStockIn" value="DiaStockIn"/>
     <text name="DiaLocation" value="DiaLocation"/>
     <text name="CIGMAReceived" value="CIGMAReceived"/>
     <text name="TransportMode" value="Transport Mode"/>
@@ -547,6 +552,22 @@
     <text name="ShortageShiftId" value="Id"/>
     <text name="ShortageShiftName" value="Name"/>
     <text name="ShortageTime" value="Time"/>
+    <text name="GroupBy" value="Group By"/>
+    <text name="SendToHotSheet" value="Send to Hot Sheet"/>
+    <text name="SelectOne" value="Select at least one item"/>
+    <text name="SendStarSheetToHotSheet" value="Star Sheets Sent, Successfully"/>
 
+    <text name="PurchaseOrder" value="Purchase Order"/>
+    <text name="PurchaseOrders" value="Purchase Orders"/>
+    <text name="Qty" value="Quantity"/>
+    <text name="RequiredDate" value="Required Date"/>
+    <text name="Ticket" value="Ticket"/>
+    <text name="Line" value="Line"/>
+    <text name="PlannerCodePO" value="Planner Code"/>    
+    <text name="SupplierCodePO" value="Supplier Code"/>
+    
+
+    <text name="PurchaseOrdersReports" value="Purchase Orders Reports" />
+    
   </texts>
 </localizationDictionary>

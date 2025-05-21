@@ -1,9 +1,9 @@
 import { Component, Injector, OnInit, ViewChild,LOCALE_ID } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
-import { UserServiceProxy, HotSheetServiceProxy, HotSheetsItemDto, HotSheetsDto,FileDto, TransportModeDto,CatalogServiceProxy, UserByCurrentUserDto, ShortageShiftDto, HotSheetsCommetsDto } from '@shared/service-proxies/service-proxies';
+import { UserServiceProxy, HotSheetServiceProxy, HotSheetsItemDto, HotSheetsDto,FileDto, TransportModeDto,CatalogServiceProxy, UserByCurrentUserDto, ShortageShiftDto, HotSheetsCommetsDto, GetHotSheetInput } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
-import { DxDataGridComponent } from 'devextreme-angular';
+import { DxDataGridComponent,DxDataGridModule,DxButtonModule  } from 'devextreme-angular';
 import DataSource from 'devextreme/data/data_source';
 import { Moment } from 'moment';
 import { Workbook } from 'exceljs';
@@ -17,9 +17,10 @@ import { TokenService } from 'abp-ng2-module';
 
 import { DrawerProps } from '@app/denso/shared/models/drawer.props';
 import { PopupTemplate } from '@app/denso/shared/models/popup-template';
-import { cloneDeep } from 'lodash-es';
+import { cloneDeep, toInteger } from 'lodash-es';
 import { DxAccordionComponent } from 'devextreme-angular';
 import { AppUtilsService } from '@shared/utils/app-utils.service';
+import * as moment from 'moment';
 
 declare var bootstrap: any;
 
@@ -32,6 +33,16 @@ declare var bootstrap: any;
 export class HotSheetsComponent extends AppComponentBase implements OnInit {
     hotSheets: HotSheetsItemDto[] = [];
     isTableLoading: boolean = false;
+    groupingValues: any[];
+
+    statusOptions = [        
+        { text: 'Completed', value: 'Completed' },
+        { text: 'Incomplete', value: 'Incomplete' }
+      ];
+    
+    statusSelected: string = 'completado';
+
+    //statusSelected: string | null = null;
 
     userIdSelected: number;
     usersDataSource: DataSource = new DataSource({
@@ -80,6 +91,9 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
     filaSeleccionada: any = null;
     comentario: string = '';
     commentSelected: HotSheetsCommetsDto;
+
+    startDate: Date;
+    endDate: Date;
 
     constructor(
         injector: Injector, 
@@ -136,8 +150,48 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
     }
 
     public ngOnInit(): void {
-       
+
+        // if (this.statusOptions.length > 0) {
+        //     this.statusSelected = this.statusOptions[0].value;
+        // }
+
         this.refresh();
+
+        this.groupingValues = [
+            {
+                value: 'withoutGrouping',
+                text: this.l('NoFilter'),
+            },
+            {
+                value: 'plannerName',
+                text: `${this.l('FilteredBy')} ${this.l('Planner')}`,
+            },
+            {
+                value: 'supplierName',
+                text: `${this.l('FilteredBy')} ${this.l('Supplier')}`,
+            },
+            {
+                value: 'partNumber',
+                text: `${this.l('FilteredBy')} ${this.l('PartNumber')}`,
+            },            
+            {
+                value: 'realShortageDate',
+                text: `${this.l('FilteredBy')} ${this.l('RealShortageDate')}`,
+            },
+            {
+                value: 'deliveryOrder',
+                text: `${this.l('FilteredBy')} ${this.l('DeliveryOrder')}`,
+            },
+            // {
+            //     value: 'creatorFullName',
+            //     text: `${this.l('FilteredBy')} ${this.l('RequestedBy')}`,
+            // },
+            {
+                value: 'asn',
+                text: `${this.l('FilteredBy')} ${this.l('ASN')}`,
+            }           
+        ];
+
 
         this.isLoadingData = true;
         Promise.all([
@@ -238,9 +292,18 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
 
     public refresh(): void {
         this.isTableLoading = true;
-        const statusIncompleted = 0;
+        let statusIncompleted = 0;
+        // if(this.statusSelected == "Completed"){
+        //     statusIncompleted = 1;
+        // }
+
+        let input: GetHotSheetInput = new GetHotSheetInput();
+        input.startDate = this.startDate ? moment(this.startDate) : undefined;
+        input.endDate = this.endDate ? moment(this.endDate) : undefined;
+        input.statusHS = statusIncompleted;
+        
         this._hotSheetservice
-            .getHotSheets(statusIncompleted)
+            .getHotSheets(input)
             .pipe(
                 finalize(() => {
                     this.isTableLoading = false;
@@ -251,6 +314,23 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
                
             });
     }
+
+
+    public groupChanged(e): void {
+        this.dataGrid.instance.clearGrouping();
+        if (e.value !== 'withoutGrouping') {
+            this.dataGrid.instance.columnOption(e.value, 'groupIndex', 0);
+        }
+
+        //this.totalCount = this.getGroupCount(e.value);
+    }
+    
+    searchValue: string = '';
+    onSearch(e: any) {
+        this.searchValue = e.value;
+        this.dataGrid.instance.searchByText(this.searchValue); // Asegúrate de tener una referencia a tu grid
+      }
+
 
     public exportGrid(e: any): void {
         if (e.format === 'xlsx') {
@@ -311,6 +391,14 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
             }
         });
     }
+
+    public get enabledEditInfo(): boolean {
+        return (
+            this.appSession.user.isPC || this.appSession.user.isPC            
+        );
+    }
+
+
 
     // public getActionOptionsBy(item: HotSheetsItemDto): any {
     //     let actionSettings: any[] = [];
@@ -413,4 +501,180 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
         newCommentsItem.comments = "";
         this.commentSelected = newCommentsItem;
     }
+
+    private coloresPorFecha = new Map<string, string>();
+
+    // personalizarFila(e: any): void {
+    //     if (e.rowType === 'data') {
+    //       const fechaCompleta = new Date(e.data.creationDate);
+    //       const fechaClave = fechaCompleta.toISOString().split('T')[0];
+      
+    //       if (!this.coloresPorFecha.has(fechaClave)) {
+    //         const ahora = new Date();
+    //         const fechaBase = new Date(fechaClave);
+    //         const diasDiferencia = Math.floor((ahora.getTime() - fechaBase.getTime()) / (1000 * 60 * 60 * 24));
+            
+    //         let color: string;
+      
+    //         if (diasDiferencia < 5) {
+    //           // Colores diferenciados para los primeros 5 días con gradientes más sutiles
+    //           const coloresPrimeros5 = [
+    //             'linear-gradient(45deg, #76b041, #a8d08d)', // Día 1 -> Verde suave
+    //             'linear-gradient(45deg, #8bc34a, #c8e6c9)', // Día 2 -> Verde claro
+    //             'linear-gradient(45deg, #ffeb3b, #fff59d)', // Día 3 -> Amarillo suave
+    //             'linear-gradient(45deg, #ff9800, #ffe0b2)', // Día 4 -> Naranja suave
+    //             'linear-gradient(45deg, #f44336,rgb(245, 116, 129))'  // Día 5 -> Rojo suave
+    //           ];
+    //           color = coloresPrimeros5[diasDiferencia];
+    //         } else {
+    //           // Gradiente de color para días posteriores
+    //           const daysAgo = Math.min(diasDiferencia, 364);
+    //           const hue = 120 - (120 * (daysAgo / 364)); // 120 → 0
+    //           color = `linear-gradient(45deg, hsl(${hue}, 85%, 70%), hsl(${hue + 10}, 85%, 90%))`; // Gradiente suave
+    //         }
+      
+    //         this.coloresPorFecha.set(fechaClave, color);
+    //       }
+      
+    //       const colorAplicar = this.coloresPorFecha.get(fechaClave)!;
+    //       e.rowElement.classList.remove('dx-row-alt');
+    //       e.rowElement.style.setProperty('background', colorAplicar, 'important');
+    //     }
+    //   }
+      
+    personalizarFila(e: any): void {
+        // if (e.rowType === 'data') {
+        //   const fechaCompleta = new Date(e.data.creationDate);
+        //   const fechaClave = fechaCompleta.toISOString().split('T')[0];
+      
+        //   if (!this.coloresPorFecha.has(fechaClave)) {
+        //     const ahora = new Date();
+        //     const fechaBase = new Date(fechaClave);
+        //     const diasDiferencia = Math.floor((ahora.getTime() - fechaBase.getTime()) / (1000 * 60 * 60 * 24));
+            
+        //     let color: string;
+      
+        //     if (diasDiferencia < 5) {
+        //       // Colores sólidos suaves para los primeros 5 días
+        //       const coloresPrimeros5 = [
+        //         //'#A8D08D', // Día 1 -> Verde claro
+        //         '#fafbfd', // Día 1 -> Casi Blanco  
+        //         '#FFF59D', // Día 3 -> Amarillo muy suave
+        //         '#FFE0B2', // Día 4 -> Naranja suave
+        //         '#FFCDD2',  // Día 5 -> Rojo suave
+        //         '#f08989'  // Día 5 -> Naranja
+        //       ];
+        //       color = coloresPrimeros5[diasDiferencia];
+        //     } else {           
+        //         color = '#f08989' ;
+        //     }
+      
+        //     this.coloresPorFecha.set(fechaClave, color);
+        //   }
+      
+        //   const colorAplicar = this.coloresPorFecha.get(fechaClave)!;
+        //   e.rowElement.classList.remove('dx-row-alt');
+        //   e.rowElement.style.setProperty('background-color', colorAplicar, 'important');
+        // }
+      }
+
+
+      getFlagColor(dateStr: string): string {
+        const today = new Date();
+        const date = new Date(dateStr);
+      
+        // Ajustar las horas para comparar solo las fechas
+        today.setHours(0, 0, 0, 0);
+        date.setHours(0, 0, 0, 0);
+      
+        const diffTime = today.getTime() - date.getTime();
+        const diffDays = Math.floor(diffTime / (1000 * 3600 * 24));
+          
+        //         '#fafbfd', // Día 1 -> Casi Blanco  
+        //         '#FFF59D', // Día 3 -> Amarillo muy suave
+        //         '#FFE0B2', // Día 4 -> Naranja suave
+        //         '#FFCDD2',  // Día 5 -> Rojo suave
+        //         '#f08989'  // Día 5 -> Naranja
+
+        if (diffDays < 1) return '#fafbfd';   // Hoy
+        if (diffDays < 2) return '#FFF59D';   // Ayer
+        if (diffDays < 3) return '#FFE0B2';   // Hace 2 días
+        if (diffDays < 4) return '#FFCDD2';   // Hace 3 días
+        return '#f08989';                      // Más de 4 días
+      }
+
+
+    //   onCellPrepared(e: any) {
+    //     if (
+    //       e.rowType === 'data' &&
+    //       e.column.type === 'buttons' &&
+    //       e.cellElement
+    //     ) {
+    //       // Busca el botón con el ícono de comentario dentro de la celda
+    //       const commentButton = e.cellElement.querySelector('.dx-icon-comment');
+    //       if (commentButton) {
+    //         const existComment = e.data.existComment;
+    //         if (existComment === 0) {
+    //           commentButton.classList.add('comment-icon-gray');
+    //         } else {
+    //           commentButton.classList.add('comment-icon-colored');
+    //         }
+    //       }
+    //     }
+    //   }
+
+    //   onCellPrepared(e: any) {
+    //     if (e.rowType === 'data' && e.column.type === 'buttons' && e.cellElement) {
+    //       const buttons = e.cellElement.querySelectorAll('.dx-icon-comment');
+      
+    //       buttons.forEach((commentButton: HTMLElement) => {
+    //         // Limpia clases anteriores si las hubiera
+    //         commentButton.classList.remove('comment-icon-gray', 'comment-icon-colored');
+      
+    //         // Aplica nueva clase según el valor
+    //         if (e.data.ExistComment === 0) {
+    //           commentButton.classList.add('comment-icon-gray');
+    //         } else {
+    //           commentButton.classList.add('comment-icon-colored');
+    //         }
+    //       });
+    //     }
+    //   }
+
+    //(onCellPrepared)="onCellPrepared($event)"
+
+    onCellPrepared(e: any) {
+        if (e.rowType === 'data' && e.column.type === 'buttons' && e.cellElement) {
+          const iconContainer = e.cellElement.querySelector('.dx-icon-comment')?.parentElement;
+      
+          // Asegura que existe el contenedor y que la estrella aún no ha sido añadida
+          if (iconContainer && !iconContainer.querySelector('.dx-icon-star')) {
+            if (e.data.existComment >= 1) {
+              const starIcon = document.createElement('i');
+              starIcon.classList.add('dx-icon', 'dx-icon-star', 'custom-star-icon');
+              iconContainer.appendChild(starIcon);
+            }
+          }
+        }
+    }
+
+    showCommentButtonExist(e: any): boolean {
+        let visible = false;
+        if (e.row?.data?.existComment >= 1){
+            visible = true;
+        }
+        return visible; // o cualquier lógica que necesites
+      }
+
+      showCommentButtonNotExist(e: any): boolean {
+        let visible = false;
+        if (e.row?.data?.existComment == 0){
+            visible = true;
+        }
+        return visible; // o cualquier lógica que necesites
+      }
+
+      
+
+
 }

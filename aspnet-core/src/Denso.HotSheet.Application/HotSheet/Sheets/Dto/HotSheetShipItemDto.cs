@@ -53,12 +53,12 @@ namespace Denso.HotSheet.Sheets.Dto
         public string HotSheetTerm { get; set; }
 
         public int? RmaAssignmentId { get; set; }
-        public string OtherBy { get; set; }        
-        public string RMANumber { get; set; }        
-        public string BNotice { get; set; }        
+        public string OtherBy { get; set; }
+        public string RMANumber { get; set; }
+        public string BNotice { get; set; }
         public string AccountNumber { get; set; }
 
-        public long CostPaidById { get; set; }        
+        public long CostPaidById { get; set; }
         public long FreightPaidById { get; set; }
 
         public long? FreightPaidByDepartmentId { get; set; }
@@ -66,7 +66,7 @@ namespace Denso.HotSheet.Sheets.Dto
         public string FreightPrePaidExplanation { get; set; }
 
         public string Currency { get; set; }
-        
+
         public long? DepartmentId { get; set; }
         public string DepartmentName { get; set; }
 
@@ -74,18 +74,18 @@ namespace Denso.HotSheet.Sheets.Dto
         public bool ShowBehalfFields { get; set; }
 
         public long? IEStaffId { get; set; }
-        public DateTime? IEStaffApprovalDate { get; set; }        
+        public DateTime? IEStaffApprovalDate { get; set; }
         public long? IEStaffApproverUserId { get; set; }
         public string IEStaffEmailAddress { get; set; }
         public bool IEStaffIsApproved { get; set; }
 
         public long? ManagerApprovalId { get; set; }
-        public DateTime? ManagerApprovalDate { get; set; }        
+        public DateTime? ManagerApprovalDate { get; set; }
         public string ManagerEmailAddress { get; set; }
         public bool ManagerIsApproved { get; set; }
 
         public long? AccountingApprovalId { get; set; }
-        public DateTime? AccountingApprovalDate { get; set; }        
+        public DateTime? AccountingApprovalDate { get; set; }
         public long? AccountingApproverUserId { get; set; }
         public string AccountingEmailAddress { get; set; }
         public bool AccountingIsApproved { get; set; }
@@ -121,7 +121,7 @@ namespace Denso.HotSheet.Sheets.Dto
         public List<HotSheetShipPackagingDto> Packaging { get; set; } = new List<HotSheetShipPackagingDto>();
 
         public List<HotSheetHistoryDto> History { get; set; } = new List<HotSheetHistoryDto>();
-        
+
         public List<FileDto> Files { get; set; }
         public List<HotSheetShipManifestDto> Manifests { get; set; } = new List<HotSheetShipManifestDto>();
 
@@ -145,5 +145,7 @@ namespace Denso.HotSheet.Sheets.Dto
         public string GuideCurrency { get; set; }
 
         public DateTime? PaymentDate { get; set; }
+
+        public int ExistComment { get; set; }
     }
 }

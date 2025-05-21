@@ -28,11 +28,19 @@ import { DevExpressComponent } from 'app/dev-express/dev-express.component';
                     },
                     {
                         path: 'surveys',
-                        loadChildren: () => import('./denso/surveys/surveys.module').then((m) => m.SurversModule),
+                        loadChildren: () => import('./denso/surveys/surveys.module').then((m) => m.SurversModule),                       
+                    },
+                    {
+                        path: 'starSheets',
+                        loadChildren: () => import('./denso/starSheets/starSheets.module').then((m) => m.StarSheetsModule),
                     },
                     {
                         path: 'hotSheets',
                         loadChildren: () => import('./denso/hotSheets/hotSheets.module').then((m) => m.HotSheetsModule),
+                    },
+                    {
+                        path: 'purchaseOrders',
+                        loadChildren: () => import('./denso/purchaseOrders/purchaseOrders.module').then((m) => m.PurchaseOrdersModule),
                     },
                     {
                         path: 'reports',

@@ -50,12 +50,17 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
             ),
             new MenuItem(this.l('Templates'), '/app/shipping/instructions/templates', 'fa-solid fa-file-invoice', 'Pages.ShippingInstructions.Templates'),
             
-            new MenuItem(this.l('Surveys'), '/app/surveys', 'fa-solid fa-square-poll-vertical', 'Pages.Surveys'),
+            // new MenuItem(this.l('Surveys'), '/app/surveys', 'fa-solid fa-square-poll-vertical', 'Pages.Surveys'),
+            
+            new MenuItem(this.l('StarSheets'), '/app/starSheets', 'fa-solid fa-square-poll-vertical', 'Pages.StarSheets'),
+
+            new MenuItem(this.l('PurchaseOrders'), '/app/purchaseOrders', 'fa-solid fa-square-poll-vertical', 'Pages.PurchaseOrders'),
 
             new MenuItem(this.l('HotSheets'), '/app/hotSheets', 'fa-solid fa-square-poll-vertical', 'Pages.HotSheets'),
             
             new MenuItem(this.l('Reports'), '', 'fas fa-chart-bar', 'Pages.Reports', [
-                new MenuItem(this.l('HotSheetsReports'), '/app/reports/report-hot-sheets', 'fas fa-receipt', 'Pages.Reports.HotSheetsReports'),                                
+                new MenuItem(this.l('HotSheetsReports'), '/app/reports/report-hot-sheets', 'fas fa-receipt', 'Pages.Reports.HotSheetsReports'),                                                
+                new MenuItem(this.l('PurchaseOrdersReports'), '/app/reports/report-purchase-orders', 'fas fa-receipt', 'Pages.Reports.PurchaseOrdersReports'),                                                
             ]),
             new MenuItem(this.l('Catalogs'), '', 'fas fa-database', 'Pages.Catalogs', [
                 new MenuItem(this.l('Employees'), '/app/catalogs/employees', 'fas fa-users', 'Pages.Catalogs.Employees'),
@@ -63,40 +68,40 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                 new MenuItem(this.l('Departments'), '/app/catalogs/departments', 'fas fa-building-user', 'Pages.Catalogs.Departments'),
                 new MenuItem(this.l('Carriers'), '/app/catalogs/carriers', 'fas fa-truck-fast', 'Pages.Catalogs.Carriers'),
                 new MenuItem(this.l('DocumentTypes'), '/app/catalogs/document-types', 'fas fa-file-invoice', 'Pages.Catalogs.DocumentTypes'),
-                new MenuItem(this.l('PartNumbers'), '/app/catalogs/part-numbers', 'fas fa-parking', 'Pages.Catalogs.PartNumbers'),
-                new MenuItem(
-                    this.l('PartNumberPricesMenu'),
-                    '/app/catalogs/part-number-prices',
-                    'fa-solid fa-hand-holding-dollar',
-                    'Pages.Catalogs.PartNumberPrices'
-                ),
-                new MenuItem(this.l('ProductCodesSat'), '/app/catalogs/product-codes-sat', 'fas fa-clipboard-list', 'Pages.Catalogs.ProductCodesSAT'),
+                //new MenuItem(this.l('PartNumbers'), '/app/catalogs/part-numbers', 'fas fa-parking', 'Pages.Catalogs.PartNumbers'),
+                // new MenuItem(
+                //     this.l('PartNumberPricesMenu'),
+                //     '/app/catalogs/part-number-prices',
+                //     'fa-solid fa-hand-holding-dollar',
+                //     'Pages.Catalogs.PartNumberPrices'
+                // ),
+                //new MenuItem(this.l('ProductCodesSat'), '/app/catalogs/product-codes-sat', 'fas fa-clipboard-list', 'Pages.Catalogs.ProductCodesSAT'),
                 
                 new MenuItem(this.l('TransportMode'), '/app/catalogs/transport-mode', 'fas fa-clipboard-list', 'Pages.Catalogs.TransportMode'),
                 new MenuItem(this.l('StatusHotSheet'), '/app/catalogs/status-hot-sheet', 'fas fa-clipboard-list', 'Pages.Catalogs.StatusHotSheet'),
                 new MenuItem(this.l('ShortageShift'), '/app/catalogs/shortage-shift', 'fas fa-clipboard-list', 'Pages.Catalogs.ShortageShift'),
 
-                new MenuItem(this.l('UnitMeasures'), '/app/catalogs/unit-measures', 'fas fa-ruler-combined', 'Pages.Catalogs.UnitMeasures'),
-                new MenuItem(this.l('ShipmentTerms'), '/app/catalogs/shipment-terms', 'fas fa-handshake', 'Pages.Catalogs.ShipmentTerms'),
-                new MenuItem(this.l('ShipmentReasons'), '/app/catalogs/shipment-reasons', 'fas fa-tags', 'Pages.Catalogs.ShipmentReasons'),
-                new MenuItem(this.l('PaidBy'), '/app/catalogs/paid-by', 'fas fa-user-tie', 'Pages.Catalogs.PaidBy'),
-                new MenuItem(this.l('PaymentTerms'), '/app/catalogs/payment-terms', 'fa-solid fa-file-invoice-dollar', 'Pages.Catalogs.PaymentTerms'),
-                new MenuItem(this.l('RmaAssigned'), '/app/catalogs/rma-assignment', 'fas fa-id-card-alt', 'Pages.Catalogs.RMAAssignments'),
-                new MenuItem(this.l('Customers'), '/app/catalogs/customers', 'fa-solid fa-users-gear', 'Pages.Catalogs.Customers'),
-                new MenuItem(this.l('Services'), '/app/catalogs/services', 'fa-solid fa-truck-plane', 'Pages.Catalogs.Services'),
-                new MenuItem(this.l('Staff'), '/app/catalogs/staff', 'fa-solid fa-user-check', 'Pages.Catalogs.IEStaff'),
+                //new MenuItem(this.l('UnitMeasures'), '/app/catalogs/unit-measures', 'fas fa-ruler-combined', 'Pages.Catalogs.UnitMeasures'),
+                //new MenuItem(this.l('ShipmentTerms'), '/app/catalogs/shipment-terms', 'fas fa-handshake', 'Pages.Catalogs.ShipmentTerms'),
+                //new MenuItem(this.l('ShipmentReasons'), '/app/catalogs/shipment-reasons', 'fas fa-tags', 'Pages.Catalogs.ShipmentReasons'),
+                //new MenuItem(this.l('PaidBy'), '/app/catalogs/paid-by', 'fas fa-user-tie', 'Pages.Catalogs.PaidBy'),
+                //new MenuItem(this.l('PaymentTerms'), '/app/catalogs/payment-terms', 'fa-solid fa-file-invoice-dollar', 'Pages.Catalogs.PaymentTerms'),
+                //new MenuItem(this.l('RmaAssigned'), '/app/catalogs/rma-assignment', 'fas fa-id-card-alt', 'Pages.Catalogs.RMAAssignments'),
+                //new MenuItem(this.l('Customers'), '/app/catalogs/customers', 'fa-solid fa-users-gear', 'Pages.Catalogs.Customers'),
+                //new MenuItem(this.l('Services'), '/app/catalogs/services', 'fa-solid fa-truck-plane', 'Pages.Catalogs.Services'),
+                //new MenuItem(this.l('Staff'), '/app/catalogs/staff', 'fa-solid fa-user-check', 'Pages.Catalogs.IEStaff'),
                 new MenuItem(this.l('HelpInfo'), '/app/catalogs/help-info', 'fa-solid fa-circle-info', 'Pages.Catalogs.HelpInfo'),
-                new MenuItem(this.l('Currencies'), '/app/catalogs/currencies', 'fa-solid fa-money-check-dollar', 'Pages.Catalogs.Currencies'),
+                //new MenuItem(this.l('Currencies'), '/app/catalogs/currencies', 'fa-solid fa-money-check-dollar', 'Pages.Catalogs.Currencies'),
                 new MenuItem(this.l('LogServices'), '/app/catalogs/log-services', 'fa-solid fa-bars-progress', 'Pages.Catalogs.LogServices'),
 
-                new MenuItem(this.l('PartNumbersInternalMenu'), '/app/catalogs/part-numbers-internal', 'fas fa-parking', 'Pages.Catalogs.PartNumbersInternal'),
-                new MenuItem(
-                    this.l('PartNumberPricesInternalMenu'),
-                    '/app/catalogs/part-number-prices-internal',
-                    'fa-solid fa-hand-holding-dollar',
-                    'Pages.Catalogs.PartNumberPricesInternal'
-                ),
-                new MenuItem(this.l('Notices'), '/app/catalogs/notices', 'fa-solid fa-circle-info', 'Pages.Catalogs.Notices'),
+                //new MenuItem(this.l('PartNumbersInternalMenu'), '/app/catalogs/part-numbers-internal', 'fas fa-parking', 'Pages.Catalogs.PartNumbersInternal'),
+                // new MenuItem(
+                //     this.l('PartNumberPricesInternalMenu'),
+                //     '/app/catalogs/part-number-prices-internal',
+                //     'fa-solid fa-hand-holding-dollar',
+                //     'Pages.Catalogs.PartNumberPricesInternal'
+                // ),
+                //new MenuItem(this.l('Notices'), '/app/catalogs/notices', 'fa-solid fa-circle-info', 'Pages.Catalogs.Notices'),
             ]),
             new MenuItem(this.l('Administration'), '', 'fas fa-tools', 'Pages.Administration', [
                 new MenuItem(this.l('Roles'), '/app/admin/roles', 'fas fa-theater-masks', 'Pages.Administration.Roles'),

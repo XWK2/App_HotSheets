@@ -67,10 +67,13 @@ namespace Denso.HotSheet.Authorization
             catalogs.CreateChildPermission(PermissionNames.Pages_Catalogs_Notices, L("Notices"));
 
             var surveys = context.CreatePermission(PermissionNames.Pages_Surveys, L("Surveys"));
+            var starSheets = context.CreatePermission(PermissionNames.Pages_StarSheets, L("StarSheets"));
             var hotSheets = context.CreatePermission(PermissionNames.Pages_HotSheets, L("HotSheets"));
+            var purchaseOrders = context.CreatePermission(PermissionNames.Pages_PurchaseOrders, L("PurchaseOrders"));
 
             var reports = context.CreatePermission(PermissionNames.Pages_Reports, L("Reports"));
             reports.CreateChildPermission(PermissionNames.Pages_Reports_HotSheetsReports, L("HotSheetsReports"));
+            reports.CreateChildPermission(PermissionNames.Pages_Reports_PurchaseOrdersReports, L("PurchaseOrdersReports"));
             reports.CreateChildPermission(PermissionNames.Pages_Reports_TrackingScrapSales, L("TrackingScrapSales"));
             reports.CreateChildPermission(PermissionNames.Pages_Reports_TrackingGuidesReports, L("TrackingGuidesReports"));
         }

@@ -61,10 +61,13 @@
         public const string Pages_Catalogs_Notices = "Pages.Catalogs.Notices";
 
         public const string Pages_Surveys = "Pages.Surveys";
+        public const string Pages_StarSheets = "Pages.StarSheets";
         public const string Pages_HotSheets= "Pages.HotSheets";
+        public const string Pages_PurchaseOrders = "Pages.PurchaseOrders";
 
         public const string Pages_Reports = "Pages.Reports";
         public const string Pages_Reports_HotSheetsReports = "Pages.Reports.HotSheetsReports";
+        public const string Pages_Reports_PurchaseOrdersReports = "Pages.Reports.PurchaseOrdersReports";
         public const string Pages_Reports_TrackingScrapSales = "Pages.Reports.TrackingScrapSales";
         public const string Pages_Reports_TrackingGuidesReports = "Pages.Reports.TrackingGuidesReports";
         //public const string Pages_Reports_HotSheetsGenerated = "Pages.Reports.HotSheetsGenerated";

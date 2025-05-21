@@ -7,22 +7,20 @@
                 </div>
                 <div class="col-10 text-right">
                     <dx-form colCount="12">
-                        <!-- <dxi-item [label]="{ text: 'User' | localize }" [colSpan]="3">
-                            <div *dxTemplate>
+                        <dxi-item [label]="{ text: 'Status' | localize }" [colSpan]="3">
+                            <div *dxTemplate>                               
                                 <dx-select-box
-                                    displayExpr="fullName"
-                                    valueExpr="userId"
-                                    [(value)]="userIdSelected"
-                                    [dataSource]="usersDataSource"
-                                    [placeholder]="'SelectAUser' | localize"
-                                    [searchEnabled]="true"
-                                    searchMode="contains"
-                                    [width]="280"
-                                    showClearButton="true"
-                                >
+                                    [(value)]="statusSelected"
+                                    [items]="statusOptions"
+                                    displayExpr="text"
+                                    valueExpr="value"
+                                    [placeholder]="'Select option'"
+                                    [width]="200"
+                                    showClearButton="true">
                                 </dx-select-box>
                             </div>
                         </dxi-item>
+                        <!--
                         <dxi-item [label]="{ text: 'ShippingInstructionCode' | localize }" [colSpan]="3">
                             <div *dxTemplate>
                                 <dx-text-box [(value)]="shippingCode" showClearButton="true"></dx-text-box>
@@ -33,6 +31,18 @@
                                 <dx-date-box type="date" [(value)]="creationDate" showClearButton="true"> </dx-date-box>
                             </div>
                         </dxi-item>                         -->
+                        <dxi-item [label]="{ text: 'RangeDates' | localize }" [colSpan]="4">
+                            <div *dxTemplate>
+                                <dx-form colCount="2">
+                                    <dxi-item [label]="{ text: '' }">
+                                        <dx-date-box type="date" [(max)]="endDate" [(value)]="startDate" showClearButton="true"> </dx-date-box>
+                                    </dxi-item>
+                                    <dxi-item [label]="{ text: '' }">
+                                        <dx-date-box type="date" [(min)]="startDate" [(value)]="endDate" showClearButton="true"> </dx-date-box>
+                                    </dxi-item>
+                                </dx-form>
+                            </div>
+                        </dxi-item>
                         <dxi-item label="" [colSpan]="2">
                             <div *dxTemplate>
                                 <dx-button
@@ -83,8 +93,7 @@
                              
                             <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']"> </dxo-export>                            
                             
-
-                            <dxo-editing mode="popup" [allowUpdating]="true" [useIcons]="true" [allowAdding]="true" [allowDeleting]="false">
+                            <dxo-editing mode="popup" [allowUpdating]="true" [useIcons]="true" [allowAdding]="false" [allowDeleting]="false">
                                 <dxo-popup [title]="'HotSheetInfo' | localize" [showTitle]="true" [width]="1050" [height]="700"> </dxo-popup>                                
                                 <dxo-form colCount="1">
                                   
@@ -413,24 +422,24 @@
                             </dxi-column>
                             <dxi-column [caption]="'Supplier' | localize">
                                 <dxi-column [caption]="'SupplierCode' | localize" dataField="supplierCode" [width]="90"></dxi-column>
-                                <dxi-column [caption]="'SupplerName' | localize" dataField="supplerName" [width]="250"></dxi-column>
+                                <dxi-column [caption]="'SupplierName' | localize" dataField="supplierName" [width]="150"></dxi-column>
                             </dxi-column>                            
                             <dxi-column [caption]="'PartNumberHS' | localize">
-                                <dxi-column [caption]="'PartNumberCodeHS' | localize" dataField="partNumber" [width]="100"></dxi-column>
+                                <dxi-column [caption]="'PartNumberCodeHS' | localize" dataField="partNumber" [width]="130"></dxi-column>
                                 <dxi-column [caption]="'PartDescriptionHS' | localize" dataField="partDescription" [width]="250"></dxi-column>
                             </dxi-column>                                                    
-                            <dxi-column [caption]="'InTransitQty' | localize" dataField="inTransitQty" [width]="80"></dxi-column>
-                            <dxi-column [caption]="'DiaStockIn' | localize" dataField="diaStockIn" [width]="80"></dxi-column>
+                            <dxi-column [caption]="'InTransitQty' | localize" dataField="inTransitQty" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'DiaStockIn' | localize" dataField="diaStockIn" [width]="100"></dxi-column>
                             <dxi-column [caption]="'DiaLocation' | localize" dataField="diaLocation" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'CIGMAReceived' | localize" dataField="cIGMAReceived" [width]="150"></dxi-column>
+                            <dxi-column [caption]="'CIGMAReceived' | localize" dataField="cigmaReceived" [width]="120"></dxi-column>
                             <dxi-column [caption]="'TransportMode' | localize">
                                 <dxi-column [caption]="'TransportModeId' | localize" dataField="transportModeId" [width]="50"></dxi-column>
                                 <dxi-column [caption]="'TransportModeName' | localize" dataField="transportModeName" [width]="250"></dxi-column>
                             </dxi-column>
                             
-                            <dxi-column [caption]="'DeliveryOrder' | localize" dataField="deliveryOrder" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'TrafficContainerFX' | localize" dataField="trafficContainerFX" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'UnitNumber' | localize" dataField="unitNumber" [width]="100"></dxi-column>                            
+                            <dxi-column [caption]="'DeliveryOrder' | localize" dataField="deliveryOrder" [width]="150"></dxi-column>
+                            <dxi-column [caption]="'TrafficContainerFX' | localize" dataField="trafficContainerFX" [width]="250"></dxi-column>
+                            <dxi-column [caption]="'UnitNumber' | localize" dataField="unitNumber" [width]="150"></dxi-column>                            
                             <dxi-column
                                 [caption]="'EtaDNMX' | localize"
                                 dataField="etaDNMX"
@@ -440,7 +449,7 @@
                             ></dxi-column>
                             <dxi-column [caption]="'Status' | localize">
                                 <dxi-column [caption]="'StatusId' | localize" dataField="statusId" [width]="50"></dxi-column>
-                                <dxi-column [caption]="'StatusHotSheetName' | localize" dataField="statusHotSheetName" [width]="100"></dxi-column>                            
+                                <dxi-column [caption]="'StatusHotSheetName' | localize" dataField="statusHotSheetName" [width]="150"></dxi-column>                            
                             </dxi-column>
                             
                             

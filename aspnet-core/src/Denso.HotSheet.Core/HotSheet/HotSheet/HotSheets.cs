@@ -22,8 +22,8 @@ namespace Denso.HotSheet.HotSheet
         [StringLength(30)]
         public string SupplierCode { get; set; }
         [StringLength(255)]
-        public string SupplerName { get; set; }
-        [StringLength(30)]
+        public string SupplierName { get; set; }
+        [StringLength(255)]
         public string PartNumber { get; set; }
         [StringLength(255)]
         public string PartDescription { get; set; }

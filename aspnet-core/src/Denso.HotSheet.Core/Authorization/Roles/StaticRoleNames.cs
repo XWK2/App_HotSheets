@@ -12,6 +12,7 @@ namespace Denso.HotSheet.Authorization.Roles
             public const string Admin = "Admin";
             public const string Authors = "Authors";
             public const string Approvers = "Approvers";
+            public const string PC = "PC";
             public const string StaffImpoExpo = "StaffImpoExpo";
             public const string StaffAccounting = "StaffAccounting";
 

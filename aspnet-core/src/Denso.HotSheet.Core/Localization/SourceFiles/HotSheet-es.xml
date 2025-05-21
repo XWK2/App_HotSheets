@@ -118,6 +118,7 @@
     <text name="ResetPasswordStepTwoInfo">2. Copie esta contraseña aleatoria para poder enviársela al usuario</text>
 
     <!--Denso - Hot Sheet-->
+    <text name="StarSheet" value="Hoja Estrella" />
     <text name="HotSheet" value="Hoja Caliente" />
     <text name="Catalogs" value="Catálogos" />
     <text name="Carriers" value="Transportistas" />
@@ -378,6 +379,7 @@
     <text name="Survey" value="Encuesta" />
     <text name="Surveys" value="Encuestas" />
     <text name="HotSheets" value="Hojas Calientes" />
+    <text name="StarSheets" value="Hojas Estrellas" />
     <text name="AnswerSurvey" value="Contestar Encuesta" />
     <text name="SurveyTitle" value="Encuesta de satisfacción del usuario" />
     <text name="SurveySubTitle" value="Por favor ayúdenos a mejorar nuestro servicio respondiendo esta breve encuesta" />     
@@ -513,6 +515,9 @@
     <text name="ImportationRequest" value="Pedimento Importación"/>
 
     <text name="Comments" value="Comentarios" />
+    <text name="StarSheetInfo" value="Información Hoja Estrella" />
+    <text name="StarSheetFile" value="Documento de Hoja Estrella" />
+    
     <text name="HotSheetInfo" value="Información Hoja Caliente" />
     <text name="HotSheetFile" value="Documento de Hoja Caliente" />
     <text name="PartNumbers" value="Número de Partes" />
@@ -521,7 +526,7 @@
     <text name="PlannerName" value="Nombre"/>
     <text name="Supplier" value="Proveedor"/>
     <text name="SupplierCode" value="Codigo"/>
-    <text name="SupplerName" value="Nombre"/>
+    <text name="SupplierName" value="Nombre"/>
     <text name="PartNumber" value="Número de Parte"/>
     <text name="PartNumberHS" value="Número de Parte"/>
     <text name="PartNumberCodeHS" value="Codigo"/>
@@ -545,6 +550,20 @@
     <text name="ShortageShiftId" value="Id"/>
     <text name="ShortageShiftName" value="Nombre"/>
     <text name="ShortageTime" value="Hora"/>
+    <text name="GroupBy" value="Agrupar Por"/>
+    <text name="SendToHotSheet" value="Enviar a Hoja Caliente"/>
+    <text name="SelectOne" value="Selecciona al menos un elemento"/>    
+    <text name="SendStarSheetToHotSheet" value="Hojas de Estrellas Enviadas, Satisfactoriamente"/>
+
+    <text name="PurchaseOrder" value="Orden de Compra"/>
+    <text name="PurchaseOrders" value="Ordenes de Compra"/>
+    <text name="Qty" value="Cantidad"/>
+    <text name="RequiredDate" value="Fecha Requerida"/>
+    <text name="Ticket" value="Boleta"/>
+    <text name="Line" value="Linea"/>
+    <text name="PlannerCodePO" value="Código Planificador"/>
+    <text name="SupplierCodePO" value="Código de Proveedor Code"/>
+    <text name="PurchaseOrdersReports" value="Reporte de órdenes de compra" />
     
   </texts>
 </localizationDictionary>

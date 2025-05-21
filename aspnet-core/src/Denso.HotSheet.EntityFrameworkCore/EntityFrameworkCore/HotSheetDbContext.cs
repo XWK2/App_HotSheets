@@ -83,6 +83,7 @@ namespace Denso.HotSheet.EntityFrameworkCore
 
         /* Hot Sheet */
         public virtual DbSet<HotSheets> HotSheets { get; set; }
+        public virtual DbSet<PurchaseOrders> PurchaseOrders { get; set; }
         public virtual DbSet<HotSheetsShip> HotSheetShip { get; set; }
         public virtual DbSet<HotSheetShipProduct> HotSheetShipProducts { get; set; }
         public virtual DbSet<CigmaExport> CigmaExports { get; set; }
@@ -147,7 +148,8 @@ namespace Denso.HotSheet.EntityFrameworkCore
             });
 
 
-                modelBuilder.Entity<HotSheetsShip>(s =>
+
+            modelBuilder.Entity<HotSheetsShip>(s =>
             {
                 s.HasOne(b => b.DocumentType)
                     .WithMany()

@@ -1,0 +1,336 @@
+<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1 class="denso-page-title"><i class="fa-solid fa-square-poll-vertical"></i>&nbsp;{{ 'PurchaseOrders' | localize }}</h1>
+                </div>
+                <div class="col-10 text-right">
+                    <dx-form colCount="12">                        
+                       
+                    </dx-form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body grid-content" [busy]="isTableLoading">
+                       
+                        <dx-data-grid
+                            keyExpr="purchaseOrderId"
+                            [dataSource]="purchaseOrders"
+                            [allowColumnReordering]="false"
+                            [allowColumnResizing]="false"
+                            [columnAutoWidth]="true"
+                            (onInitNewRow)="onInitNewRow($event)"
+                            (onSaving)="onSavingPurchaseOrder($event)"
+                            (onEditCanceling)="onEditCanceling($event)"                           
+                            (onEditingStart)="onEditingPurchaseOrder($event)"                           
+
+                            [showBorders]="true"
+                            [noDataText]="'NoDataText' | localize"
+                            [rowAlternationEnabled]="true"
+                            (onExporting)="exportGrid($event)"                            
+                            [groupPanel]="{ visible: true }" [grouping]="{ autoExpandAll: true }"                            
+                            
+                        >
+                            <dxo-scrolling mode="none"></dxo-scrolling>
+                            <dxo-paging [pageSize]="20"></dxo-paging>
+                            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100]"></dxo-pager>
+                            <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+                            <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>                             
+                            <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']"> </dxo-export>                            
+                            
+
+                            <dxo-editing mode="popup" [allowUpdating]="true" [useIcons]="true" [allowAdding]="false" [allowDeleting]="false" >
+                                <dxo-popup [title]="'PurchaseOrders' | localize" [showTitle]="true" [width]="1050" [height]="700"> 
+                                  
+                                </dxo-popup>                                
+                                <dxo-form colCount="1">
+                                  
+                                    <dxi-item [colSpan]="1">
+                                        <div *dxTemplate>
+                                            <dx-tab-panel  
+                                            [animationEnabled]="true"                                            
+                                            [swipeEnabled]="true">
+                                                
+                                                <dxi-item [title]="'PurchaseOrder' | localize" > 
+                                                    <div class="tab-content">                                       
+                                                        <dx-form labelLocation="top" colCount="3">
+                                                            <dxi-item [label]="{ text: 'PlannerCodePO' | localize }" [colSpan]="1">                                                        
+                                                                <div *dxTemplate>
+                                                                    <dx-text-box 
+                                                                    [(value)]="purchaseOrdersChanges.plannerCode"
+                                                                    [readOnly]="!enabledEditInfo">
+                                                                    </dx-text-box>
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+
+                                                            <dxi-item [label]="{ text: 'PlannerName' | localize }" [colSpan]="2">
+                                                                <div *dxTemplate>
+                                                                    <dx-text-box 
+                                                                        [(value)]="purchaseOrdersChanges.plannerName"
+                                                                        [readOnly]="!enabledEditInfo">
+                                                                    </dx-text-box>
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+                                                           
+                                                            <dxi-item [label]="{ text: 'PartNumber' | localize }" [colSpan]="1">
+                                                                <div *dxTemplate>
+                                                                    <dx-text-box 
+                                                                        [(value)]="purchaseOrdersChanges.partNumber"
+                                                                        [readOnly]="!enabledEditInfo">
+                                                                    </dx-text-box>
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+
+                                                            <dxi-item [label]="{ text: 'PartDescriptionHS' | localize }" [colSpan]="2">
+                                                                <div *dxTemplate>
+                                                                    <dx-text-box 
+                                                                        [(value)]="purchaseOrdersChanges.partDescription"
+                                                                        [readOnly]="!enabledEditInfo">
+                                                                    </dx-text-box>
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+
+                                                            <dxi-item [label]="{ text: 'SupplierCodePO' | localize }" [colSpan]="1">
+                                                                <div *dxTemplate>
+                                                                    <dx-text-box 
+                                                                        [(value)]="purchaseOrdersChanges.supplierCode"
+                                                                        [readOnly]="!enabledEditInfo">
+                                                                    </dx-text-box>
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+
+                                                            <dxi-item [label]="{ text: 'SupplierName' | localize }" [colSpan]="2">
+                                                                <div *dxTemplate>
+                                                                    <dx-text-box 
+                                                                        [(value)]="purchaseOrdersChanges.supplierName"
+                                                                        [readOnly]="!enabledEditInfo">
+                                                                    </dx-text-box>
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+                                                            <dxi-item [label]="{ text: 'Line' | localize }" [colSpan]="1">
+                                                                <div *dxTemplate>
+                                                                    <dx-text-box 
+                                                                        [(value)]="purchaseOrdersChanges.line"
+                                                                        [readOnly]="!enabledEditInfo">
+                                                                    </dx-text-box>
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+                                                            <dxi-item [label]="{ text: 'PurchaseOrder' | localize }" [colSpan]="1">
+                                                                <div *dxTemplate>
+                                                                    <dx-text-box 
+                                                                        [(value)]="purchaseOrdersChanges.purchaseOrder"
+                                                                        [readOnly]="!enabledEditInfo">
+                                                                    </dx-text-box>
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+                                                            <dxi-item [label]="{ text: 'Qty' | localize }" [colSpan]="1">
+                                                                <div *dxTemplate>
+                                                                    <dx-text-box 
+                                                                        [(value)]="purchaseOrdersChanges.qty"
+                                                                        [readOnly]="!enabledEditInfo">
+                                                                    </dx-text-box>
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+
+                                                            <dxi-item [label]="{ text: 'RequiredDate' | localize }" [colSpan]="1">
+                                                                <div *dxTemplate>
+                                                                    <dx-date-box 
+                                                                        type="date" 
+                                                                        [(value)]="purchaseOrdersChanges.requiredDate" 
+                                                                        showClearButton="true"
+                                                                        [readOnly]="!enabledEditInfo">
+                                                                    </dx-date-box>
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+                        
+                                                            
+                                                            <dxi-item [label]="{ text: 'Status' | localize }" [colSpan]="1">
+                                                                <div *dxTemplate>                                                                   
+
+                                                                    <dx-select-box                                                                        
+                                                                        displayExpr="text"
+                                                                        valueExpr="value"
+                                                                        [(value)]="purchaseOrdersChanges.statusId"
+                                                                        [items]="statusOptions"
+                                                                        [searchEnabled]="true"                                                                        
+                                                                        [readOnly]="!enabledEditInfo">                                                                    
+                                                                    </dx-select-box>
+                                                                    
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+                        
+                                                            <dxi-item [label]="{ text: 'Ticket' | localize }" [colSpan]="1">
+                                                                <div *dxTemplate>
+                                                                    <dx-text-box 
+                                                                        [(value)]="purchaseOrdersChanges.ticket"
+                                                                        [readOnly]="!enabledEditInfo">
+                                                                    </dx-text-box>
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>                              
+                                                           
+
+                                                        </dx-form>
+                                                    </div>       
+                                                </dxi-item>                                               
+                                            </dx-tab-panel>
+                                        </div>
+                                    </dxi-item>
+                                </dxo-form>
+                            </dxo-editing>
+
+                            <dxo-column-fixing [enabled]="true"></dxo-column-fixing> 
+                                                        
+                            <dxo-toolbar>
+                                
+                                <dxi-item location="before" locateInMenu="auto">
+                                    <div *dxTemplate>
+                                    <div style="display: flex; align-items: center; gap: 15px;">
+
+                                         <!-- Select-box para agrupamiento -->
+                                         <label class="lb-filter" style="margin: 0 8px 0 0;">{{ 'GroupBy' | localize }}:</label>
+                                         <dx-select-box
+                                            width="225"
+                                            [items]="groupingValues"
+                                            [inputAttr]="{ 'aria-label': 'Value' }"
+                                            displayExpr="text"
+                                            valueExpr="value"
+                                            value="withoutGrouping"
+                                            (onValueChanged)="groupChanged($event)">
+                                         </dx-select-box>
+
+                                         <!-- Campo de búsqueda -->
+                                        <dx-text-box
+                                        placeholder="Buscar..."
+                                        [value]="searchValue"
+                                        (onValueChanged)="onSearch($event)"
+                                        width="200">
+                                        </dx-text-box>
+
+                                        <dx-button
+                                            stylingMode="contained"
+                                            [text]="'Search' | localize"
+                                            icon="search"
+                                            type="normal"
+                                            [width]="120"
+                                            (click)="refresh()"
+                                            class="dx-button-ml"
+                                        >
+                                        </dx-button>
+                                    </div>
+                                    </div>
+                                </dxi-item>
+
+                                <dxi-item label="" [colSpan]="2">
+                                    <div *dxTemplate>
+                                       
+                                    </div>
+                                </dxi-item>
+
+                                <dxi-item name="exportButton"></dxi-item> 
+                            </dxo-toolbar>
+
+                            <dxi-column [caption]="'Planner' | localize" >
+                                <dxi-column [caption]="'PlannerCode' | localize" dataField="plannerCode" [width]="90"></dxi-column>
+                                <dxi-column [caption]="'PlannerName' | localize" dataField="plannerName" [width]="250"></dxi-column>
+                            </dxi-column>
+                            <dxi-column [caption]="'PurchaseOrder' | localize" dataField="purchaseOrder" [width]="150"></dxi-column>
+                            <dxi-column [caption]="'Line' | localize" dataField="line" [width]="150"></dxi-column>                                                 
+                            <dxi-column [caption]="'PartNumberHS' | localize">
+                                <dxi-column [caption]="'PartNumberCodeHS' | localize" dataField="partNumber" [width]="130"></dxi-column>
+                                <dxi-column [caption]="'PartDescriptionHS' | localize" dataField="partDescription" [width]="250"></dxi-column>
+                            </dxi-column>    
+                            <dxi-column [caption]="'Supplier' | localize">
+                                <dxi-column [caption]="'SupplierCode' | localize" dataField="supplierCode" [width]="90"></dxi-column>
+                                <dxi-column [caption]="'SupplierName' | localize" dataField="supplierName" [width]="150"></dxi-column>
+                            </dxi-column>                                                      
+                            <dxi-column [caption]="'Qty' | localize" dataField="qty" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'RequiredDate' | localize">
+                                <dxi-column
+                                [caption]="'RequiredDate' | localize"
+                                dataField="requiredDate"
+                                [width]="150"
+                                dataType="date"
+                                format="yyyy-MM-dd"
+                                ></dxi-column>                                                                                             
+                            </dxi-column>
+                           
+                            <dxi-column [caption]="'Status' | localize">
+                                <dxi-column [caption]="'StatusId' | localize" dataField="statusId" [width]="50"></dxi-column>
+                                <dxi-column [caption]="'StatusPO' | localize" dataField="statusPO" [width]="150"></dxi-column>                            
+                            </dxi-column>
+                            
+                            <dxi-column [caption]="'Ticket' | localize" dataField="ticket" [width]="70"></dxi-column>
+                                                       
+                            
+                            <dxi-column
+                                [caption]="'CreationDate' | localize"
+                                dataField="creationDate"
+                                [width]="130"
+                                dataType="date"
+                                format="yyyy-MM-dd HH:mm"                                
+                            ></dxi-column>
+
+                                                      
+                            <dxi-column type="buttons" [caption]="'Acciones' | localize" [alignment]="'left'">
+                                <!-- Botones por defecto -->
+                                <dxi-button name="edit"></dxi-button>
+                                <dxi-button name="delete"></dxi-button>
+                            </dxi-column>                                 
+                                                 
+                            <!-- Sumatoria al pie de la tabla -->
+                            <dxo-summary>
+                                <dxi-total-item 
+                                column="qty" 
+                                summaryType="sum" 
+                                valueFormat="fixedPoint">
+                                </dxi-total-item>
+                               
+                                <!-- Sumatoria por grupo -->
+                                <dxi-group-item 
+                                column="qty" 
+                                summaryType="sum" 
+                                valueFormat="fixedPoint" 
+                                displayFormat="Total: {0}">
+                            </dxi-group-item>
+
+                            </dxo-summary>
+
+                           
+                        </dx-data-grid>
+                    </div>
+                    <div class="card-footer table-card-footer bg-light border-top">
+                        <div class="row">
+                            <div class="col-sm-4 col-12 text-sm-left text-center">
+                                <button class="btn btn-sm btn-secondary" (click)="refresh()">
+                                    <i class="fas fa-redo-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+  
+
+  
+
+</div>

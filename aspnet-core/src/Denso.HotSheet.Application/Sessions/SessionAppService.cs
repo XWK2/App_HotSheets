@@ -85,6 +85,7 @@ namespace Denso.HotSheet.Sessions
 
                 var rolesByUser = await _userManager.GetRolesAsync(currentUser);
                 output.User.IsAdmin = rolesByUser.Any() && rolesByUser.Contains(StaticRoleNames.Tenants.Admin);
+                output.User.IsPC = rolesByUser.Any() && rolesByUser.Contains(StaticRoleNames.Tenants.PC);
                 output.User.IsImpoExpo = rolesByUser.Any() && rolesByUser.Contains(StaticRoleNames.Tenants.StaffImpoExpo);
             }
 

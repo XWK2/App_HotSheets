@@ -46,7 +46,7 @@ import {
     DxNumberBoxModule,
     DxSwitchModule,
     DxCheckBoxModule,
-    DxTemplateModule,
+    DxTemplateModule,    
 } from 'devextreme-angular';
 
 @NgModule({

@@ -1,0 +1,64 @@
+.leyenda-colores {
+    margin-top: 15px;
+    padding: 5px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px; /* Espaciado aumentado entre los colores */
+    font-size: 14px; /* Aumentamos el tamaño de la fuente */
+    align-items: center;
+    flex-wrap: wrap; /* Permite que la leyenda se ajuste en pantallas pequeñas */
+  }
+  
+  .color-cuadro {
+    display: inline-block;
+    width: 25px; /* Cuadro de color más grande */
+    height: 25px; /* Cuadro de color más grande */
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+
+  .circle-color {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%; /* Hace que sea un círculo */
+    display: inline-block;
+    box-sizing: border-box; /* Asegura que el tamaño se mantenga como el esperado */    
+    margin: 0 auto; /* Centra el círculo */
+    border: 2px solid transparent; /* Añade un borde si quieres destacar el círculo */
+  }
+
+
+  .custom-star-icon {
+    color: gold;   /* Color dorado para la estrella */
+    margin-left: 4px; /* Espaciado entre el comentario y la estrella */
+    font-size: 16px;  /* Tamaño de la estrella */
+  }
+
+  .custom-star-icon-gray {
+    color: rgb(192, 191, 191);   /* Color dorado para la estrella */
+    margin-left: 4px; /* Espaciado entre el comentario y la estrella */
+    font-size: 16px;  /* Tamaño de la estrella */
+  }
+
+  .dx-button {    
+    border-style: none !important; 
+}
+
+.yellow-star-button .dx-icon.fa-star {
+  color: yellow !important;
+}
+
+::ng-deep .yellow-star-button .dx-icon.fa-star {
+  color: yellow !important;
+  font-size: 20px;
+}
+
+::ng-deep .planner-group-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;         /* IMPORTANTE: asegura que el div ocupe toda la altura */
+  width: 100%;
+  font-weight: bold;
+  text-align: center;
+}

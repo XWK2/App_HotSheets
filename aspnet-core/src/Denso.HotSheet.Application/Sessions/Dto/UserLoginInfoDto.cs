@@ -24,5 +24,7 @@ namespace Denso.HotSheet.Sessions.Dto
 
         public bool IsAdmin { get; set; }
         public bool IsImpoExpo { get; set; }
+
+        public bool IsPC { get; set; }
     }
 }

@@ -11,10 +11,24 @@ namespace Denso.HotSheet.Sheets
 {
     public interface IHotSheetAppService : IApplicationService
     {
-        Task<List<HotSheetsItemDto>> GetHotSheets(int StatusHS);
+        //Task<List<HotSheetsItemDto>> GetHotSheets(int StatusHS);
+        Task<List<HotSheetsItemDto>> GetHotSheets(GetHotSheetInput input);
+
+        Task<List<PurchaseOrdersItemDto>> GetPurchaseOrders(GetPurchaseOrdersInput input);
+        Task<List<StarSheetsItemDto>> GetStarSheets(GetStarSheetInput input);
+
         Task<HotSheetsItemDetailDto> GetHotSheetById(long HotSheetId);
 
+        Task<PurchaseOrdersItemDto> GetPurchaseOrderById(long PurchaseOrderId);
+        Task<StarSheetsItemDetailDto> GetStarSheetById(long StarSheetId);
+
+        Task<long> UpdateStartSheetToHotSheet(List<StarSheetsItemDto> input);
+
         Task CreateOrUpdateHotSheet(HotSheetsDto input);
+
+        Task CreateOrUpdatePurchaseOrder(PurchaseOrdersDto input);
+
+        Task CreateOrUpdateStarSheet(StarSheetsDto input);
 
         //Task<List<HotSheetShipItemDto>> GetHotSheetShip(GetHotSheeShiptInput input);
         //Task<List<HotSheetShipItemDto>> GetHotSheetShipReports(GetHotSheeShiptInput input);
@@ -28,7 +42,11 @@ namespace Denso.HotSheet.Sheets
 
         Task<List<FileDto>> GetHotSheetFiles(long HotSheetId);
 
+        Task<List<FileDto>> GetStarSheetFiles(long StarSheetId);
+
         Task<HotSheetsCommetsDto> CreateOrUpdateHotSheetComments(HotSheetsCommetsDto input);
+
+        Task<StarSheetsCommetsDto> CreateOrUpdateStarSheetComments(StarSheetsCommetsDto input);
 
         //Task CreateOrUpdateHotSheetComments(HotSheetsCommetsDto input);
 

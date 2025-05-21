@@ -23,6 +23,8 @@ import { DocumentViewerPopupComponent } from '@app/denso/reports/document-viewer
 
 import { CommentsPopupComponent } from '@app/denso/reports/comments-popup/comments-popup.component';
 
+import { PurchaseOrdersReportsComponent } from '@app/denso/reports/report-purchase-orders/report-purchase-orders.component';
+
 import {
     DxDataGridModule,
     DxButtonModule,
@@ -95,7 +97,7 @@ import {
         DensoSharedModule,
         DevExtremeSharedModule,
     ],
-    declarations: [DocumentViewerPopupComponent,HotSheetsReportsComponent,CommentsPopupComponent],
+    declarations: [DocumentViewerPopupComponent,HotSheetsReportsComponent,CommentsPopupComponent, PurchaseOrdersReportsComponent],
     entryComponents: [],
     providers: [],
 })

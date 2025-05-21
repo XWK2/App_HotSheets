@@ -63,6 +63,9 @@ namespace Denso.HotSheet.Sheets
         private readonly IRepository<HotSheets, long> _hotSheetsRepository;
         private readonly IDapperRepository<HotSheets, long> _hotSheetsDapperRepository;
 
+        private readonly IRepository<PurchaseOrders, long> _purchaseOrdersRepository;
+        private readonly IDapperRepository<PurchaseOrders, long> _purchaseOrdersDapperRepository;
+
         //private readonly IRepository<HotSheetsComments, long> _hotSheetCommentsRepository;
         //private readonly IDapperRepository<HotSheetsComments, long> _hotSheetCommentsDapperRepository;
 
@@ -88,9 +91,13 @@ namespace Denso.HotSheet.Sheets
 
             //Nuevo LHH
             IRepository<HotSheets, long> hotSheetsRepository,
-            IDapperRepository<HotSheets, long> hotSheetsDapperRepository
-            //IRepository<HotSheetsComments, long> hotSheetCommentsRepository
-            //IDapperRepository<HotSheetsComments, long> hotSheetCommentsDapperRepository
+            IDapperRepository<HotSheets, long> hotSheetsDapperRepository,
+
+            IRepository<PurchaseOrders, long> purchaseOrdersRepository,
+            IDapperRepository<PurchaseOrders, long> purchaseOrdersDapperRepository
+
+        //IRepository<HotSheetsComments, long> hotSheetCommentsRepository
+        //IDapperRepository<HotSheetsComments, long> hotSheetCommentsDapperRepository
         )
         {
 
@@ -116,18 +123,23 @@ namespace Denso.HotSheet.Sheets
             //Nuevo LHH
             _hotSheetsDapperRepository = hotSheetsDapperRepository;
             _hotSheetsRepository = hotSheetsRepository;
+
+            _purchaseOrdersDapperRepository = purchaseOrdersDapperRepository;
+            _purchaseOrdersRepository = purchaseOrdersRepository;
             //_hotSheetCommentsRepository = hotSheetCommentsRepository;
             //_hotSheetCommentsDapperRepository = hotSheetCommentsDapperRepository;
         }
 
-
-        public async Task<List<HotSheetsItemDto>> GetHotSheets(int StatusHS)
+        [HttpPost]
+        public async Task<List<HotSheetsItemDto>> GetHotSheets(GetHotSheetInput input)
         {
-            string sqlQuery = "EXEC GetHotSheets @UserId, @StatusHS";
+            string sqlQuery = "EXEC GetHotSheets @UserId, @StatusHS, @StartDate, @EndDate";
             var sqlParams = new
             {
                 UserId = AbpSession.UserId,
-                StatusHS = StatusHS,
+                StatusHS = input.StatusHS,
+                StartDate = input.StartDate,
+                EndDate = input.EndDate,
             };
 
             try
@@ -143,7 +155,54 @@ namespace Denso.HotSheet.Sheets
             }
         }
 
+        [HttpPost]
+        public async Task<List<PurchaseOrdersItemDto>> GetPurchaseOrders(GetPurchaseOrdersInput input)
+        {
+            string sqlQuery = "EXEC GetPurchaseOrders @UserId, @StatusHS, @StartDate, @EndDate";
+            var sqlParams = new
+            {
+                UserId = AbpSession.UserId,
+                StatusHS = input.StatusHS,
+                StartDate = input.StartDate,
+                EndDate = input.EndDate,
+            };
 
+            try
+            {
+                var itemsDapper = await _hotSheetsDapperRepository.QueryAsync<PurchaseOrdersItemDto>(sqlQuery, sqlParams);
+
+                return itemsDapper.ToList();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public async Task<List<StarSheetsItemDto>> GetStarSheets(GetStarSheetInput input)
+        {
+            string sqlQuery = "EXEC GetStarSheets @UserId, @StatusHS, @StartDate, @EndDate";
+            var sqlParams = new
+            {
+                UserId = AbpSession.UserId,
+                StatusHS = input.StatusHS,
+                StartDate = input.StartDate,
+                EndDate = input.EndDate,
+            };
+
+            try
+            {
+                var itemsDapper = await _hotSheetsDapperRepository.QueryAsync<StarSheetsItemDto>(sqlQuery, sqlParams);
+
+                return itemsDapper.ToList();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        
         public async Task<HotSheetsItemDetailDto> GetHotSheetById(long HotSheetId)
         {
             string sqlQuery = "EXEC GetHotSheetById @HotSheetId, @UserId";
@@ -163,6 +222,51 @@ namespace Denso.HotSheet.Sheets
                 {
                     EntityType = "HotSheets",
                     EntityIds = HotSheetId.ToString(),
+                };
+
+                var itemsFilesDapper = await _hotSheetsDapperRepository.QueryAsync<FileDto>(sqlQueryFiles, sqlParamsFiles);
+                hotSheetFound.Files = itemsFilesDapper.ToList();
+
+            }
+
+            return hotSheetFound;
+        }
+                
+        public async Task<PurchaseOrdersItemDto> GetPurchaseOrderById(long PurchaseOrderId)
+        {
+            string sqlQuery = "EXEC GetPurchaseOrderById @PurchaseOrderId, @UserId";
+            var sqlParams = new
+            {
+                PurchaseOrderId = PurchaseOrderId,
+                UserId = AbpSession.UserId,
+            };
+            var itemsDapper = await _hotSheetsDapperRepository.QueryAsync<PurchaseOrdersItemDto>(sqlQuery, sqlParams);
+
+            //Nuevo para relacionar archivos.
+            var hotSheetFound = itemsDapper.FirstOrDefault();            
+
+            return hotSheetFound;
+        }
+
+        public async Task<StarSheetsItemDetailDto> GetStarSheetById(long StarSheetId)
+        {
+            string sqlQuery = "EXEC GetStarSheetById @StarSheetId, @UserId";
+            var sqlParams = new
+            {
+                StarSheetId = StarSheetId,
+                UserId = AbpSession.UserId,
+            };
+            var itemsDapper = await _hotSheetsDapperRepository.QueryAsync<StarSheetsItemDetailDto>(sqlQuery, sqlParams);
+
+            //Nuevo para relacionar archivos.
+            var hotSheetFound = itemsDapper.FirstOrDefault();
+            if (hotSheetFound != null)
+            {
+                string sqlQueryFiles = "EXEC GetFiles @EntityType, @EntityIds";
+                var sqlParamsFiles = new
+                {
+                    EntityType = "StarSheets",
+                    EntityIds = StarSheetId.ToString(),
                 };
 
                 var itemsFilesDapper = await _hotSheetsDapperRepository.QueryAsync<FileDto>(sqlQueryFiles, sqlParamsFiles);
@@ -195,30 +299,156 @@ namespace Denso.HotSheet.Sheets
             }
         }
 
+        public async Task<List<FileDto>> GetStarSheetFiles(long StarSheetId)
+        {
+            string sqlQueryFiles = "EXEC GetFiles @EntityType, @EntityIds";
+            var sqlParamsFiles = new
+            {
+                EntityType = "StarSheet",
+                EntityIds = StarSheetId.ToString(),
+            };
+
+            try
+            {
+                var itemsFilesDapper = await _hotSheetsDapperRepository.QueryAsync<FileDto>(sqlQueryFiles, sqlParamsFiles);
+
+                return itemsFilesDapper.ToList();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public async Task<long> UpdateStartSheetToHotSheet(List<StarSheetsItemDto> input)
+        {
+            long StarSheetId = 0;
+            try
+            {
+                var IdStarsSheetList = string.Join(",", input.Select(i => i.StarSheetId));
+
+                DynamicParameters spParams = new DynamicParameters();
+                spParams.Add("@UserId", AbpSession.UserId);
+                spParams.Add("@IdStarsSheetList", IdStarsSheetList);
+
+                spParams.Add("@StarSheetIdUpdated", dbType: DbType.Int64, direction: ParameterDirection.Output);
+
+                long affectedRows = await _hotSheetsDapperRepository.ExecuteAsync("UpdateStartSheetToHotSheet",
+                    spParams, commandType: CommandType.StoredProcedure);
+
+                StarSheetId = spParams.Get<long>("@StarSheetIdUpdated");
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }            
+            
+            return StarSheetId;
+        }
 
         public async Task CreateOrUpdateHotSheet(HotSheetsDto input)
         {
             if (input.Id.HasValue)
             {
-                var hotSheet = await _hotSheetsRepository.GetAsync(input.Id.Value);
-                if (hotSheet != null)
-                {                    
-                    hotSheet.TransportModeId = input.TransportModeId;                    
-                    hotSheet.DeliveryOrder = input.DeliveryOrder;
-                    hotSheet.TrafficContainerFX = input.TrafficContainerFX;
-                    hotSheet.UnitNumber = input.UnitNumber;
-                    hotSheet.EtaDNMX = input.EtaDNMX;
-                    hotSheet.ShortageShiftId = input.ShortageShiftId;
-                    hotSheet.PCComments = input.PCComments;
-                    hotSheet.RealShortageDate = input.RealShortageDate;
-                    hotSheet.Shortage = input.Shortage;
+                try
+                {
+                    var hotSheet = await _hotSheetsRepository.GetAsync(input.Id.Value);
+                    if (hotSheet != null)
+                    {
+                        hotSheet.TransportModeId = input.TransportModeId;
+                        hotSheet.DeliveryOrder = input.DeliveryOrder;
+                        hotSheet.TrafficContainerFX = input.TrafficContainerFX;
+                        hotSheet.UnitNumber = input.UnitNumber;
+                        hotSheet.EtaDNMX = input.EtaDNMX;
+                        hotSheet.ShortageShiftId = input.ShortageShiftId;
+                        hotSheet.PCComments = input.PCComments;
+                        hotSheet.RealShortageDate = input.RealShortageDate;
+                        hotSheet.Shortage = input.Shortage;
 
-                    hotSheet.ShortageShift = null;
-                    hotSheet.TransportMode = null;                   
+                        hotSheet.ShortageShift = null;
+                        hotSheet.TransportMode = null;
 
-                    await _hotSheetsRepository.UpdateAsync(hotSheet);
+                        await _hotSheetsRepository.UpdateAsync(hotSheet);
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
                 }
             }            
+        }
+
+        public async Task CreateOrUpdatePurchaseOrder(PurchaseOrdersDto input)
+        {
+            if (input.Id.HasValue)
+            {
+                try
+                {
+                    var purchaseOrder = await _purchaseOrdersRepository.GetAsync(input.Id.Value);
+                    if (purchaseOrder != null)
+                    {
+                        purchaseOrder.PlannerCode = input.PlannerName;
+                        purchaseOrder.PlannerName = input.PlannerName;
+                        purchaseOrder.PurchaseOrder = input.PurchaseOrder;
+                        purchaseOrder.Line = input.Line;
+                        purchaseOrder.PartNumber = input.PartNumber;
+                        purchaseOrder.PartDescription = input.PartDescription;
+                        purchaseOrder.SupplierCode = input.SupplierCode;
+                        purchaseOrder.SupplierName = input.SupplierName;
+                        purchaseOrder.Qty = input.Qty;
+                        purchaseOrder.RequiredDate = input.RequiredDate;
+                        purchaseOrder.StatusId = input.StatusId;
+                        purchaseOrder.Ticket = input.Ticket;
+
+                        await _purchaseOrdersRepository.UpdateAsync(purchaseOrder);
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
+
+
+            }
+        }
+
+        public async Task CreateOrUpdateStarSheet(StarSheetsDto input)
+        {
+            if (input.Id.HasValue)
+            {
+                try
+                {
+                    var starSheet = await _hotSheetsRepository.GetAsync(input.Id.Value);
+                    if (starSheet != null)
+                    {
+                        starSheet.TransportModeId = input.TransportModeId;
+                        starSheet.DeliveryOrder = input.DeliveryOrder;
+                        starSheet.TrafficContainerFX = input.TrafficContainerFX;
+                        starSheet.UnitNumber = input.UnitNumber;
+                        starSheet.EtaDNMX = input.EtaDNMX;
+                        starSheet.ShortageShiftId = input.ShortageShiftId;
+                        starSheet.PCComments = input.PCComments;
+                        starSheet.RealShortageDate = input.RealShortageDate;
+                        starSheet.Shortage = input.Shortage;
+
+                        starSheet.ShortageShift = null;
+                        starSheet.TransportMode = null;
+
+                        await _hotSheetsRepository.UpdateAsync(starSheet);
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
+
+
+            }
         }
 
         public async Task<List<HotSheetsCommetsDto>> GetHotSheetComments(long HotSheetId)
@@ -233,6 +463,28 @@ namespace Denso.HotSheet.Sheets
             try
             {
                 var itemsFilesDapper = await _hotSheetsDapperRepository.QueryAsync<HotSheetsCommetsDto>(sqlQueryFiles, sqlParamsFiles);
+
+                return itemsFilesDapper.ToList();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public async Task<List<StarSheetsCommetsDto>> GetStarSheetComments(long HotSheetId)
+        {
+
+            string sqlQueryFiles = "EXEC GetStarSheetComments @StarSheetId";
+            var sqlParamsFiles = new
+            {
+                StarSheetId = HotSheetId.ToString(),
+            };
+
+            try
+            {
+                var itemsFilesDapper = await _hotSheetsDapperRepository.QueryAsync<StarSheetsCommetsDto>(sqlQueryFiles, sqlParamsFiles);
 
                 return itemsFilesDapper.ToList();
             }
@@ -261,6 +513,27 @@ namespace Denso.HotSheet.Sheets
             input.Id = HotSheetCommentId;
 
             return input;            
+        }
+
+
+        public async Task<StarSheetsCommetsDto> CreateOrUpdateStarSheetComments(StarSheetsCommetsDto input)
+        {
+            DynamicParameters spParams = new DynamicParameters();
+            spParams.Add("@UserId", AbpSession.UserId);
+            spParams.Add("@StarSheetId", input.StarSheetId);
+            spParams.Add("@DepartmentId", input.DepartmentId);
+            spParams.Add("@Comments", input.Comments);
+
+            spParams.Add("@StarSheeCommentIdUpdated", dbType: DbType.Int64, direction: ParameterDirection.Output);
+
+            long affectedRows = await _hotSheetsDapperRepository.ExecuteAsync("StarSheetCommentCreate",
+                spParams, commandType: CommandType.StoredProcedure);
+
+            var StarSheetCommentId = spParams.Get<long>("@StarSheeCommentIdUpdated");
+
+            input.Id = StarSheetCommentId;
+
+            return input;
         }
 
         //[HttpPost]

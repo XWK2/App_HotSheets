@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit, ViewChild,LOCALE_ID } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
-import { UserServiceProxy, HotSheetServiceProxy, HotSheetsItemDto, HotSheetsDto,FileDto, TransportModeDto,CatalogServiceProxy, UserByCurrentUserDto, ShortageShiftDto, HotSheetsCommetsDto } from '@shared/service-proxies/service-proxies';
+import { UserServiceProxy, HotSheetServiceProxy, HotSheetsItemDto, HotSheetsDto, FileDto, TransportModeDto,CatalogServiceProxy, UserByCurrentUserDto, ShortageShiftDto, HotSheetsCommetsDto, GetHotSheetInput } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
 import { DxDataGridComponent } from 'devextreme-angular';
 import DataSource from 'devextreme/data/data_source';
@@ -20,6 +20,7 @@ import { PopupTemplate } from '@app/denso/shared/models/popup-template';
 import { cloneDeep } from 'lodash-es';
 import { DxAccordionComponent } from 'devextreme-angular';
 import { AppUtilsService } from '@shared/utils/app-utils.service';
+import * as moment from 'moment';
 
 declare var bootstrap: any;
 
@@ -32,6 +33,13 @@ declare var bootstrap: any;
 export class HotSheetsReportsComponent extends AppComponentBase implements OnInit {
     hotSheets: HotSheetsItemDto[] = [];
     isTableLoading: boolean = false;
+
+    statusOptions = [        
+        { text: 'Completed', value: 'Completed' },
+        { text: 'Incomplete', value: 'Incomplete' }
+      ];
+    
+    statusSelected: string = 'completado';
 
     userIdSelected: number;
     usersDataSource: DataSource = new DataSource({
@@ -80,6 +88,9 @@ export class HotSheetsReportsComponent extends AppComponentBase implements OnIni
     filaSeleccionada: any = null;
     comentario: string = '';
     commentSelected: HotSheetsCommetsDto;
+
+    startDate: Date;
+    endDate: Date;
 
     constructor(
         injector: Injector, 
@@ -137,6 +148,10 @@ export class HotSheetsReportsComponent extends AppComponentBase implements OnIni
 
     public ngOnInit(): void {
        
+        if (this.statusOptions.length > 0) {
+            this.statusSelected = this.statusOptions[0].value;
+        }
+
         this.refresh();
 
         this.isLoadingData = true;
@@ -237,10 +252,23 @@ export class HotSheetsReportsComponent extends AppComponentBase implements OnIni
             }
 
     public refresh(): void {
+
+       
+
         this.isTableLoading = true;
-        const statusCompleted = 1;
+
+        let statusIncompleted = 0;
+        if(this.statusSelected == "Completed"){
+            statusIncompleted = 1;
+        }
+        
+        let input: GetHotSheetInput = new GetHotSheetInput();
+        input.startDate = this.startDate ? moment(this.startDate) : undefined;
+        input.endDate = this.endDate ? moment(this.endDate) : undefined;
+        input.statusHS = statusIncompleted;
+
         this._hotSheetservice
-            .getHotSheets(statusCompleted)
+            .getHotSheets(input)
             .pipe(
                 finalize(() => {
                     this.isTableLoading = false;

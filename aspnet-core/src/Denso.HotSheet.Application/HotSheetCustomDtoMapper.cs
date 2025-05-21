@@ -102,6 +102,15 @@ namespace Denso.HotSheet
             configuration.CreateMap<PartNumberPriceInternal, PartNumberPriceInternalDto>().ReverseMap();
             configuration.CreateMap<Notice, NoticeDto>().ReverseMap();
 
+            // Star Sheet
+            configuration.CreateMap<StarSheets, StarSheetsDto>().ReverseMap();
+            configuration.CreateMap<StarSheets, StarSheetsItemDto>().ReverseMap();
+            configuration.CreateMap<StarSheetsComments, StarSheetsCommetsDto>().ReverseMap();
+
+            // Purchase Orders
+            configuration.CreateMap<PurchaseOrders, PurchaseOrdersDto>().ReverseMap();
+            configuration.CreateMap<PurchaseOrders, PurchaseOrdersItemDto>().ReverseMap();
+
             // Hot Sheet
             configuration.CreateMap<HotSheets, HotSheetsDto>().ReverseMap();
             configuration.CreateMap<HotSheets, HotSheetsItemDto>().ReverseMap();

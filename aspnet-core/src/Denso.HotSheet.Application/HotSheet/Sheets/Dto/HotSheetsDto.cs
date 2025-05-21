@@ -14,7 +14,7 @@ namespace Denso.HotSheet.Sheets.Dto
         public string PlannerCode { get; set; }
         public string PlannerName { get; set; }
         public string SupplierCode { get; set; }
-        public string SupplerName { get; set; }
+        public string SupplierName { get; set; }
         public string PartNumber { get; set; }
         public string PartDescription { get; set; }
         public int? InTransitQty { get; set; }
@@ -35,9 +35,6 @@ namespace Denso.HotSheet.Sheets.Dto
         public ShortageShiftDto ShortageShift { get; set; }
         public string Shortage { get; set; }
         public int ASN { get; set; }
-        public string PCComments { get; set; }                
-
-
-       
+        public string PCComments { get; set; }       
     }
 }
