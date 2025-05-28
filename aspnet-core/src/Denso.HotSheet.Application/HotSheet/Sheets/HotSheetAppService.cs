@@ -390,7 +390,7 @@ namespace Denso.HotSheet.Sheets
                     var purchaseOrder = await _purchaseOrdersRepository.GetAsync(input.Id.Value);
                     if (purchaseOrder != null)
                     {
-                        purchaseOrder.PlannerCode = input.PlannerName;
+                        purchaseOrder.PlannerCode = input.PlannerCode;
                         purchaseOrder.PlannerName = input.PlannerName;
                         purchaseOrder.PurchaseOrder = input.PurchaseOrder;
                         purchaseOrder.Line = input.Line;
@@ -411,10 +411,44 @@ namespace Denso.HotSheet.Sheets
 
                     throw ex;
                 }
+            }
+            else {
 
+                try
+                {
+                    var purchaseOrder = new PurchaseOrders();
+                    purchaseOrder.PlannerCode = input.PlannerCode;
+                    purchaseOrder.PlannerName = input.PlannerName;
+                    purchaseOrder.PurchaseOrder = input.PurchaseOrder;
+                    purchaseOrder.Line = input.Line;
+                    purchaseOrder.PartNumber = input.PartNumber;
+                    purchaseOrder.PartDescription = input.PartDescription;
+                    purchaseOrder.SupplierCode = input.SupplierCode;
+                    purchaseOrder.SupplierName = input.SupplierName;
+                    purchaseOrder.Qty = input.Qty;
+                    purchaseOrder.RequiredDate = input.RequiredDate;
+                    purchaseOrder.StatusId = input.StatusId;
+                    purchaseOrder.Ticket = input.Ticket;
 
+                    await _purchaseOrdersRepository.InsertAsync(purchaseOrder);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                
             }
         }
+
+        public async Task DeletePurchaseOrder(long purchaseOrderId)
+        {
+            var item = await _purchaseOrdersRepository.GetAsync(purchaseOrderId);
+            if (item != null)
+            {
+                await _purchaseOrdersRepository.DeleteAsync(item);
+            }
+        }
+
 
         public async Task CreateOrUpdateStarSheet(StarSheetsDto input)
         {
@@ -439,6 +473,8 @@ namespace Denso.HotSheet.Sheets
                         starSheet.TransportMode = null;
 
                         await _hotSheetsRepository.UpdateAsync(starSheet);
+
+                        //await _hotSheetsRepository.InsertAsync(starSheet);
                     }
                 }
                 catch (Exception ex)
@@ -535,6 +571,8 @@ namespace Denso.HotSheet.Sheets
 
             return input;
         }
+
+       
 
         //[HttpPost]
         //public async Task<List<HotSheetShipItemDto>> GetHotSheetShip(GetHotSheeShiptInput input)

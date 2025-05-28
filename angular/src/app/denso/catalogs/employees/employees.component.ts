@@ -22,7 +22,9 @@ export class EmployeesComponent extends AppComponentBase implements OnInit {
 
     public screenWidth: number;
     public screenHeight: number;
-    popupHeight: number = 850;
+    //popupHeight: number = 850;
+    popupHeight: number = 400;
+    
 
     constructor(injector: Injector, private _catalogService: CatalogServiceProxy, private _appUtils: AppUtilsService) {
         super(injector);

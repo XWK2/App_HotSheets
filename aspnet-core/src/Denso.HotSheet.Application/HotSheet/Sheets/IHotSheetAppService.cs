@@ -28,6 +28,8 @@ namespace Denso.HotSheet.Sheets
 
         Task CreateOrUpdatePurchaseOrder(PurchaseOrdersDto input);
 
+        Task DeletePurchaseOrder(long purchaseOrderId);
+
         Task CreateOrUpdateStarSheet(StarSheetsDto input);
 
         //Task<List<HotSheetShipItemDto>> GetHotSheetShip(GetHotSheeShiptInput input);
@@ -70,7 +72,7 @@ namespace Denso.HotSheet.Sheets
         //Task<List<DBServicesLogsDto>> GetLogsInterfacesServices(string DateStart, string DateEnd);
 
         //Task<List<CarrierNonWorkingDayDto>> GetNonWorkDaysToNotify();
-        //Task DeleteFile(long fileId);
+        Task DeleteFile(long fileId);
 
         //Task<TrackingScrapSales> GetTrackingScrapSales(GetTrackingScrapSalesInput input);
 

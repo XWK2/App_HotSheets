@@ -29,12 +29,12 @@
                             (onSaving)="onSavingPurchaseOrder($event)"
                             (onEditCanceling)="onEditCanceling($event)"                           
                             (onEditingStart)="onEditingPurchaseOrder($event)"                           
-
+                            
                             [showBorders]="true"
                             [noDataText]="'NoDataText' | localize"
                             [rowAlternationEnabled]="true"
                             (onExporting)="exportGrid($event)"                            
-                            [groupPanel]="{ visible: true }" [grouping]="{ autoExpandAll: true }"                            
+                            [groupPanel]="{ visible: true }" [grouping]="{ autoExpandAll: true }"                                   
                             
                         >
                             <dxo-scrolling mode="none"></dxo-scrolling>
@@ -45,7 +45,7 @@
                             <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']"> </dxo-export>                            
                             
 
-                            <dxo-editing mode="popup" [allowUpdating]="true" [useIcons]="true" [allowAdding]="false" [allowDeleting]="false" >
+                            <dxo-editing mode="popup" [allowUpdating]="true" [useIcons]="true" [allowAdding]="true" [allowDeleting]="true" [confirmDelete]="false">
                                 <dxo-popup [title]="'PurchaseOrders' | localize" [showTitle]="true" [width]="1050" [height]="700"> 
                                   
                                 </dxo-popup>                                
@@ -234,6 +234,16 @@
                                             class="dx-button-ml"
                                         >
                                         </dx-button>
+
+                                        <dx-button
+                                            [text]="'New' | localize"
+                                            icon="add"
+                                            type="normal"
+                                            [width]="120"
+                                            (click)="openNewPurchaseOrderPopup()"
+                                            class="dx-button-ml"
+                                        ></dx-button>
+                                        
                                     </div>
                                     </div>
                                 </dxi-item>
@@ -292,7 +302,8 @@
                             <dxi-column type="buttons" [caption]="'Acciones' | localize" [alignment]="'left'">
                                 <!-- Botones por defecto -->
                                 <dxi-button name="edit"></dxi-button>
-                                <dxi-button name="delete"></dxi-button>
+                                <!-- <dxi-button name="delete"></dxi-button>     -->
+                                <dxi-button icon="trash" hint="Eliminar" [onClick]="deletePurchaseOrder"></dxi-button>                            
                             </dxi-column>                                 
                                                  
                             <!-- Sumatoria al pie de la tabla -->

@@ -30,7 +30,8 @@ namespace Denso.HotSheet.Authorization.Users
         private readonly IRepository<DepartmentUser, long> _departmentUserRepository;
         private readonly IRepository<PlantUser, long> _plantUserRepository;
 
-        const string passwordBaseUser = "123qwe";
+        //const string passwordBaseUser = "123qwe";
+        const string passwordBaseUser = "Denso123";
 
         public UserRegistrationManager(
             TenantManager tenantManager,
@@ -56,6 +57,8 @@ namespace Denso.HotSheet.Authorization.Users
         {
             CheckForTenant();
 
+            userName = "";
+
             var tenant = await GetActiveTenantAsync();
 
             var user = new User
@@ -71,12 +74,16 @@ namespace Denso.HotSheet.Authorization.Users
                 EmployeeId = employeeId
             };
 
-            user.SetNormalizedNames();
+            //user.SetNormalizedNames();
            
             foreach (var defaultRole in await _roleManager.Roles.Where(r => r.IsDefault).ToListAsync())
             {
                 user.Roles.Add(new UserRole(tenant.Id, user.Id, defaultRole.Id));
             }
+
+            user.UserName = employeeId.ToString();
+
+            user.SetNormalizedNames();
 
             await _userManager.InitializeOptionsAsync(tenant.Id);
 

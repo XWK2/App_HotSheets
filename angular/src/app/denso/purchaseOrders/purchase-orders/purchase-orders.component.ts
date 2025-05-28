@@ -22,6 +22,9 @@ import { DxAccordionComponent } from 'devextreme-angular';
 import { AppUtilsService } from '@shared/utils/app-utils.service';
 import * as moment from 'moment';
 
+import notify from "devextreme/ui/notify";
+import { confirm } from "devextreme/ui/dialog";
+
 declare var bootstrap: any;
 
 @Component({
@@ -135,8 +138,13 @@ export class PurchaseOrdersComponent extends AppComponentBase implements OnInit 
         
     }
 
+    public openNewPurchaseOrderPopup(): void {
+        this.dataGrid.instance.addRow();
+    }
+
     public onInitNewRow(event: any): void {
-        this.purchaseOrdersChanges = new PurchaseOrdersDto();
+        this.purchaseOrdersChanges = new PurchaseOrdersDto();            
+        this.Editing = true;
     }
 
     public onEditingPurchaseOrder(event: any): void {
@@ -164,16 +172,48 @@ export class PurchaseOrdersComponent extends AppComponentBase implements OnInit 
             this.Editing = false;
         }
 
+        deletePurchaseOrder = (e: any) => {             
+            e.cancel = true;                          
+            confirm("¿Estás seguro de que deseas eliminar este registro?", "Confirmar eliminación")
+            .then((result) => {
+                if (result) {
+                    this._hotSheetservice.deletePurchaseOrder(e.row.data.purchaseOrderId)
+                    .pipe(
+                        finalize(() => {                                    
+                        })
+                    )
+                    .subscribe(() => {
+                        this.notify.success(this.l('SuccessfullyDeleted'), this.l('Purchase Order'));                            
+                        this.refresh();
+                    });
+                }
+            });           
+       
+          };
 
         public onSavingPurchaseOrder(e: any): void {
-                const change = e.changes[0];
-        
+                const change = e.changes[0];       
 
                 if (change || this.Editing) {
                     e.cancel = true;
         
-                    if (change != undefined && change.type === 'remove') {                      
-                        abp.notify.success(this.l('SuccessfullyDeleted'));
+                    if (change != undefined && change.type === 'remove') {    
+
+                        //LHH: Esto ya no funciona ya que pusimos [confirmDelete]="false" y nos fuimos por un boton personalizado
+                        //cambiando: <!-- <dxi-button name="delete"></dxi-button>     -->
+                        //por : <dxi-button icon="trash" hint="Eliminar" [onClick]="deletePurchaseOrder"></dxi-button>                            
+                        //por lo cual lo comentamos, jala bien pero trae un confirm por default sn permitir personalizar el texto.
+                          
+                        // this._hotSheetservice.deletePurchaseOrder(change.key)
+                        // .pipe(
+                        //     finalize(() => {                                    
+                        //     })
+                        // )
+                        // .subscribe(() => {
+                        //     this.notify.success(this.l('SuccessfullyDeleted'), this.l('Purchase Order'));                            
+                        //     this.refresh();
+                        // });
+                
                     } else if ((change != undefined && change.type === 'insert') || this.Editing) {
                         this._hotSheetservice
                             .createOrUpdatePurchaseOrder(this.purchaseOrdersChanges)

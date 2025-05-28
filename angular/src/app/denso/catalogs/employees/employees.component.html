@@ -30,25 +30,25 @@
                             <dxo-paging [pageSize]="20"></dxo-paging>
                             <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100, 150]" displayMode="compact"></dxo-pager>
                             <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
-                            <dxo-header-filter [visible]="true"></dxo-header-filter>
+                            <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
 
                             <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
                             <dxi-column caption="ID" dataField="densoEmployeeId" alignment="center" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'Credential' | localize" dataField="credential" [width]="120"></dxi-column>
+                            <!-- <dxi-column [caption]="'Credential' | localize" dataField="credential" [width]="120"></dxi-column> -->
                             <dxi-column [caption]="'Name' | localize" dataField="name" [width]="300" cellTemplate="nameCellTemplate"></dxi-column>
                             <div *dxTemplate="let info of 'nameCellTemplate'">
                                 <span>{{ info.data.name }} {{ info.data.surnames }}</span>
                             </div>
-                            <dxi-column [caption]="'EmployeeType' | localize" dataField="employeeType"></dxi-column>
+                            <!-- <dxi-column [caption]="'EmployeeType' | localize" dataField="employeeType"></dxi-column> -->
                             <dxi-column [caption]="'EmailAddress' | localize" dataField="emailAddress"></dxi-column>
-                            <dxi-column [caption]="'BirthDate' | localize" dataField="birthDate" dataType="date" format="MM-dd-yyyy"></dxi-column>
-                            <dxi-column [caption]="'NSS' | localize" dataField="nss"></dxi-column>
-                            <dxi-column [caption]="'CURP' | localize" dataField="curp"></dxi-column>
-                            <dxi-column [caption]="'EntryDate' | localize" dataField="entryDate" [width]="120" dataType="date" format="MM-dd-yyyy"></dxi-column>
+                            <!-- <dxi-column [caption]="'BirthDate' | localize" dataField="birthDate" dataType="date" format="MM-dd-yyyy"></dxi-column> -->
+                            <!-- <dxi-column [caption]="'NSS' | localize" dataField="nss"></dxi-column> -->
+                            <!-- <dxi-column [caption]="'CURP' | localize" dataField="curp"></dxi-column> -->
+                            <!-- <dxi-column [caption]="'EntryDate' | localize" dataField="entryDate" [width]="120" dataType="date" format="MM-dd-yyyy"></dxi-column> -->
                             <dxi-column [caption]="'Active' | localize" dataField="isActive" [width]="120"></dxi-column>
 
                             <dxo-editing mode="popup" [allowUpdating]="true" [useIcons]="true" [allowAdding]="true" [allowDeleting]="false">
-                                <dxo-popup [title]="'Employee' | localize" [showTitle]="true" [width]="900" [height]="popupHeight">
+                                <dxo-popup [title]="'Employee' | localize" [showTitle]="true" [width]="900" [height]="400">
                                     <dxi-toolbar-item
                                         widget="dxButton"
                                         toolbar="bottom"
@@ -76,12 +76,12 @@
                                         </div>
                                         <dxi-validation-rule type="required"></dxi-validation-rule>
                                     </dxi-item>
-                                    <dxi-item [label]="{ text: 'Credential' | localize }" [colSpan]="1">
+                                    <!-- <dxi-item [label]="{ text: 'Credential' | localize }" [colSpan]="1">
                                         <div *dxTemplate>
                                             <dx-number-box [(value)]="employeeChanges.credential"></dx-number-box>
                                         </div>
                                         <dxi-validation-rule type="required"></dxi-validation-rule>
-                                    </dxi-item>
+                                    </dxi-item> -->
 
                                     <dxi-item [label]="{ text: 'Name' | localize }" [colSpan]="1">
                                         <div *dxTemplate>
@@ -96,27 +96,28 @@
                                         <dxi-validation-rule type="required"></dxi-validation-rule>
                                     </dxi-item>
 
-                                    <dxi-item [label]="{ text: 'Rfc' | localize }" [colSpan]="1">
+                                    <!-- <dxi-item [label]="{ text: 'Rfc' | localize }" [colSpan]="1">
                                         <div *dxTemplate>
                                             <dx-text-box [(value)]="employeeChanges.rfc"></dx-text-box>
                                         </div>
-                                    </dxi-item>
-                                    <dxi-item [label]="{ text: 'BirthDate' | localize }" [colSpan]="1">
+                                    </dxi-item> -->
+                                    
+                                    <!-- <dxi-item [label]="{ text: 'BirthDate' | localize }" [colSpan]="1">
                                         <div *dxTemplate>
                                             <dx-date-box type="date" [(value)]="employeeChanges.birthDate" showClearButton="true"> </dx-date-box>
                                         </div>
-                                    </dxi-item>
+                                    </dxi-item> -->
 
-                                    <dxi-item [label]="{ text: 'Nss' | localize }" [colSpan]="1">
+                                    <!-- <dxi-item [label]="{ text: 'Nss' | localize }" [colSpan]="1">
                                         <div *dxTemplate>
                                             <dx-text-box [(value)]="employeeChanges.nss"></dx-text-box>
                                         </div>
-                                    </dxi-item>
-                                    <dxi-item [label]="{ text: 'Curp' | localize }" [colSpan]="1">
+                                    </dxi-item> -->
+                                    <!-- <dxi-item [label]="{ text: 'Curp' | localize }" [colSpan]="1">
                                         <div *dxTemplate>
                                             <dx-text-box [(value)]="employeeChanges.curp"></dx-text-box>
                                         </div>
-                                    </dxi-item>
+                                    </dxi-item> -->
 
                                     <dxi-item [label]="{ text: 'Department' | localize }" [colSpan]="2">
                                         <div *dxTemplate>
@@ -131,7 +132,7 @@
                                         </div>
                                         <dxi-validation-rule type="required"></dxi-validation-rule>
                                     </dxi-item>
-                                    <dxi-item [label]="{ text: 'Position' | localize }" [colSpan]="1">
+                                    <!-- <dxi-item [label]="{ text: 'Position' | localize }" [colSpan]="1">
                                         <div *dxTemplate>
                                             <dx-select-box
                                                 displayExpr="name"
@@ -142,8 +143,8 @@
                                             >
                                             </dx-select-box>
                                         </div>
-                                    </dxi-item>
-                                    <dxi-item [label]="{ text: 'Type' | localize }" [colSpan]="1">
+                                    </dxi-item> -->
+                                    <!-- <dxi-item [label]="{ text: 'Type' | localize }" [colSpan]="1">
                                         <div *dxTemplate>
                                             <dx-select-box
                                                 displayExpr="name"
@@ -154,7 +155,7 @@
                                             >
                                             </dx-select-box>
                                         </div>
-                                    </dxi-item>
+                                    </dxi-item> -->
 
                                     <dxi-item [label]="{ text: 'Plant' | localize }" [colSpan]="1">
                                         <div *dxTemplate>
@@ -169,40 +170,40 @@
                                         </div>
                                         <dxi-validation-rule type="required"></dxi-validation-rule>
                                     </dxi-item>
-                                    <dxi-item [label]="{ text: 'EntryDate' | localize }" [colSpan]="1">
+                                    <!-- <dxi-item [label]="{ text: 'EntryDate' | localize }" [colSpan]="1">
                                         <div *dxTemplate>
                                             <dx-date-box type="date" [(value)]="employeeChanges.entryDate" showClearButton="true"> </dx-date-box>
                                         </div>
                                         <dxi-validation-rule type="required"></dxi-validation-rule>
-                                    </dxi-item>
+                                    </dxi-item> -->
 
-                                    <dxi-item [label]="{ text: 'Extras' | localize }" [colSpan]="1">
+                                    <!-- <dxi-item [label]="{ text: 'Extras' | localize }" [colSpan]="1">
                                         <div *dxTemplate>
                                             <dx-check-box [(value)]="employeeChanges.extras"> </dx-check-box>
                                         </div>
-                                    </dxi-item>
-                                    <dxi-item [label]="{ text: 'NotRequiredAHE' | localize }" [colSpan]="1">
+                                    </dxi-item> -->
+                                    <!-- <dxi-item [label]="{ text: 'NotRequiredAHE' | localize }" [colSpan]="1">
                                         <div *dxTemplate>
                                             <dx-check-box [(value)]="employeeChanges.notRequiredAHE"> </dx-check-box>
                                         </div>
-                                    </dxi-item>
+                                    </dxi-item> -->
 
-                                    <dxi-item [label]="{ text: 'Supervisor' | localize }" [colSpan]="1">
+                                    <!-- <dxi-item [label]="{ text: 'Supervisor' | localize }" [colSpan]="1">
                                         <div *dxTemplate>
                                             <dx-check-box [(value)]="employeeChanges.supervisor"> </dx-check-box>
                                         </div>
-                                    </dxi-item>
-                                    <dxi-item [label]="{ text: 'Subsidy' | localize }" [colSpan]="1">
+                                    </dxi-item> -->
+                                    <!-- <dxi-item [label]="{ text: 'Subsidy' | localize }" [colSpan]="1">
                                         <div *dxTemplate>
                                             <dx-check-box [(value)]="employeeChanges.subsidy"> </dx-check-box>
                                         </div>
-                                    </dxi-item>
+                                    </dxi-item> -->
 
-                                    <dxi-item [label]="{ text: 'PositionLevel' | localize }" [colSpan]="1">
+                                    <!-- <dxi-item [label]="{ text: 'PositionLevel' | localize }" [colSpan]="1">
                                         <div *dxTemplate>
                                             <dx-check-box [(value)]="employeeChanges.positionLevel"> </dx-check-box>
                                         </div>
-                                    </dxi-item>
+                                    </dxi-item> -->
 
                                     <dxi-item [label]="{ text: 'Email' | localize }" [colSpan]="1">
                                         <div *dxTemplate>
@@ -211,30 +212,30 @@
                                         <dxi-validation-rule type="required"></dxi-validation-rule>
                                     </dxi-item>
 
-                                    <dxi-item [label]="{ text: 'AddressLine1' | localize }" [colSpan]="2">
+                                    <!-- <dxi-item [label]="{ text: 'AddressLine1' | localize }" [colSpan]="2">
                                         <div *dxTemplate>
                                             <dx-text-box [(value)]="employeeChanges.addressLine1"></dx-text-box>
                                         </div>
                                         <dxi-validation-rule type="required"></dxi-validation-rule>
-                                    </dxi-item>
+                                    </dxi-item> -->
 
-                                    <dxi-item [label]="{ text: 'AddressLine2' | localize }" [colSpan]="2">
+                                    <!-- <dxi-item [label]="{ text: 'AddressLine2' | localize }" [colSpan]="2">
                                         <div *dxTemplate>
                                             <dx-text-box [(value)]="employeeChanges.addressLine2"></dx-text-box>
                                         </div>
-                                    </dxi-item>
+                                    </dxi-item> -->
 
-                                    <dxi-item [label]="{ text: 'AddressLine3' | localize }" [colSpan]="2">
+                                    <!-- <dxi-item [label]="{ text: 'AddressLine3' | localize }" [colSpan]="2">
                                         <div *dxTemplate>
                                             <dx-text-box [(value)]="employeeChanges.addressLine3"></dx-text-box>
                                         </div>
-                                    </dxi-item>
+                                    </dxi-item> -->
 
-                                    <dxi-item [label]="{ text: 'AddressLine4' | localize }" [colSpan]="2">
+                                    <!-- <dxi-item [label]="{ text: 'AddressLine4' | localize }" [colSpan]="2">
                                         <div *dxTemplate>
                                             <dx-text-box [(value)]="employeeChanges.addressLine4"></dx-text-box>
                                         </div>
-                                    </dxi-item>
+                                    </dxi-item> -->
                                 </dxo-form>
                             </dxo-editing>
                         </dx-data-grid>
