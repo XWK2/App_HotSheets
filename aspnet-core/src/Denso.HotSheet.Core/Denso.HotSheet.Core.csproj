@@ -19,6 +19,7 @@
     <PackageReference Include="Abp.Dapper" Version="8.2.0" />
     <PackageReference Include="Abp.ZeroCore.EntityFrameworkCore" Version="8.1.0" />
     <PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="3.4.0" />
+    <PackageReference Include="Novell.Directory.Ldap.NETStandard" Version="4.0.0" />
     <PackageReference Include="System.Data.Odbc" Version="7.0.0" />
     <PackageReference Include="System.Data.OleDb" Version="7.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />

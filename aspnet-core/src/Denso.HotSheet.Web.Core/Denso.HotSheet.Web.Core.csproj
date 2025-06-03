@@ -34,5 +34,6 @@
     <PackageReference Include="Abp.AspNetCore" Version="8.1.0" />
     <PackageReference Include="Abp.ZeroCore" Version="8.1.0" />
     <PackageReference Include="Abp.AspNetCore.SignalR" Version="8.1.0" />
+    <PackageReference Include="System.DirectoryServices.Protocols" Version="9.0.5" />
   </ItemGroup>
 </Project>

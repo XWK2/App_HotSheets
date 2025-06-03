@@ -18,8 +18,18 @@ using Denso.HotSheet.Authorization.Users;
 using Denso.HotSheet.Models.TokenAuth;
 using Denso.HotSheet.MultiTenancy;
 
+using System.Web;
+using System.Net;
+
+using Microsoft.Extensions.Configuration;
+
+//using System.DirectoryServices.Protocols;
+using Novell.Directory.Ldap;
+
+
 namespace Denso.HotSheet.Controllers
 {
+    //System.Web.Http.  
     [Route("api/[controller]/[action]")]
     public class TokenAuthController : HotSheetControllerBase
     {
@@ -30,6 +40,7 @@ namespace Denso.HotSheet.Controllers
         private readonly IExternalAuthConfiguration _externalAuthConfiguration;
         private readonly IExternalAuthManager _externalAuthManager;
         private readonly UserRegistrationManager _userRegistrationManager;
+        private readonly IConfiguration _configurationAppSeetings;
 
         public TokenAuthController(
             LogInManager logInManager,
@@ -38,15 +49,106 @@ namespace Denso.HotSheet.Controllers
             TokenAuthConfiguration configuration,
             IExternalAuthConfiguration externalAuthConfiguration,
             IExternalAuthManager externalAuthManager,
-            UserRegistrationManager userRegistrationManager)
+            UserRegistrationManager userRegistrationManager,
+            IConfiguration configurationAppSeetings)
         {
             _logInManager = logInManager;
             _tenantCache = tenantCache;
-            _abpLoginResultTypeHelper = abpLoginResultTypeHelper;
-            _configuration = configuration;
+            _abpLoginResultTypeHelper = abpLoginResultTypeHelper;            
             _externalAuthConfiguration = externalAuthConfiguration;
             _externalAuthManager = externalAuthManager;
             _userRegistrationManager = userRegistrationManager;
+            _configurationAppSeetings = configurationAppSeetings;
+        }
+
+
+        [HttpGet]
+        public string GetUserName()
+        {
+            var name = HttpContext?.User?.Identity?.Name;
+            return name ?? "Desconocido";
+        }
+
+
+
+        //[HttpGet]
+        //public Task<bool> AuthenticateLdapAsync(string email, string password)
+        //{
+        //    if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+        //        return Task.FromResult(false);
+
+        //    string domain = _configurationAppSeetings["Ldap:Domain"] ?? throw new Exception("Ldap:Domain is not configured");
+        //    string ldapServer = _configurationAppSeetings["Ldap:LdapServer"] ?? throw new Exception("Ldap:LdapServer is not configured");
+
+        //    if (!int.TryParse(_configurationAppSeetings["Ldap:Port"], out int port))
+        //        throw new Exception("Ldap:Port is not a valid number");
+
+        //    if (!bool.TryParse(_configurationAppSeetings["Ldap:UseSsl"], out bool useSsl))
+        //        throw new Exception("Ldap:UseSsl is not a valid boolean");
+
+        //    try
+        //    {
+        //        string userDn = email.Contains("@") ? email : $"{email}@{domain}";
+
+        //        var connection = new LdapConnection();
+
+        //        connection.SecureSocketLayer = useSsl;                
+        //        connection.ConnectAsync(ldapServer, port);
+        //        connection.BindAsync(userDn, password);
+
+        //        return Task.FromResult(connection.Bound);
+        //    }
+        //    catch (LdapException ex)
+        //    {
+        //        Console.WriteLine($"LDAP Error: {ex.Message}");
+        //        return Task.FromResult(false);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"General Error: {ex.Message}");
+        //        return Task.FromResult(false);
+        //    }
+        //}
+
+        [HttpGet]
+        public async Task<bool> AuthenticateLdapAsync(string email, string password)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+                return false;
+
+            string domain = _configurationAppSeetings["Ldap:Domain"] ?? throw new Exception("Ldap:Domain is not configured");
+            string ldapServer = _configurationAppSeetings["Ldap:LdapServer"] ?? throw new Exception("Ldap:LdapServer is not configured");
+
+            if (!int.TryParse(_configurationAppSeetings["Ldap:Port"], out int port))
+                throw new Exception("Ldap:Port is not a valid number");
+
+            if (!bool.TryParse(_configurationAppSeetings["Ldap:UseSsl"], out bool useSsl))
+                throw new Exception("Ldap:UseSsl is not a valid boolean");
+
+            try
+            {
+                string userDn = email.Contains("@") ? email : $"{email}@{domain}";
+
+                var connection = new LdapConnection
+                {
+                    SecureSocketLayer = useSsl
+                };
+
+                await connection.ConnectAsync(ldapServer, port);
+                await connection.BindAsync(userDn, password);
+
+                return connection.Bound;
+            }
+            catch (LdapException ex)
+            {
+                Console.WriteLine($"LDAP Error: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"General Error: {ex.Message}");
+                return false;
+            }
         }
 
         [HttpPost]
