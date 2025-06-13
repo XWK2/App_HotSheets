@@ -516,6 +516,7 @@
 
     <text name="Comments" value="Comentarios" />
     <text name="StarSheetInfo" value="Información Hoja Estrella" />
+    <text name="StarSheetInfoUpdated" value="Información Hojas Estrellas Actualizadas" />
     <text name="StarSheetFile" value="Documento de Hoja Estrella" />
     
     <text name="HotSheetInfo" value="Información Hoja Caliente" />

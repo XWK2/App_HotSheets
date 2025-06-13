@@ -17,6 +17,6 @@
   ],
   "helpDocumentUrl": "http://localhost:4200/assets/documents/Shipping Web Manual de Usuario.docx",
   "templateNPUrl": "http://localhost:4200/assets/documents/NP Nacionales.xlsx",
-  "hotSheetsPrintUrl": "http://localhost:4200/app/shipping/instructions-details/print/{id}/false",
-  "wsPortalHotSheetsUrl": "http://localhost:55688/WSPortalShipping.asmx"
+  "hotSheetsPrintUrl": "http://localhost:4200/app/shipping/instructions-details/print/{id}/false",  
+  "wsPortalHotSheetsUrl": "http://localhost/WSPortalShipping/WSPortalShipping.asmx"
 }

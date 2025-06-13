@@ -42,6 +42,7 @@ namespace Denso.HotSheet.Sheets.Dto
 
         public int ExistComment { get;set; }
 
+        public decimal Stock2 { get; set; }
 
     }
 }

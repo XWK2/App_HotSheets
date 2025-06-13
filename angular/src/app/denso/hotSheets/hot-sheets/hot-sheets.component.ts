@@ -21,6 +21,7 @@ import { cloneDeep, toInteger } from 'lodash-es';
 import { DxAccordionComponent } from 'devextreme-angular';
 import { AppUtilsService } from '@shared/utils/app-utils.service';
 import * as moment from 'moment';
+import { WsPortalShippingService } from '@app/denso/shared/services/ws-portal-shipping.service';
 
 declare var bootstrap: any;
 
@@ -100,7 +101,8 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
         private _hotSheetservice: HotSheetServiceProxy, 
         private _tokenService: TokenService, 
         private _userService: UserServiceProxy, 
-        private _catalogService: CatalogServiceProxy ) {
+        private _catalogService: CatalogServiceProxy,
+        private _wsPortalShippingService: WsPortalShippingService) {
         super(injector);
         this.timeShortage = new Date();
 
@@ -223,14 +225,20 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
             this.hotSheetChanges.unitNumber = newhotSheet.unitNumber;
             this.hotSheetChanges.etaDNMX = newhotSheet.etaDNMX;
             this.hotSheetChanges.shortageShiftId = newhotSheet.shortageShiftId;                                    
-            this.hotSheetChanges.realShortageDate = newhotSheet.realShortageDate;                
+            //this.hotSheetChanges.realShortageDate = newhotSheet.realShortageDate;                
             this.hotSheetChanges.shortage = newhotSheet.shortage;
-            const shortage = newhotSheet.shortage;
-            const shortageVal = newhotSheet.shortageVal;      
-            const parts = shortageVal.split(":");
-            const hora = parseInt(parts[0].toString());
-            const min =parseInt(parts[1].toString());
-            const seg = parseInt(parts[2].toString());
+            
+            // const shortage = newhotSheet.shortage;            
+            // const shortageVal = newhotSheet.shortageVal;  
+            // const parts = shortageVal.split(":");
+            // const hora = parseInt(parts[0].toString());
+            // const min =parseInt(parts[1].toString());
+            // const seg = parseInt(parts[2].toString());
+
+            const ahora = new Date();
+            const hora = parseInt(this.agregarCeros(ahora.getHours()));
+            const min = parseInt(this.agregarCeros(ahora.getMinutes()));
+            const seg = parseInt(this.agregarCeros(ahora.getSeconds()));
 
             this.timeShortage = new Date(2025,1,1,hora,min,seg);
             //this.timeShortage = newhotSheet.shortageVal;
@@ -251,7 +259,11 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
                 this.hotSheetComments = responses[1];       
                 this.isLoadingData = false;
             });
-        }        
+        }       
+        
+        agregarCeros(valor: number): string {
+            return valor < 10 ? '0' + valor : valor.toString();
+         }
 
         public onEditCanceling(event: any) {
             this.Editing = false;
@@ -262,7 +274,7 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
                 const change = e.changes[0];
         
                 //veremos como viene el dato
-                var ok= this.timeShortage;
+                //var ok= this.timeShortage;
 
                 if (change || this.Editing) {
                     e.cancel = true;
@@ -675,6 +687,10 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
       }
 
       
+      public wsPortalShippingUpdateStarSheets(): void {
+        let wsPortalShippingUrls: string[] = [AppConsts.wsPortalHotSheetsUrl + '/UpdateStarSheets'];
 
+        this._wsPortalShippingService.UpdateShippingInfo(wsPortalShippingUrls, this.l('StarSheetInfo'), this);
+    }
 
 }

@@ -30,8 +30,8 @@ namespace Denso.HotSheet.Authorization.Users
         private readonly IRepository<DepartmentUser, long> _departmentUserRepository;
         private readonly IRepository<PlantUser, long> _plantUserRepository;
 
-        //const string passwordBaseUser = "123qwe";
-        const string passwordBaseUser = "Denso123";
+        const string passwordBaseUser = "123qwe";
+        //const string passwordBaseUser = "Denso123";
 
         public UserRegistrationManager(
             TenantManager tenantManager,

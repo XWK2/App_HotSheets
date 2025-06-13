@@ -21,6 +21,7 @@ import { cloneDeep, toInteger } from 'lodash-es';
 import { DxAccordionComponent } from 'devextreme-angular';
 import { AppUtilsService } from '@shared/utils/app-utils.service';
 import * as moment from 'moment';
+import { WsPortalShippingService } from '@app/denso/shared/services/ws-portal-shipping.service';
 
 declare var bootstrap: any;
 
@@ -102,7 +103,8 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
         private _hotheetservice: HotSheetServiceProxy, 
         private _tokenService: TokenService, 
         private _userService: UserServiceProxy, 
-        private _catalogService: CatalogServiceProxy ) {
+        private _catalogService: CatalogServiceProxy,
+        private _wsPortalShippingService: WsPortalShippingService) {
         super(injector);
         this.timeShortage = new Date();
 
@@ -709,5 +711,12 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
       onSelectionChanged(e: any) {
         this.selectedRows = e.selectedRowsData;
       }
+
+
+      public wsPortalShippingUpdateStarSheets(): void {
+        let wsPortalShippingUrls: string[] = [AppConsts.wsPortalHotSheetsUrl + '/UpdateDataStarSheets'];
+
+        this._wsPortalShippingService.UpdateShippingInfo(wsPortalShippingUrls, this.l('StarSheetInfo'), this);
+    }
 
 }

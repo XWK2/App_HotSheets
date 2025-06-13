@@ -17,7 +17,7 @@ export class WsPortalShippingService {
                     .then((responses) => {
                         responses.map((response) => {
                             console.log(response.status);
-                            component.notify.success(component.l('UpdateShippingInfoUpdated', catalogName), component.l('ShippingInstructions'));
+                            component.notify.success(component.l('UpdateShippingInfoUpdated', catalogName), component.l('HotSheetInfo'));
                             abp.ui.clearBusy();
                         });
                     })

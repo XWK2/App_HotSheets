@@ -18,8 +18,8 @@ using Denso.HotSheet.Authorization.Users;
 using Denso.HotSheet.Models.TokenAuth;
 using Denso.HotSheet.MultiTenancy;
 
-using System.Web;
-using System.Net;
+//using System.Web;
+//using System.Net;
 
 using Microsoft.Extensions.Configuration;
 
@@ -50,11 +50,13 @@ namespace Denso.HotSheet.Controllers
             IExternalAuthConfiguration externalAuthConfiguration,
             IExternalAuthManager externalAuthManager,
             UserRegistrationManager userRegistrationManager,
-            IConfiguration configurationAppSeetings)
+            IConfiguration configurationAppSeetings
+        )
         {
             _logInManager = logInManager;
             _tenantCache = tenantCache;
-            _abpLoginResultTypeHelper = abpLoginResultTypeHelper;            
+            _abpLoginResultTypeHelper = abpLoginResultTypeHelper;
+            _configuration = configuration;
             _externalAuthConfiguration = externalAuthConfiguration;
             _externalAuthManager = externalAuthManager;
             _userRegistrationManager = userRegistrationManager;
@@ -141,12 +143,12 @@ namespace Denso.HotSheet.Controllers
             }
             catch (LdapException ex)
             {
-                Console.WriteLine($"LDAP Error: {ex.Message}");
+                //Console.WriteLine($"LDAP Error: {ex.Message}");
                 return false;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"General Error: {ex.Message}");
+                //Console.WriteLine($"General Error: {ex.Message}");
                 return false;
             }
         }

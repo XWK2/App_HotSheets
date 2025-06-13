@@ -357,14 +357,21 @@ namespace Denso.HotSheet.Sheets
                     var hotSheet = await _hotSheetsRepository.GetAsync(input.Id.Value);
                     if (hotSheet != null)
                     {
-                        hotSheet.TransportModeId = input.TransportModeId;
+                        if (input.TransportModeId != 0) {
+                            hotSheet.TransportModeId = input.TransportModeId;
+                        }
+              
                         hotSheet.DeliveryOrder = input.DeliveryOrder;
                         hotSheet.TrafficContainerFX = input.TrafficContainerFX;
                         hotSheet.UnitNumber = input.UnitNumber;
                         hotSheet.EtaDNMX = input.EtaDNMX;
-                        hotSheet.ShortageShiftId = input.ShortageShiftId;
+                        if (input.ShortageShiftId != 0)
+                        {
+                            hotSheet.ShortageShiftId = input.ShortageShiftId;
+                        }
+                        
                         hotSheet.PCComments = input.PCComments;
-                        hotSheet.RealShortageDate = input.RealShortageDate;
+                        //hotSheet.RealShortageDate = input.RealShortageDate;
                         hotSheet.Shortage = input.Shortage;
 
                         hotSheet.ShortageShift = null;

@@ -35,6 +35,18 @@ namespace Denso.HotSheet.Sheets.Dto
         public ShortageShiftDto ShortageShift { get; set; }
         public string Shortage { get; set; }
         public int ASN { get; set; }
-        public string PCComments { get; set; }       
+        public string PCComments { get; set; }
+
+        //Campos nuevos inicio
+        public decimal StockShortageDate { get; set; }
+        public string ShortagePriority { get; set; }
+        public decimal OnHandTotalQty { get; set; }
+        public decimal RequirementTotalQty { get; set; }
+        public decimal OverDefProdQtyFromParentPartNo { get; set; }
+        public decimal OverDefRecQty { get; set; }
+        public decimal ShortageNoticeDateFrom { get; set; }
+        public decimal Stock2 { get; set; }
+        //Campos nuevos fin
+
     }
 }

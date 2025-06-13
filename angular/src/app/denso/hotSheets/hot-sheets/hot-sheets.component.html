@@ -5,6 +5,7 @@
                 <div class="col-2">
                     <h1 class="denso-page-title"><i class="fa-solid fa-square-poll-vertical"></i>&nbsp;{{ 'HotSheets' | localize }}</h1>
                 </div>
+                
                 <div class="col-10 text-right">
                     <dx-form colCount="12">
                          <!-- <dxi-item [label]="{ text: 'Status' | localize }" [colSpan]="3">
@@ -161,7 +162,7 @@
                                                                     </dx-date-box>
                                                                 </div>
                                                             </dxi-item>
-                                                            <dxi-item [label]="{ text: 'RealShortageDate' | localize }" [colSpan]="1">
+                                                            <!-- <dxi-item [label]="{ text: 'RealShortageDate' | localize }" [colSpan]="1">
                                                                 <div *dxTemplate>
                                                                     <dx-date-box 
                                                                         type="date" 
@@ -171,7 +172,7 @@
                                                                     </dx-date-box>
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
-                                                            </dxi-item>
+                                                            </dxi-item> -->
                         
                                                             <dxi-item [label]="{ text: 'Shortage' | localize }" [colSpan]="2">
                                                                 <div *dxTemplate>
@@ -526,7 +527,8 @@
                                 <dxi-column [caption]="'ShortageShiftName' | localize" dataField="shortageShiftName" [width]="150"></dxi-column>                            
                                 <dxi-column [caption]="'ShortageTime' | localize" dataField="shortageVal" [width]="150"></dxi-column>                                                                  
                             </dxi-column>
-                            <dxi-column [caption]="'ASN' | localize" dataField="asn" [width]="70"></dxi-column>
+                            <dxi-column [caption]="'ASN' | localize" dataField="asn" [width]="80"></dxi-column>
+                            <dxi-column [caption]="'Stock2' | localize" dataField="stock2" [width]="90"></dxi-column>
                             <dxi-column [caption]="'ExistComment' | localize" dataField="existComment" [width]="70"></dxi-column>
                             <!-- <dxi-column [caption]="'PCComments' | localize" dataField="pcComments" [width]="250"></dxi-column> -->
                             

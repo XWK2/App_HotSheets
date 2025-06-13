@@ -518,6 +518,7 @@
 
     <text name="Comments" value="Comments" />
     <text name="StarSheetInfo" value="StarSheet Information" />
+    <text name="StarSheetInfoUpdated" value="StarSheet Information Updated" />
     <text name="StarSheetFile" value="StarSheet Document" />
     
     <text name="HotSheetInfo" value="HotSheet Information" />

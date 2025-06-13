@@ -6,9 +6,10 @@ import { AppAuthService } from '@shared/auth/app-auth.service';
 
 import {
   AuthenticateModel,
-  AuthenticateResultModel,
+  AuthenticateResultModel,  
   TokenAuthServiceProxy,  
 } from '@shared/service-proxies/service-proxies';
+
 
 @Component({
   templateUrl: './login.component.html',
@@ -17,7 +18,7 @@ import {
 export class LoginComponent extends AppComponentBase {
   submitting = false;
   
-  //Aqui pondria el codigo.
+  //Aqui pondria el codigo. 
   userName: string = '';
 
   constructor(

@@ -12173,6 +12173,7 @@ export class HotSheetsDto implements IHotSheetsDto {
     shortage: string | undefined;
     asn: number;
     pcComments: string | undefined;
+    stock2: number;
 
     constructor(data?: IHotSheetsDto) {
         if (data) {
@@ -12210,6 +12211,7 @@ export class HotSheetsDto implements IHotSheetsDto {
             this.shortage = _data["shortage"];
             this.asn = _data["asn"];
             this.pcComments = _data["pcComments"];
+            this.stock2 = _data["stock2"];
         }
     }
 
@@ -12247,6 +12249,7 @@ export class HotSheetsDto implements IHotSheetsDto {
         data["shortage"] = this.shortage;
         data["asn"] = this.asn;
         data["pcComments"] = this.pcComments;
+        data["stock2"] = this.stock2;
         return data;
     }
 
@@ -12284,6 +12287,7 @@ export interface IHotSheetsDto {
     shortage: string | undefined;
     asn: number;
     pcComments: string | undefined;
+    stock2: number;
 }
 
 export class HotSheetsItemDetailDto implements IHotSheetsItemDetailDto {
@@ -12466,6 +12470,7 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
     pcComments: string | undefined;
     creationDate: moment.Moment | undefined;
     existComment: number;
+    stock2: number;
 
     constructor(data?: IHotSheetsItemDto) {
         if (data) {
@@ -12506,6 +12511,7 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
             this.pcComments = _data["pcComments"];
             this.creationDate = _data["creationDate"] ? moment(_data["creationDate"].toString()) : <any>undefined;
             this.existComment = _data["existComment"];
+            this.stock2 = _data["stock2"];
         }
     }
 
@@ -12546,6 +12552,7 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
         data["pcComments"] = this.pcComments;
         data["creationDate"] = this.creationDate ? this.creationDate.toISOString() : <any>undefined;
         data["existComment"] = this.existComment;
+        data["stock2"] = this.stock2;
         return data;
     }
 
@@ -12586,6 +12593,7 @@ export interface IHotSheetsItemDto {
     pcComments: string | undefined;
     creationDate: moment.Moment | undefined;
     existComment: number;
+    stock2: number;
 }
 
 export class Int64EntityDto implements IInt64EntityDto {
@@ -15529,6 +15537,14 @@ export class StarSheetsDto implements IStarSheetsDto {
     shortage: string | undefined;
     asn: number;
     pcComments: string | undefined;
+    stockShortageDate: number;
+    shortagePriority: string | undefined;
+    onHandTotalQty: number;
+    requirementTotalQty: number;
+    overDefProdQtyFromParentPartNo: number;
+    overDefRecQty: number;
+    shortageNoticeDateFrom: number;
+    stock2: number;
 
     constructor(data?: IStarSheetsDto) {
         if (data) {
@@ -15566,6 +15582,14 @@ export class StarSheetsDto implements IStarSheetsDto {
             this.shortage = _data["shortage"];
             this.asn = _data["asn"];
             this.pcComments = _data["pcComments"];
+            this.stockShortageDate = _data["stockShortageDate"];
+            this.shortagePriority = _data["shortagePriority"];
+            this.onHandTotalQty = _data["onHandTotalQty"];
+            this.requirementTotalQty = _data["requirementTotalQty"];
+            this.overDefProdQtyFromParentPartNo = _data["overDefProdQtyFromParentPartNo"];
+            this.overDefRecQty = _data["overDefRecQty"];
+            this.shortageNoticeDateFrom = _data["shortageNoticeDateFrom"];
+            this.stock2 = _data["stock2"];
         }
     }
 
@@ -15603,6 +15627,14 @@ export class StarSheetsDto implements IStarSheetsDto {
         data["shortage"] = this.shortage;
         data["asn"] = this.asn;
         data["pcComments"] = this.pcComments;
+        data["stockShortageDate"] = this.stockShortageDate;
+        data["shortagePriority"] = this.shortagePriority;
+        data["onHandTotalQty"] = this.onHandTotalQty;
+        data["requirementTotalQty"] = this.requirementTotalQty;
+        data["overDefProdQtyFromParentPartNo"] = this.overDefProdQtyFromParentPartNo;
+        data["overDefRecQty"] = this.overDefRecQty;
+        data["shortageNoticeDateFrom"] = this.shortageNoticeDateFrom;
+        data["stock2"] = this.stock2;
         return data;
     }
 
@@ -15640,6 +15672,14 @@ export interface IStarSheetsDto {
     shortage: string | undefined;
     asn: number;
     pcComments: string | undefined;
+    stockShortageDate: number;
+    shortagePriority: string | undefined;
+    onHandTotalQty: number;
+    requirementTotalQty: number;
+    overDefProdQtyFromParentPartNo: number;
+    overDefRecQty: number;
+    shortageNoticeDateFrom: number;
+    stock2: number;
 }
 
 export class StarSheetsItemDetailDto implements IStarSheetsItemDetailDto {
@@ -15668,6 +15708,14 @@ export class StarSheetsItemDetailDto implements IStarSheetsItemDetailDto {
     shortage: string | undefined;
     shortageVal: string | undefined;
     pcComments: string | undefined;
+    stockShortageDate: number;
+    shortagePriority: string | undefined;
+    onHandTotalQty: number;
+    requirementTotalQty: number;
+    overDefProdQtyFromParentPartNo: number;
+    overDefRecQty: number;
+    shortageNoticeDateFrom: number;
+    stock2: number;
     files: FileDto[] | undefined;
 
     constructor(data?: IStarSheetsItemDetailDto) {
@@ -15706,6 +15754,14 @@ export class StarSheetsItemDetailDto implements IStarSheetsItemDetailDto {
             this.shortage = _data["shortage"];
             this.shortageVal = _data["shortageVal"];
             this.pcComments = _data["pcComments"];
+            this.stockShortageDate = _data["stockShortageDate"];
+            this.shortagePriority = _data["shortagePriority"];
+            this.onHandTotalQty = _data["onHandTotalQty"];
+            this.requirementTotalQty = _data["requirementTotalQty"];
+            this.overDefProdQtyFromParentPartNo = _data["overDefProdQtyFromParentPartNo"];
+            this.overDefRecQty = _data["overDefRecQty"];
+            this.shortageNoticeDateFrom = _data["shortageNoticeDateFrom"];
+            this.stock2 = _data["stock2"];
             if (Array.isArray(_data["files"])) {
                 this.files = [] as any;
                 for (let item of _data["files"])
@@ -15748,6 +15804,14 @@ export class StarSheetsItemDetailDto implements IStarSheetsItemDetailDto {
         data["shortage"] = this.shortage;
         data["shortageVal"] = this.shortageVal;
         data["pcComments"] = this.pcComments;
+        data["stockShortageDate"] = this.stockShortageDate;
+        data["shortagePriority"] = this.shortagePriority;
+        data["onHandTotalQty"] = this.onHandTotalQty;
+        data["requirementTotalQty"] = this.requirementTotalQty;
+        data["overDefProdQtyFromParentPartNo"] = this.overDefProdQtyFromParentPartNo;
+        data["overDefRecQty"] = this.overDefRecQty;
+        data["shortageNoticeDateFrom"] = this.shortageNoticeDateFrom;
+        data["stock2"] = this.stock2;
         if (Array.isArray(this.files)) {
             data["files"] = [];
             for (let item of this.files)
@@ -15790,6 +15854,14 @@ export interface IStarSheetsItemDetailDto {
     shortage: string | undefined;
     shortageVal: string | undefined;
     pcComments: string | undefined;
+    stockShortageDate: number;
+    shortagePriority: string | undefined;
+    onHandTotalQty: number;
+    requirementTotalQty: number;
+    overDefProdQtyFromParentPartNo: number;
+    overDefRecQty: number;
+    shortageNoticeDateFrom: number;
+    stock2: number;
     files: FileDto[] | undefined;
 }
 
@@ -15822,6 +15894,14 @@ export class StarSheetsItemDto implements IStarSheetsItemDto {
     pcComments: string | undefined;
     creationDate: moment.Moment | undefined;
     existComment: number;
+    stockShortageDate: number;
+    shortagePriority: string | undefined;
+    onHandTotalQty: number;
+    requirementTotalQty: number;
+    overDefProdQtyFromParentPartNo: number;
+    overDefRecQty: number;
+    shortageNoticeDateFrom: number;
+    stock2: number;
 
     constructor(data?: IStarSheetsItemDto) {
         if (data) {
@@ -15862,6 +15942,14 @@ export class StarSheetsItemDto implements IStarSheetsItemDto {
             this.pcComments = _data["pcComments"];
             this.creationDate = _data["creationDate"] ? moment(_data["creationDate"].toString()) : <any>undefined;
             this.existComment = _data["existComment"];
+            this.stockShortageDate = _data["stockShortageDate"];
+            this.shortagePriority = _data["shortagePriority"];
+            this.onHandTotalQty = _data["onHandTotalQty"];
+            this.requirementTotalQty = _data["requirementTotalQty"];
+            this.overDefProdQtyFromParentPartNo = _data["overDefProdQtyFromParentPartNo"];
+            this.overDefRecQty = _data["overDefRecQty"];
+            this.shortageNoticeDateFrom = _data["shortageNoticeDateFrom"];
+            this.stock2 = _data["stock2"];
         }
     }
 
@@ -15902,6 +15990,14 @@ export class StarSheetsItemDto implements IStarSheetsItemDto {
         data["pcComments"] = this.pcComments;
         data["creationDate"] = this.creationDate ? this.creationDate.toISOString() : <any>undefined;
         data["existComment"] = this.existComment;
+        data["stockShortageDate"] = this.stockShortageDate;
+        data["shortagePriority"] = this.shortagePriority;
+        data["onHandTotalQty"] = this.onHandTotalQty;
+        data["requirementTotalQty"] = this.requirementTotalQty;
+        data["overDefProdQtyFromParentPartNo"] = this.overDefProdQtyFromParentPartNo;
+        data["overDefRecQty"] = this.overDefRecQty;
+        data["shortageNoticeDateFrom"] = this.shortageNoticeDateFrom;
+        data["stock2"] = this.stock2;
         return data;
     }
 
@@ -15942,6 +16038,14 @@ export interface IStarSheetsItemDto {
     pcComments: string | undefined;
     creationDate: moment.Moment | undefined;
     existComment: number;
+    stockShortageDate: number;
+    shortagePriority: string | undefined;
+    onHandTotalQty: number;
+    requirementTotalQty: number;
+    overDefProdQtyFromParentPartNo: number;
+    overDefRecQty: number;
+    shortageNoticeDateFrom: number;
+    stock2: number;
 }
 
 export class StatusHotSheetDto implements IStatusHotSheetDto {
