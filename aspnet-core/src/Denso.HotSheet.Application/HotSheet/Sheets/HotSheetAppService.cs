@@ -182,11 +182,10 @@ namespace Denso.HotSheet.Sheets
         [HttpPost]
         public async Task<List<StarSheetsItemDto>> GetStarSheets(GetStarSheetInput input)
         {
-            string sqlQuery = "EXEC GetStarSheets @UserId, @StatusHS, @StartDate, @EndDate";
+            string sqlQuery = "EXEC GetStarSheets @UserId, @StartDate, @EndDate";
             var sqlParams = new
             {
-                UserId = AbpSession.UserId,
-                StatusHS = input.StatusHS,
+                UserId = AbpSession.UserId,                
                 StartDate = input.StartDate,
                 EndDate = input.EndDate,
             };
@@ -466,15 +465,15 @@ namespace Denso.HotSheet.Sheets
                     var starSheet = await _hotSheetsRepository.GetAsync(input.Id.Value);
                     if (starSheet != null)
                     {
-                        starSheet.TransportModeId = input.TransportModeId;
-                        starSheet.DeliveryOrder = input.DeliveryOrder;
-                        starSheet.TrafficContainerFX = input.TrafficContainerFX;
-                        starSheet.UnitNumber = input.UnitNumber;
-                        starSheet.EtaDNMX = input.EtaDNMX;
-                        starSheet.ShortageShiftId = input.ShortageShiftId;
+                        //starSheet.TransportModeId = input.TransportModeId;
+                        //starSheet.DeliveryOrder = input.DeliveryOrder;
+                        //starSheet.TrafficContainerFX = input.TrafficContainerFX;
+                        //starSheet.UnitNumber = input.UnitNumber;
+                        //starSheet.EtaDNMX = input.EtaDNMX;
+                        //starSheet.ShortageShiftId = input.ShortageShiftId;
                         starSheet.PCComments = input.PCComments;
-                        starSheet.RealShortageDate = input.RealShortageDate;
-                        starSheet.Shortage = input.Shortage;
+                        //starSheet.RealShortageDate = input.RealShortageDate;
+                        //starSheet.Shortage = input.Shortage;
 
                         starSheet.ShortageShift = null;
                         starSheet.TransportMode = null;

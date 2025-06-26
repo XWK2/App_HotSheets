@@ -687,10 +687,6 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
       }
 
       
-      public wsPortalShippingUpdateStarSheets(): void {
-        let wsPortalShippingUrls: string[] = [AppConsts.wsPortalHotSheetsUrl + '/UpdateStarSheets'];
-
-        this._wsPortalShippingService.UpdateShippingInfo(wsPortalShippingUrls, this.l('StarSheetInfo'), this);
-    }
+     
 
 }

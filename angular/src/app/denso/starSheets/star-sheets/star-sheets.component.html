@@ -115,7 +115,7 @@
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
                                                             </dxi-item>
 
-                                                            <dxi-item [label]="{ text: 'TrafficContainerFX' | localize }" [colSpan]="2">
+                                                            <!-- <dxi-item [label]="{ text: 'TrafficContainerFX' | localize }" [colSpan]="2">
                                                                 <div *dxTemplate>
                                                                     <dx-text-box 
                                                                         [(value)]="starSheetChanges.trafficContainerFX"
@@ -123,8 +123,8 @@
                                                                     </dx-text-box>
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
-                                                            </dxi-item>
-                                                            <dxi-item [label]="{ text: 'UnitNumber' | localize }" [colSpan]="2">
+                                                            </dxi-item> -->
+                                                            <!-- <dxi-item [label]="{ text: 'UnitNumber' | localize }" [colSpan]="2">
                                                                 <div *dxTemplate>
                                                                     <dx-text-box 
                                                                         [(value)]="starSheetChanges.unitNumber"
@@ -132,9 +132,9 @@
                                                                     </dx-text-box>
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
-                                                            </dxi-item>
+                                                            </dxi-item> -->
                         
-                                                            <dxi-item [label]="{ text: 'TransportMode' | localize }" [colSpan]="1">
+                                                            <!-- <dxi-item [label]="{ text: 'TransportMode' | localize }" [colSpan]="1">
                                                                 <div *dxTemplate>
                                                                     <dx-select-box
                                                                         displayExpr="description"
@@ -146,9 +146,9 @@
                                                                     </dx-select-box>
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
-                                                            </dxi-item>
+                                                            </dxi-item> -->
                         
-                                                            <dxi-item [label]="{ text: 'ShortageShift' | localize }" [colSpan]="1">
+                                                            <!-- <dxi-item [label]="{ text: 'ShortageShift' | localize }" [colSpan]="1">
                                                                 <div *dxTemplate>
                                                                     <dx-select-box
                                                                         displayExpr="description"
@@ -161,8 +161,8 @@
                                                                     </dx-select-box>
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
-                                                            </dxi-item>                                    
-                                                            <dxi-item [label]="{ text: 'EtaDNMX' | localize }" [colSpan]="1">
+                                                            </dxi-item>                                     -->
+                                                            <!-- <dxi-item [label]="{ text: 'EtaDNMX' | localize }" [colSpan]="1">
                                                                 <div *dxTemplate>
                                                                     <dx-date-box 
                                                                         type="date" 
@@ -171,8 +171,8 @@
                                                                         [readOnly]="!enabledEditInfo">
                                                                     </dx-date-box>
                                                                 </div>
-                                                            </dxi-item>
-                                                            <dxi-item [label]="{ text: 'RealShortageDate' | localize }" [colSpan]="1">
+                                                            </dxi-item> -->
+                                                            <!-- <dxi-item [label]="{ text: 'RealShortageDate' | localize }" [colSpan]="1">
                                                                 <div *dxTemplate>
                                                                     <dx-date-box 
                                                                         type="date" 
@@ -182,7 +182,7 @@
                                                                     </dx-date-box>
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
-                                                            </dxi-item>
+                                                            </dxi-item> -->
                         
                                                             <dxi-item [label]="{ text: 'Shortage' | localize }" [colSpan]="2">
                                                                 <div *dxTemplate>
@@ -502,26 +502,32 @@
                                 <dxi-column [caption]="'PartNumberCodeHS' | localize" dataField="partNumber" [width]="130"></dxi-column>
                                 <dxi-column [caption]="'PartDescriptionHS' | localize" dataField="partDescription" [width]="250"></dxi-column>
                             </dxi-column>                                                    
+                            <dxi-column [caption]="'DateSearch' | localize" dataField="dateSearch" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'OrderQty' | localize" dataField="orderQty" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'DeliveryOrder' | localize" dataField="deliveryOrder" [width]="100"></dxi-column>  
+                            <dxi-column [caption]="'DelQty' | localize" dataField="delQty" [width]="100"></dxi-column>  
+                            <dxi-column [caption]="'ASN' | localize" dataField="asn" [width]="100"></dxi-column>                              
                             <dxi-column [caption]="'InTransitQty' | localize" dataField="inTransitQty" [width]="100"></dxi-column>
-                            <!-- <dxi-column [caption]="'DiaStockIn' | localize" dataField="diaStockIn" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'DiaLocation' | localize" dataField="diaLocation" [width]="100"></dxi-column> -->
+                            <dxi-column [caption]="'ADate' | localize" dataField="aDate" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'RCVD' | localize" dataField="RCVD" [width]="100"></dxi-column>
                             <dxi-column [caption]="'CIGMAReceived' | localize" dataField="cigmaReceived" [width]="120"></dxi-column>
                             <!-- <dxi-column [caption]="'TransportMode' | localize">
                                 <dxi-column [caption]="'TransportModeId' | localize" dataField="transportModeId" [width]="50"></dxi-column>
                                 <dxi-column [caption]="'TransportModeName' | localize" dataField="transportModeName" [width]="250"></dxi-column>
                             </dxi-column> -->
-                            
-                            <dxi-column [caption]="'DeliveryOrder' | localize" dataField="deliveryOrder" [width]="150"></dxi-column>
-
-                            <!-- <dxi-column [caption]="'TrafficContainerFX' | localize" dataField="trafficContainerFX" [width]="250"></dxi-column> -->
-                            <!-- <dxi-column [caption]="'UnitNumber' | localize" dataField="unitNumber" [width]="150"></dxi-column>                             -->
-                            <!-- <dxi-column
-                                [caption]="'EtaDNMX' | localize"
-                                dataField="etaDNMX"
+                            <dxi-column
+                                [caption]="'DueDate' | localize"
+                                dataField="dueDate"
                                 [width]="150"
                                 dataType="date"
                                 format="yyyy-MM-dd"
-                            ></dxi-column> -->
+                            ></dxi-column>
+                            <dxi-column [caption]="'ReceivedQty' | localize" dataField="receivedQty" [width]="150"></dxi-column>
+
+                            <dxi-column [caption]="'Container' | localize" dataField="container" [width]="250"></dxi-column>
+                            <dxi-column [caption]="'Stock1' | localize" dataField="stock1" [width]="150"></dxi-column>  
+                            <dxi-column [caption]="'Stock2' | localize" dataField="stock2" [width]="150"></dxi-column>                             -->
+                           
                             <!-- <dxi-column [caption]="'Status' | localize">
                                 <dxi-column [caption]="'StatusId' | localize" dataField="statusId" [width]="50"></dxi-column>
                                 <dxi-column [caption]="'StatusHotSheetName' | localize" dataField="statusHotSheetName" [width]="150"></dxi-column>                            
@@ -540,18 +546,18 @@
                                 <dxi-column [caption]="'ShortageShiftName' | localize" dataField="shortageShiftName" [width]="150"></dxi-column>                            
                                 <dxi-column [caption]="'ShortageTime' | localize" dataField="shortageVal" [width]="150"></dxi-column>                                                                  
                             </dxi-column> -->
-                            <dxi-column [caption]="'ASN' | localize" dataField="asn" [width]="70"></dxi-column>
+                            <!-- <dxi-column [caption]="'ASN' | localize" dataField="asn" [width]="70"></dxi-column> -->
                             <!-- <dxi-column [caption]="'ExistComment' | localize" dataField="existComment" [width]="70"></dxi-column> -->
                             <!-- <dxi-column [caption]="'PCComments' | localize" dataField="pcComments" [width]="250"></dxi-column> -->
                             
-                            <dxi-column [caption]="'StockShortageDate' | localize" dataField="stockShortageDate" [width]="100"></dxi-column>
+                            <!-- <dxi-column [caption]="'StockShortageDate' | localize" dataField="stockShortageDate" [width]="100"></dxi-column>
                             <dxi-column [caption]="'ShortagePriority' | localize" dataField="shortagePriority" [width]="100"></dxi-column>
                             <dxi-column [caption]="'OnHandTotalQty' | localize" dataField="onHandTotalQty" [width]="100"></dxi-column>
                             <dxi-column [caption]="'RequirementTotalQty' | localize" dataField="requirementTotalQty" [width]="100"></dxi-column>
                             <dxi-column [caption]="'OverDefProdQtyFromParentPartNo' | localize" dataField="overDefProdQtyFromParentPartNo" [width]="100"></dxi-column>
                             <dxi-column [caption]="'OverDefRecQty' | localize" dataField="overDefRecQty" [width]="100"></dxi-column>
                             <dxi-column [caption]="'ShortageNoticeDateFrom' | localize" dataField="shortageNoticeDateFrom" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'Stock2' | localize" dataField="stock2" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'Stock2' | localize" dataField="stock2" [width]="100"></dxi-column> -->
 
                             <dxi-column
                             [caption]="'CreationDate' | localize"
@@ -620,7 +626,7 @@
                                 valueFormat="fixedPoint">
                                 </dxi-total-item>
 
-                                <dxi-total-item 
+                                <!-- <dxi-total-item 
                                 column="diaStockIn" 
                                 summaryType="sum" 
                                 valueFormat="fixedPoint">
@@ -630,13 +636,13 @@
                                 column="deliveryOrder" 
                                 summaryType="sum" 
                                 valueFormat="fixedPoint">
-                                </dxi-total-item>
+                                </dxi-total-item> -->
 
-                                <dxi-total-item 
+                                <!-- <dxi-total-item 
                                 column="unitNumber" 
                                 summaryType="sum" 
                                 valueFormat="fixedPoint">
-                                </dxi-total-item>
+                                </dxi-total-item> -->
 
                                 <!-- Sumatoria por grupo -->
                                 <dxi-group-item 

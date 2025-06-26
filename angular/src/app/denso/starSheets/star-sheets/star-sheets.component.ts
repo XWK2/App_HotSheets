@@ -221,24 +221,24 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
             let newhotSheet = new StarSheetsItemDto(); 
             newhotSheet = this.starSheets.find((pn: StarSheetsItemDto) => pn.starSheetId === event.data.hotSheetId);
             this.starSheetChanges.id = event.data.starSheetId;
-            this.starSheetChanges.transportModeId = newhotSheet.transportModeId;            
+            // this.starSheetChanges.transportModeId = newhotSheet.transportModeId;            
             this.starSheetChanges.deliveryOrder = newhotSheet.deliveryOrder;
-            this.starSheetChanges.trafficContainerFX = newhotSheet.trafficContainerFX;
-            this.starSheetChanges.unitNumber = newhotSheet.unitNumber;
-            this.starSheetChanges.etaDNMX = newhotSheet.etaDNMX;
-            this.starSheetChanges.shortageShiftId = newhotSheet.shortageShiftId;                                    
-            this.starSheetChanges.realShortageDate = newhotSheet.realShortageDate;                
-            this.starSheetChanges.shortage = newhotSheet.shortage;
-            const shortage = newhotSheet.shortage;
-            const shortageVal = newhotSheet.shortageVal;      
-            const parts = shortageVal.split(":");
-            const hora = parseInt(parts[0].toString());
-            const min =parseInt(parts[1].toString());
-            const seg = parseInt(parts[2].toString());
+            // this.starSheetChanges.trafficContainerFX = newhotSheet.trafficContainerFX;
+            // this.starSheetChanges.unitNumber = newhotSheet.unitNumber;
+            // this.starSheetChanges.etaDNMX = newhotSheet.etaDNMX;
+            // this.starSheetChanges.shortageShiftId = newhotSheet.shortageShiftId;                                    
+            // this.starSheetChanges.realShortageDate = newhotSheet.realShortageDate;                
+            // this.starSheetChanges.shortage = newhotSheet.shortage;
+            // const shortage = newhotSheet.shortage;
+            // const shortageVal = newhotSheet.shortageVal;      
+            // const parts = shortageVal.split(":");
+            // const hora = parseInt(parts[0].toString());
+            // const min =parseInt(parts[1].toString());
+            // const seg = parseInt(parts[2].toString());
 
-            this.timeShortage = new Date(2025,1,1,hora,min,seg);
-            //this.timeShortage = newhotSheet.shortageVal;
-            //this.starSheetChanges.shortage = new TimeSpan(this.timeShortage);
+            // this.timeShortage = new Date(2025,1,1,hora,min,seg);
+            // //this.timeShortage = newhotSheet.shortageVal;
+            // //this.starSheetChanges.shortage = new TimeSpan(this.timeShortage);
 
             this.starSheetChanges.pcComments = newhotSheet.pcComments;
             this.Editing = true;
@@ -296,7 +296,7 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
 
     public refresh(): void {
         this.isTableLoading = true;
-        let statusIncompleted = 0;
+        // let statusIncompleted = 0;
         // if(this.statusSelected == "Completed"){
         //     statusIncompleted = 1;
         // }
@@ -304,7 +304,7 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
         let input: GetStarSheetInput = new GetStarSheetInput();
         input.startDate = this.startDate ? moment(this.startDate) : undefined;
         input.endDate = this.endDate ? moment(this.endDate) : undefined;
-        input.statusHS = statusIncompleted;
+        // input.statusHS = statusIncompleted;
         
         this._hotheetservice
             .getStarSheets(input)
@@ -367,7 +367,7 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
         const seg = '0' +  ok.getSeconds(); 
         const val = hours.slice(-2) + ':'+  min.slice(-2) + ':'+ seg.slice(-2);          
 
-        this.starSheetChanges.shortage = val;       
+        // this.starSheetChanges.shortage = val;       
     }
 
     public downloadFile(fileItem: any): void {
