@@ -62,5 +62,6 @@ namespace Denso.HotSheet.HotSheet
         [StringLength(1000)]
         public string PCComments { get; set; }
 
+        public long? CompletedManually { get; set; }
     }
 }

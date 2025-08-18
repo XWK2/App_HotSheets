@@ -37,8 +37,8 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
     groupingValues: any[];
 
     statusOptions = [        
-        { text: 'Completed', value: 'Completed' },
-        { text: 'Incomplete', value: 'Incomplete' }
+        { text: 'Completed', value: 1 },
+        { text: 'Incomplete', value: 0 }
       ];
     
     statusSelected: string = 'completado';
@@ -227,6 +227,7 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
             this.hotSheetChanges.shortageShiftId = newhotSheet.shortageShiftId;                                    
             //this.hotSheetChanges.realShortageDate = newhotSheet.realShortageDate;                
             this.hotSheetChanges.shortage = newhotSheet.shortage;
+            this.hotSheetChanges.completedManually = newhotSheet.completedManually;
             
             // const shortage = newhotSheet.shortage;            
             // const shortageVal = newhotSheet.shortageVal;  
@@ -608,11 +609,22 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
         //         '#FFCDD2',  // Día 5 -> Rojo suave
         //         '#f08989'  // Día 5 -> Naranja
 
-        if (diffDays < 1) return '#fafbfd';   // Hoy
-        if (diffDays < 2) return '#FFF59D';   // Ayer
-        if (diffDays < 3) return '#FFE0B2';   // Hace 2 días
-        if (diffDays < 4) return '#FFCDD2';   // Hace 3 días
-        return '#f08989';                      // Más de 4 días
+        // if (diffDays < 1) return '#fafbfd';   // Hoy
+        // if (diffDays < 2) return '#FFF59D';   // Ayer
+        // if (diffDays < 3) return '#FFE0B2';   // Hace 2 días
+        // if (diffDays < 4) return '#FFCDD2';   // Hace 3 días
+
+        if (diffDays < 1) return '#D00000';   // Hoy
+        if (diffDays < 2) return '#FF0000';   // Ayer
+        if (diffDays < 3) return '#FF0000';   // Hace 2 días
+        if (diffDays < 4) return '#47D45A';   // Hace 3 días
+
+        // <span class="color-cuadro" style="background-color: #D00000;"></span> Hoy                            
+        // <span class="color-cuadro" style="background-color: #FF0000;"></span> Ayer
+        // <span class="color-cuadro" style="background-color: #FF0000;"></span> Hace 2 días
+        // <span class="color-cuadro" style="background-color: #47D45A;"></span> Hace 3 días          
+
+        //return '#f08989';                      // Más de 4 días
       }
 
 

@@ -12158,6 +12158,7 @@ export class HotSheetsDto implements IHotSheetsDto {
     asn: number;
     pcComments: string | undefined;
     stock2: number;
+    completedManually: number | undefined;
 
     constructor(data?: IHotSheetsDto) {
         if (data) {
@@ -12196,6 +12197,7 @@ export class HotSheetsDto implements IHotSheetsDto {
             this.asn = _data["asn"];
             this.pcComments = _data["pcComments"];
             this.stock2 = _data["stock2"];
+            this.completedManually = _data["completedManually"];
         }
     }
 
@@ -12234,6 +12236,7 @@ export class HotSheetsDto implements IHotSheetsDto {
         data["asn"] = this.asn;
         data["pcComments"] = this.pcComments;
         data["stock2"] = this.stock2;
+        data["completedManually"] = this.completedManually;
         return data;
     }
 
@@ -12272,6 +12275,7 @@ export interface IHotSheetsDto {
     asn: number;
     pcComments: string | undefined;
     stock2: number;
+    completedManually: number | undefined;
 }
 
 export class HotSheetsItemDetailDto implements IHotSheetsItemDetailDto {
@@ -12455,6 +12459,7 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
     creationDate: moment.Moment | undefined;
     existComment: number;
     stock2: number;
+    completedManually: number | undefined;
 
     constructor(data?: IHotSheetsItemDto) {
         if (data) {
@@ -12496,6 +12501,7 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
             this.creationDate = _data["creationDate"] ? moment(_data["creationDate"].toString()) : <any>undefined;
             this.existComment = _data["existComment"];
             this.stock2 = _data["stock2"];
+            this.completedManually = _data["completedManually"];
         }
     }
 
@@ -12537,6 +12543,7 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
         data["creationDate"] = this.creationDate ? this.creationDate.toISOString() : <any>undefined;
         data["existComment"] = this.existComment;
         data["stock2"] = this.stock2;
+        data["completedManually"] = this.completedManually;
         return data;
     }
 
@@ -12578,6 +12585,7 @@ export interface IHotSheetsItemDto {
     creationDate: moment.Moment | undefined;
     existComment: number;
     stock2: number;
+    completedManually: number | undefined;
 }
 
 export class Int64EntityDto implements IInt64EntityDto {
@@ -15511,7 +15519,7 @@ export class StarSheetsDto implements IStarSheetsDto {
     inTransitQty: number;
     aDate: number;
     rcvd: number;
-    dueDate: number;
+    dueDate: string | undefined;
     receivedQty: number;
     container: string | undefined;
     stock1: number;
@@ -15610,7 +15618,7 @@ export interface IStarSheetsDto {
     inTransitQty: number;
     aDate: number;
     rcvd: number;
-    dueDate: number;
+    dueDate: string | undefined;
     receivedQty: number;
     container: string | undefined;
     stock1: number;
@@ -15634,7 +15642,7 @@ export class StarSheetsItemDetailDto implements IStarSheetsItemDetailDto {
     inTransitQty: number;
     aDate: number;
     rcvd: number;
-    dueDate: number;
+    dueDate: string | undefined;
     receivedQty: number;
     container: string | undefined;
     stock1: number;
@@ -15744,7 +15752,7 @@ export interface IStarSheetsItemDetailDto {
     inTransitQty: number;
     aDate: number;
     rcvd: number;
-    dueDate: number;
+    dueDate: string | undefined;
     receivedQty: number;
     container: string | undefined;
     stock1: number;
@@ -15769,7 +15777,7 @@ export class StarSheetsItemDto implements IStarSheetsItemDto {
     inTransitQty: number;
     aDate: number;
     rcvd: number;
-    dueDate: number;
+    dueDate: string | undefined;
     receivedQty: number;
     container: string | undefined;
     stock1: number;
@@ -15874,7 +15882,7 @@ export interface IStarSheetsItemDto {
     inTransitQty: number;
     aDate: number;
     rcvd: number;
-    dueDate: number;
+    dueDate: string | undefined;
     receivedQty: number;
     container: string | undefined;
     stock1: number;

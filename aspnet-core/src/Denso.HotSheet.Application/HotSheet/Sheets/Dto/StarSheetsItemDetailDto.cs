@@ -24,7 +24,7 @@ namespace Denso.HotSheet.Sheets.Dto
         public decimal InTransitQty { get; set; }
         public decimal ADate { get; set; }
         public decimal RCVD { get; set; }
-        public decimal DueDate { get; set; }
+        public string DueDate { get; set; }
         public decimal ReceivedQty { get; set; }
         public string Container { get; set; }
         public decimal Stock1 { get; set; }

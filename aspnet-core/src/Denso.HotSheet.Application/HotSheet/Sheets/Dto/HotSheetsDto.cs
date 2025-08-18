@@ -36,7 +36,7 @@ namespace Denso.HotSheet.Sheets.Dto
         public string Shortage { get; set; }
         public int ASN { get; set; }
         public string PCComments { get; set; }
-
         public decimal Stock2 { get; set; }
+        public long? CompletedManually { get; set; }
     }
 }

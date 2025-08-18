@@ -376,6 +376,8 @@ namespace Denso.HotSheet.Sheets
                         hotSheet.ShortageShift = null;
                         hotSheet.TransportMode = null;
 
+                        hotSheet.CompletedManually = input.CompletedManually;
+
                         await _hotSheetsRepository.UpdateAsync(hotSheet);
                     }
                 }

@@ -13384,6 +13384,11 @@
 .dx-datagrid .dx-datagrid-headers.dx-state-focused .dx-header-row td:focus {
   outline-offset: -2px;
 }
+.dx-datagrid-headers .dx-datagrid-action {
+  text-align: center !important;
+}
+
+
 .dx-datagrid .dx-header-filter {
   position: relative;
   color: #8899a8;

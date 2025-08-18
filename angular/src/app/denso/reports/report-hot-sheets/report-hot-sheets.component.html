@@ -416,26 +416,26 @@
 
                             <!-- <dxo-column-fixing [enabled]="true"></dxo-column-fixing> -->
                            
-                            <dxi-column [caption]="'Planner' | localize" >
+                            <dxi-column [caption]="'Planner' | localize" alignment="center">
                                 <dxi-column [caption]="'PlannerCode' | localize" dataField="plannerCode" [width]="90"></dxi-column>
                                 <dxi-column [caption]="'PlannerName' | localize" dataField="plannerName" [width]="250"></dxi-column>
                             </dxi-column>
-                            <dxi-column [caption]="'Supplier' | localize">
+                            <dxi-column [caption]="'Supplier' | localize" alignment="center">
                                 <dxi-column [caption]="'SupplierCode' | localize" dataField="supplierCode" [width]="90"></dxi-column>
                                 <dxi-column [caption]="'SupplierName' | localize" dataField="supplierName" [width]="150"></dxi-column>
                             </dxi-column>                            
-                            <dxi-column [caption]="'PartNumberHS' | localize">
+                            <dxi-column [caption]="'PartNumberHS' | localize" alignment="center">
                                 <dxi-column [caption]="'PartNumberCodeHS' | localize" dataField="partNumber" [width]="130"></dxi-column>
                                 <dxi-column [caption]="'PartDescriptionHS' | localize" dataField="partDescription" [width]="250"></dxi-column>
                             </dxi-column>                                                    
                             <dxi-column [caption]="'InTransitQty' | localize" dataField="inTransitQty" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'DiaStockIn' | localize" dataField="diaStockIn" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'DiaLocation' | localize" dataField="diaLocation" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'CIGMAReceived' | localize" dataField="cigmaReceived" [width]="120"></dxi-column>
-                            <dxi-column [caption]="'TransportMode' | localize">
-                                <dxi-column [caption]="'TransportModeId' | localize" dataField="transportModeId" [width]="50"></dxi-column>
-                                <dxi-column [caption]="'TransportModeName' | localize" dataField="transportModeName" [width]="250"></dxi-column>
-                            </dxi-column>
+                            <dxi-column [caption]="'DiaStockIn' | localize" dataField="diaStockIn" [width]="120"></dxi-column>
+                            <dxi-column [caption]="'DiaLocation' | localize" dataField="diaLocation" [width]="120"></dxi-column>
+                            <dxi-column [caption]="'CIGMAReceived' | localize" [visible]="false" dataField="cigmaReceived" [width]="220"></dxi-column>
+                            <!-- <dxi-column [caption]="'TransportMode' | localize"> -->
+                                <dxi-column [caption]="'TransportModeId' | localize" [visible]="false" dataField="transportModeId" [width]="50"></dxi-column>
+                                <dxi-column [caption]="'TransportMode' | localize" dataField="transportModeName" [width]="250"></dxi-column>
+                            <!-- </dxi-column> -->
                             
                             <dxi-column [caption]="'DeliveryOrder' | localize" dataField="deliveryOrder" [width]="150"></dxi-column>
                             <dxi-column [caption]="'TrafficContainerFX' | localize" dataField="trafficContainerFX" [width]="250"></dxi-column>
@@ -447,13 +447,13 @@
                                 dataType="date"
                                 format="yyyy-MM-dd"
                             ></dxi-column>
-                            <dxi-column [caption]="'Status' | localize">
-                                <dxi-column [caption]="'StatusId' | localize" dataField="statusId" [width]="50"></dxi-column>
-                                <dxi-column [caption]="'StatusHotSheetName' | localize" dataField="statusHotSheetName" [width]="150"></dxi-column>                            
-                            </dxi-column>
+                            <!-- <dxi-column [caption]="'Status' | localize"> -->
+                                <dxi-column [caption]="'StatusId' | localize" [visible]="false" dataField="statusId" [width]="50"></dxi-column>
+                                <dxi-column [caption]="'Status' | localize" dataField="statusHotSheetName" [width]="150"></dxi-column>                            
+                            <!-- </dxi-column> -->
                             
                             
-                            <dxi-column [caption]="'Shortage' | localize">
+                            <dxi-column [caption]="'Shortage' | localize" alignment="center">
                                 <dxi-column
                                 [caption]="'RealShortageDate' | localize"
                                 dataField="realShortageDate"
@@ -461,14 +461,15 @@
                                 dataType="date"
                                 format="yyyy-MM-dd"
                                 ></dxi-column>
-                                <dxi-column [caption]="'ShortageShiftId' | localize" dataField="shortageShiftId" [width]="50"></dxi-column>
+                                <dxi-column [caption]="'ShortageShiftId' | localize" [visible]="false" dataField="shortageShiftId" [width]="50"></dxi-column>
                                 <dxi-column [caption]="'ShortageShiftName' | localize" dataField="shortageShiftName" [width]="150"></dxi-column>                            
                                 <dxi-column [caption]="'ShortageTime' | localize" dataField="shortageVal" [width]="150"></dxi-column>                                                                  
                             </dxi-column>
                             <dxi-column [caption]="'ASN' | localize" dataField="asn" [width]="70"></dxi-column>
                             <!-- <dxi-column [caption]="'PCComments' | localize" dataField="pcComments" [width]="250"></dxi-column> -->
+                            <dxi-column [caption]="'CompletedManually' | localize" dataField="completedManually" [width]="200"></dxi-column>
                             <dxi-column
-                            [caption]="'Comments' | localize"
+                            [caption]="'Notas' | localize"
                             dataField="pcComments"
                             cellTemplate="pcCommentsCellTemplate"
                             [width]="500"
@@ -478,15 +479,15 @@
 
                             <dxi-column type="buttons">
                                 <!-- Botones por defecto -->
-                                <dxi-button name="edit"></dxi-button>
+                                <!-- <dxi-button name="edit"></dxi-button> -->
                                 <dxi-button name="delete"></dxi-button>
                             
                                 <!-- Botón personalizado para comentarios -->
-                                <dxi-button
+                                <!-- <dxi-button
                                   hint="Agregar Comentario"
                                   icon="comment"
                                   [onClick]="viewComent.bind(this)">
-                                </dxi-button>                                                           
+                                </dxi-button>                                                            -->
                                 
                               </dxi-column>
 

@@ -44,5 +44,7 @@ namespace Denso.HotSheet.Sheets.Dto
 
         public decimal Stock2 { get; set; }
 
+        public long? CompletedManually { get; set; }
+
     }
 }

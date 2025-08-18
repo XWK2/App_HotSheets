@@ -128,13 +128,13 @@
     <text name="Plant" value="Planta" />
     <text name="Departments" value="Departamentos" />
     <text name="DocumentTypes" value="Tipo Documentos" />
-    <text name="ProductCodeSat" value="Codigo de Producto SAT" />
+    <text name="ProductCodeSat" value="Código de Producto SAT" />
 
     
-    <text name="ShortageShift" value="Cambio Escasez" />
-    <text name="StatusHotsheet" value="Status" />
+    <text name="ShortageShift" value="Turno" />
+    <text name="StatusHotsheet" value="Estatus" />
     
-    <text name="ProductCodesSat" value="Codigos de Producto SAT" />
+    <text name="ProductCodesSat" value="Códigos de Producto SAT" />
     <text name="UnitMeasures" value="Unidades de Medidas" />
     <text name="UnitMeasure" value="Unidad de Medida" />
     <text name="UnitMeasuresSAT" value="Unidades de Medidas SAT" />
@@ -271,7 +271,7 @@
     <text name="PlantInfo" value="Información de la Planta" />
     <text name="DepartmentInfo" value="Información del Departamento" />
     <text name="PartNumberInfo" value="Información de Número de Parte" />
-    <text name="ProductCodeSATInfo" value="Información del Codigo de Producto del SAT" />
+    <text name="ProductCodeSATInfo" value="Información del Código de Producto del SAT" />
     <text name="RmaAssignedInfo" value="Información del Asignado RMA" />
     <text name="HotSheetReasonInfo" value="Información de la Razón del Envio" />
     <text name="HotSheetTermInfo" value="Información del Termino de Envio" />
@@ -378,7 +378,7 @@
     <text name="Currency" value="Moneda" />
     <text name="Survey" value="Encuesta" />
     <text name="Surveys" value="Encuestas" />
-    <text name="HotSheets" value="Hojas Calientes" />
+    <text name="HotSheets" value="Hot Sheet" />
     <text name="StarSheets" value="Hojas Estrellas" />
     <text name="AnswerSurvey" value="Contestar Encuesta" />
     <text name="SurveyTitle" value="Encuesta de satisfacción del usuario" />
@@ -430,7 +430,7 @@
     <text name="PartNumberPricesMenu" value="Precios de Num. de Parte" />
     <text name="PartNumberPriceInfo" value="Información del Precio de Número de Parte" />
     <text name="PublishDate" value="Fecha Publicación" />
-    <text name="HotSheetsReports" value="Reporte de Hoja Informativa" />
+    <text name="HotSheetsReports" value="Reporte de Hot Sheet" />
     <text name="GenerateReport" value="Generar Reporte" />
     <text name="ClearFilters" value="Limpiar Filtros" />
     <text name="RangeDates" value="Rango de Fechas" />
@@ -479,7 +479,7 @@
     <text name="TimeElapsed">Tiempo transcurrido</text>
     <text name="HotSheetsDetails">Detalles de envios</text>
 
-    <text name="StatusIndicator">Indicador de Status</text>
+    <text name="StatusIndicator">Indicador de Estatus</text>
     <text name="SummaryImplementationsResponsible">Resumen de Implementaciones por Responsable</text>
     <text name="RefreshData">Actualizar Datos</text>
     <text name="Indicator">Indicador</text>    
@@ -499,8 +499,8 @@
     <text name="ReportDateEndValidation" value="Fecha Final Informe debe ser mayor o igual que Fecha Inicio Informe"/>
     
     <text name="GuideReference" value="Referencia Guía"/>
-    <text name="GuideStatusDetail" value="Detalle Status Guía"/>
-    <text name="GuideStatus" value="Status Guía"/>
+    <text name="GuideStatusDetail" value="Detalle Estatus Guía"/>
+    <text name="GuideStatus" value="Estatus Guía"/>
     <text name="GuideCost" value="Costo Guía"/>
     <text name="GuideCurrency" value="Moneda Guía"/>
     <text name="TrackingGuidesReports">Reporte de Seguimiento de Guía</text>
@@ -522,17 +522,17 @@
     <text name="HotSheetInfo" value="Información Hoja Caliente" />
     <text name="HotSheetFile" value="Documento de Hoja Caliente" />
     <text name="PartNumbers" value="Número de Partes" />
-    <text name="Planner" value="Planificador"/>
-    <text name="PlannerCode" value="Codigo"/>
-    <text name="PlannerName" value="Nombre"/>
+    <text name="Planner" value="Planeador"/>
+    <text name="PlannerCode" value="Código"/>
+    <text name="PlannerName" value="Nombre Pleneador"/>
     <text name="Supplier" value="Proveedor"/>
-    <text name="SupplierCode" value="Codigo"/>
-    <text name="SupplierName" value="Nombre"/>
+    <text name="SupplierCode" value="Código"/>
+    <text name="SupplierName" value="Nombre Proveedor"/>
     <text name="PartNumber" value="Número de Parte"/>
     <text name="PartNumberHS" value="Número de Parte"/>
-    <text name="PartNumberCodeHS" value="Codigo"/>
+    <text name="PartNumberCodeHS" value="Código"/>
     <text name="PartDescriptionHS" value="Descripcion"/>
-    <text name="InTransitQty" value="Cantidad en Transito"/>
+    <text name="InTransitQty" value="Cantidad en Tránsito"/>
     <text name="DiaStockIn" value="Inventario Diario"/>
     <text name="DiaLocation" value="Ubicacion"/>
     <text name="CIGMAReceived" value="Recibido por CIGMA"/>
@@ -540,13 +540,13 @@
     <text name="TransportModeId" value="Id"/>
     <text name="TransportModeName" value="Nombre"/>
     <text name="DeliveryOrder" value="Orden Entrega"/>
-    <text name="TrafficContainerFX" value="Contenedor Trafico FX"/>
-    <text name="UnitNumber" value="Numbero Unidad"/>
+    <text name="TrafficContainerFX" value="Contenedor Tráfico FX"/>
+    <text name="UnitNumber" value="Número de Caja"/>
     <text name="EtaDNMX" value="ETA DNMX"/>
-    <text name="Status" value="Status" />
+    <text name="Status" value="Estatus" />
     <text name="StatusId" value="Id"/>
     <text name="StatusHotSheetName" value="Nombre"/>
-    <text name="Shortage" value="Escasez"/>
+    <text name="Shortage" value="Afectación"/>
     <text name="RealShortageDate" value="Fecha Real"/>
     <text name="ShortageShiftId" value="Id"/>
     <text name="ShortageShiftName" value="Nombre"/>
@@ -562,9 +562,10 @@
     <text name="RequiredDate" value="Fecha Requerida"/>
     <text name="Ticket" value="Boleta"/>
     <text name="Line" value="Linea"/>
-    <text name="PlannerCodePO" value="Código Planificador"/>
-    <text name="SupplierCodePO" value="Código de Proveedor Code"/>
+    <text name="PlannerCodePO" value="Código Planeador"/>
+    <text name="SupplierCodePO" value="Código de Proveedor"/>
     <text name="PurchaseOrdersReports" value="Reporte de órdenes de compra" />
-    
+    <text name="CompletedManually" value="Completado Manualmente"/>
+    <text name="AgregarPO" value="Añadir PO"/>
   </texts>
 </localizationDictionary>

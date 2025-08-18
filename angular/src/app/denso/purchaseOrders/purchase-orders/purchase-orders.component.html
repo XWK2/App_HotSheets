@@ -236,10 +236,10 @@
                                         </dx-button>
 
                                         <dx-button
-                                            [text]="'New' | localize"
+                                            [text]="'AgregarPO' | localize"
                                             icon="add"
                                             type="normal"
-                                            [width]="120"
+                                            [width]="140"
                                             (click)="openNewPurchaseOrderPopup()"
                                             class="dx-button-ml"
                                         ></dx-button>
@@ -257,17 +257,21 @@
                                 <dxi-item name="exportButton"></dxi-item> 
                             </dxo-toolbar>
 
-                            <dxi-column [caption]="'Planner' | localize" >
+                            <dxi-column [caption]="'Planner' | localize" alignment="center">
                                 <dxi-column [caption]="'PlannerCode' | localize" dataField="plannerCode" [width]="90"></dxi-column>
                                 <dxi-column [caption]="'PlannerName' | localize" dataField="plannerName" [width]="250"></dxi-column>
                             </dxi-column>
-                            <dxi-column [caption]="'PurchaseOrder' | localize" dataField="purchaseOrder" [width]="150"></dxi-column>
-                            <dxi-column [caption]="'Line' | localize" dataField="line" [width]="150"></dxi-column>                                                 
-                            <dxi-column [caption]="'PartNumberHS' | localize">
+                            <dxi-column [caption]="'PurchaseOrder' | localize" dataField="purchaseOrder" [width]="150" alignment="center"
+                            ></dxi-column>
+                            <dxi-column [caption]="'Line' | localize" dataField="line" [width]="150" alignment="center"
+                            ></dxi-column>                                                 
+                            <dxi-column [caption]="'PartNumberHS' | localize" alignment="center"
+                            >
                                 <dxi-column [caption]="'PartNumberCodeHS' | localize" dataField="partNumber" [width]="130"></dxi-column>
                                 <dxi-column [caption]="'PartDescriptionHS' | localize" dataField="partDescription" [width]="250"></dxi-column>
                             </dxi-column>    
-                            <dxi-column [caption]="'Supplier' | localize">
+                            <dxi-column [caption]="'Supplier' | localize" alignment="center"
+                            >
                                 <dxi-column [caption]="'SupplierCode' | localize" dataField="supplierCode" [width]="90"></dxi-column>
                                 <dxi-column [caption]="'SupplierName' | localize" dataField="supplierName" [width]="150"></dxi-column>
                             </dxi-column>                                                      
@@ -282,14 +286,14 @@
                                 ></dxi-column>                                                                                             
                             </dxi-column>
                            
-                            <dxi-column [caption]="'Status' | localize">
+                            <dxi-column [caption]="'Status' | localize" alignment="center"
+                            >
                                 <dxi-column [caption]="'StatusId' | localize" dataField="statusId" [width]="50"></dxi-column>
                                 <dxi-column [caption]="'StatusPO' | localize" dataField="statusPO" [width]="150"></dxi-column>                            
                             </dxi-column>
                             
                             <dxi-column [caption]="'Ticket' | localize" dataField="ticket" [width]="70"></dxi-column>
                                                        
-                            
                             <dxi-column
                                 [caption]="'CreationDate' | localize"
                                 dataField="creationDate"

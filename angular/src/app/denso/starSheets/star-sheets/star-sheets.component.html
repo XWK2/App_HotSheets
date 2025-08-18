@@ -79,12 +79,13 @@
                             (onExporting)="exportGrid($event)"
                             (onRowPrepared)="personalizarFila($event)"
                             [selection]="{ mode: 'multiple', showCheckBoxesMode: 'always' }"
-                            [groupPanel]="{ visible: true }" [grouping]="{ autoExpandAll: true }"                            
+                            [groupPanel]="{ visible: true }" [grouping]="{ autoExpandAll: true }"     
+                                                   
                             
                         >
-                            <dxo-scrolling mode="none"></dxo-scrolling>
-                            <dxo-paging [pageSize]="20"></dxo-paging>
-                            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[20, 50, 100]"></dxo-pager>
+                            <!-- <dxo-scrolling mode="standard"></dxo-scrolling> -->
+                            <dxo-paging [enabled]="true" [pageSize]="20"></dxo-paging>
+                            <dxo-pager  [allowedPageSizes]="[20, 50, 100, 500]" [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true"  displayMode="full"></dxo-pager>
                             <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
                             <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>                             
                             <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']"> </dxo-export>                            
@@ -502,31 +503,32 @@
                                 <dxi-column [caption]="'PartNumberCodeHS' | localize" dataField="partNumber" [width]="130"></dxi-column>
                                 <dxi-column [caption]="'PartDescriptionHS' | localize" dataField="partDescription" [width]="250"></dxi-column>
                             </dxi-column>                                                    
-                            <dxi-column [caption]="'DateSearch' | localize" dataField="dateSearch" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'OrderQty' | localize" dataField="orderQty" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'DateSearch' | localize" dataField="dateSearch" [visible]="false" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'OrderQty' | localize" dataField="orderQty" [width]="120"></dxi-column>
                             <dxi-column [caption]="'DeliveryOrder' | localize" dataField="deliveryOrder" [width]="100"></dxi-column>  
                             <dxi-column [caption]="'DelQty' | localize" dataField="delQty" [width]="100"></dxi-column>  
                             <dxi-column [caption]="'ASN' | localize" dataField="asn" [width]="100"></dxi-column>                              
                             <dxi-column [caption]="'InTransitQty' | localize" dataField="inTransitQty" [width]="100"></dxi-column>
                             <dxi-column [caption]="'ADate' | localize" dataField="aDate" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'RCVD' | localize" dataField="RCVD" [width]="100"></dxi-column>
+                            <dxi-column [caption]="'RCVD' | localize" dataField="rcvd" [width]="100"></dxi-column>
                             <dxi-column [caption]="'CIGMAReceived' | localize" dataField="cigmaReceived" [width]="120"></dxi-column>
                             <!-- <dxi-column [caption]="'TransportMode' | localize">
                                 <dxi-column [caption]="'TransportModeId' | localize" dataField="transportModeId" [width]="50"></dxi-column>
                                 <dxi-column [caption]="'TransportModeName' | localize" dataField="transportModeName" [width]="250"></dxi-column>
                             </dxi-column> -->
-                            <dxi-column
+                            <!-- <dxi-column
                                 [caption]="'DueDate' | localize"
                                 dataField="dueDate"
                                 [width]="150"
                                 dataType="date"
                                 format="yyyy-MM-dd"
-                            ></dxi-column>
+                            ></dxi-column> -->
+                            <dxi-column [caption]="'DueDate' | localize" dataField="dueDate" [width]="100"></dxi-column>
                             <dxi-column [caption]="'ReceivedQty' | localize" dataField="receivedQty" [width]="150"></dxi-column>
 
-                            <dxi-column [caption]="'Container' | localize" dataField="container" [width]="250"></dxi-column>
-                            <dxi-column [caption]="'Stock1' | localize" dataField="stock1" [width]="150"></dxi-column>  
-                            <dxi-column [caption]="'Stock2' | localize" dataField="stock2" [width]="150"></dxi-column>                             -->
+                            <dxi-column [caption]="'Container' | localize" dataField="container"  [width]="250"></dxi-column>
+                            <dxi-column [caption]="'Stock1' | localize" dataField="stock1" [visible]="false" [width]="150"></dxi-column>  
+                            <dxi-column [caption]="'Stock2' | localize" dataField="stock2" [visible]="false" [width]="150"></dxi-column>                             -->
                            
                             <!-- <dxi-column [caption]="'Status' | localize">
                                 <dxi-column [caption]="'StatusId' | localize" dataField="statusId" [width]="50"></dxi-column>
@@ -562,6 +564,7 @@
                             <dxi-column
                             [caption]="'CreationDate' | localize"
                             dataField="creationDate"
+                            [visible]="false"
                             [width]="130"
                             dataType="date"
                             format="yyyy-MM-dd HH:mm"                                
