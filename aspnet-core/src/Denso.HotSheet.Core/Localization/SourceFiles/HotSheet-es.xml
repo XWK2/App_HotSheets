@@ -547,9 +547,9 @@
     <text name="StatusId" value="Id"/>
     <text name="StatusHotSheetName" value="Nombre"/>
     <text name="Shortage" value="Afectación"/>
-    <text name="RealShortageDate" value="Fecha Real"/>
+    <text name="RealShortageDate" value="Fecha"/>
     <text name="ShortageShiftId" value="Id"/>
-    <text name="ShortageShiftName" value="Nombre"/>
+    <text name="ShortageShiftName" value="Turno"/>
     <text name="ShortageTime" value="Hora"/>
     <text name="GroupBy" value="Agrupar Por"/>
     <text name="SendToHotSheet" value="Enviar a Hoja Caliente"/>
@@ -567,5 +567,6 @@
     <text name="PurchaseOrdersReports" value="Reporte de órdenes de compra" />
     <text name="CompletedManually" value="Completado Manualmente"/>
     <text name="AgregarPO" value="Añadir PO"/>
+    <text name="Schedule" value="Agenda" />
   </texts>
 </localizationDictionary>

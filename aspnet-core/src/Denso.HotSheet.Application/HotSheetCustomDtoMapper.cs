@@ -56,9 +56,9 @@ namespace Denso.HotSheet
                 .ReverseMap();
 
             //Nuevos LHH HotSheet
-            configuration.CreateMap<TransportMode, TransportModeDto>();
-            configuration.CreateMap<StatusHotSheet, StatusHotSheetDto>();
-            configuration.CreateMap<ShortageShift, ShortageShiftDto>();
+            configuration.CreateMap<TransportMode, TransportModeDto>().ReverseMap();
+            configuration.CreateMap<StatusHotSheet, StatusHotSheetDto>().ReverseMap();
+            configuration.CreateMap<ShortageShift, ShortageShiftDto>().ReverseMap();
             
             //
 

@@ -229,10 +229,20 @@ namespace Denso.HotSheet.Catalogs
             }
             else
             {
-                var shortageShift = ObjectMapper.Map<ShortageShift>(input);
-                shortageShift.IsActive = true;
+                try
+                {
+                    var shortageShift = ObjectMapper.Map<ShortageShift>(input);
+                    shortageShift.IsActive = true;
 
-                await _shortageShiftRepository.InsertAsync(shortageShift);
+                    await _shortageShiftRepository.InsertAsync(shortageShift);
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
+             
+                
             }
         }
 

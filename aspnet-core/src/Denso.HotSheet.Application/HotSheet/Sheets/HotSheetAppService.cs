@@ -368,13 +368,21 @@ namespace Denso.HotSheet.Sheets
                         {
                             hotSheet.ShortageShiftId = input.ShortageShiftId;
                         }
-                        
+
+                        if (input.StatusId != 0)
+                        {
+                            hotSheet.StatusId = input.StatusId;
+                        }
+
                         hotSheet.PCComments = input.PCComments;
-                        //hotSheet.RealShortageDate = input.RealShortageDate;
+                        hotSheet.RealShortageDate = input.RealShortageDate;
                         hotSheet.Shortage = input.Shortage;
+
+
 
                         hotSheet.ShortageShift = null;
                         hotSheet.TransportMode = null;
+                        hotSheet.StatusHotSheet = null;
 
                         hotSheet.CompletedManually = input.CompletedManually;
 
