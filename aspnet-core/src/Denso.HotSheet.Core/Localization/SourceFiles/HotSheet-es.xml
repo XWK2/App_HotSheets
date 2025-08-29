@@ -119,7 +119,7 @@
 
     <!--Denso - Hot Sheet-->
     <text name="StarSheet" value="Hoja Estrella" />
-    <text name="HotSheet" value="Hoja Caliente" />
+    <text name="HotSheet" value="Hot Sheet" />
     <text name="Catalogs" value="Catálogos" />
     <text name="Carriers" value="Transportistas" />
     <text name="CarrierInfo" value="Información del Transportista" />
@@ -552,9 +552,9 @@
     <text name="ShortageShiftName" value="Turno"/>
     <text name="ShortageTime" value="Hora"/>
     <text name="GroupBy" value="Agrupar Por"/>
-    <text name="SendToHotSheet" value="Enviar a Hoja Caliente"/>
+    <text name="SendToHotSheet" value="Enviar a Hot Sheet"/>
     <text name="SelectOne" value="Selecciona al menos un elemento"/>    
-    <text name="SendStarSheetToHotSheet" value="Hojas de Estrellas Enviadas, Satisfactoriamente"/>
+    <text name="SendStarSheetToHotSheet" value="Hot Sheets Enviadas, Satisfactoriamente"/>
 
     <text name="PurchaseOrder" value="Orden de Compra"/>
     <text name="PurchaseOrders" value="Ordenes de Compra"/>
@@ -568,5 +568,7 @@
     <text name="CompletedManually" value="Completado Manualmente"/>
     <text name="AgregarPO" value="Añadir PO"/>
     <text name="Schedule" value="Agenda" />
+    <text name="ADate" value="Arrival Date" />
+    <text name="RCVD" value="Recibido en CIGMA" />
   </texts>
 </localizationDictionary>

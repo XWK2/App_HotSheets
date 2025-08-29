@@ -570,7 +570,8 @@
     <text name="AgregarPO" value="New PO"/>
     <text name="PurchaseOrdersReports" value="Purchase Orders Reports" />
     <text name="Schedule" value="Schedule" />
-    
+    <text name="ADate" value="Arrival Date" />
+    <text name="RCVD" value="CIGMA Received" />
 
   </texts>
 </localizationDictionary>
