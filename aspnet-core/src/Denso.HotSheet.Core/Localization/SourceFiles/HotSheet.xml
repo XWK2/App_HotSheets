@@ -535,7 +535,7 @@
     <text name="PartNumberCodeHS" value="Code"/>
     <text name="PartDescriptionHS" value="Description"/>
     <text name="InTransitQty" value="InTransitQty"/>
-    <text name="DiaStockIn" value="DiaStockIn"/>
+    <text name="DiaStockIn" value="DIA Inventory"/>
     <text name="DiaLocation" value="DiaLocation"/>
     <text name="CIGMAReceived" value="CIGMAReceived"/>
     <text name="TransportMode" value="Transport Mode"/>

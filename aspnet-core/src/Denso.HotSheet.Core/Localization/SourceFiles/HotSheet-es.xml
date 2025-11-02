@@ -533,7 +533,7 @@
     <text name="PartNumberCodeHS" value="Código"/>
     <text name="PartDescriptionHS" value="Descripcion"/>
     <text name="InTransitQty" value="Cantidad en Tránsito"/>
-    <text name="DiaStockIn" value="Inventario Diario"/>
+    <text name="DiaStockIn" value="Inventario DIA"/>
     <text name="DiaLocation" value="Ubicacion"/>
     <text name="CIGMAReceived" value="Recibido por CIGMA"/>
     <text name="TransportMode" value="Modo Transporte"/>
