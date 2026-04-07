@@ -14,14 +14,14 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ImageViewerModule } from 'ngx-image-viewer';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
-import { HotSheetsRoutingModule } from './hotSheets-routing.module';
+import { ImportExportsRoutingModule } from './importExports-routing.module';
 
 //Components
-import { HotSheetsComponent } from '@app/denso/hotSheets/hot-sheets/hot-sheets.component';
+import { ImportExportsComponent } from '@app/denso/importExports/import-exports/import-exports.component';
 
-import { DocumentViewerPopupComponent } from '@app/denso/hotSheets/document-viewer-popup/document-viewer-popup.component';
+import { DocumentViewerPopupComponent } from '@app/denso/importExports/document-viewer-popup/document-viewer-popup.component';
 
-import { CommentsPopupComponent } from '@app/denso/hotSheets/comments-popup/comments-popup.component';
+import { CommentsPopupComponent } from '@app/denso/importExports/comments-popup/comments-popup.component';
 
 import {
     DxDataGridModule,
@@ -57,7 +57,7 @@ import {
         HttpClientModule,
         HttpClientJsonpModule,
         ModalModule.forChild(),
-        HotSheetsRoutingModule,
+        ImportExportsRoutingModule,
         ServiceProxyModule,
         SharedModule,
 
@@ -95,8 +95,8 @@ import {
         DensoSharedModule,
         DevExtremeSharedModule,
     ],
-    declarations: [DocumentViewerPopupComponent,HotSheetsComponent, CommentsPopupComponent],
+    declarations: [DocumentViewerPopupComponent, ImportExportsComponent,CommentsPopupComponent],
     entryComponents: [],
     providers: [],
 })
-export class HotSheetsModule {}
+export class ImportExportsModule {}

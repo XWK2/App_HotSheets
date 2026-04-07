@@ -556,6 +556,9 @@
     <text name="SelectOne" value="Selecciona al menos un elemento"/>    
     <text name="SendStarSheetToHotSheet" value="Hot Sheets Enviadas, Satisfactoriamente"/>
 
+    <text name="SendToIE" value="Enviar a IE"/>
+    <text name="ImportExport" value="Import Export"/>
+    
     <text name="PurchaseOrder" value="Orden de Compra"/>
     <text name="PurchaseOrders" value="Ordenes de Compra"/>
     <text name="Qty" value="Cantidad"/>

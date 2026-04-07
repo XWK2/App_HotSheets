@@ -68,6 +68,7 @@ namespace Denso.HotSheet.Authorization
 
             //var surveys = context.CreatePermission(PermissionNames.Pages_Surveys, L("Surveys"));
             var starSheets = context.CreatePermission(PermissionNames.Pages_StarSheets, L("StarSheets"));
+            var importExports = context.CreatePermission(PermissionNames.Pages_ImportExports, L("ImportExport"));
             var hotSheets = context.CreatePermission(PermissionNames.Pages_HotSheets, L("HotSheets"));
             var purchaseOrders = context.CreatePermission(PermissionNames.Pages_PurchaseOrders, L("PurchaseOrders"));
 

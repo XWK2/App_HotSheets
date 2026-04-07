@@ -39,6 +39,10 @@ import { DevExpressComponent } from 'app/dev-express/dev-express.component';
                         loadChildren: () => import('./denso/hotSheets/hotSheets.module').then((m) => m.HotSheetsModule),
                     },
                     {
+                        path: 'importExports',
+                        loadChildren: () => import('./denso/importExports/importExports.module').then((m) => m.ImportExportsModule),
+                    },
+                    {
                         path: 'purchaseOrders',
                         loadChildren: () => import('./denso/purchaseOrders/purchaseOrders.module').then((m) => m.PurchaseOrdersModule),
                     },

@@ -558,6 +558,9 @@
     <text name="SelectOne" value="Select at least one item"/>
     <text name="SendStarSheetToHotSheet" value="Star Sheets Sent, Successfully"/>
 
+    <text name="SendToIE" value="Send to IE"/>
+    <text name="ImportExport" value="Import Export"/>
+    
     <text name="PurchaseOrder" value="Purchase Order"/>
     <text name="PurchaseOrders" value="Purchase Orders"/>
     <text name="Qty" value="Quantity"/>

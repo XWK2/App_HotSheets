@@ -63,5 +63,9 @@ namespace Denso.HotSheet.HotSheet
         public string PCComments { get; set; }
 
         public long? CompletedManually { get; set; }
+
+        public string TypeRecord { get; set; }
+
+        public string TypeColor { get; set; }
     }
 }

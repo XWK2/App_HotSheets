@@ -4870,6 +4870,9 @@ export class HotSheetServiceProxy {
         return _observableOf(null as any);
     }
 
+    
+    
+    
     /**
      * @param body (optional) 
      * @return Success
@@ -5346,6 +5349,124 @@ export class HotSheetServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+
+    //*Inicia* Manual LHERNANDEZ//
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    UpdateTypeColor(body: HotSheetColorDto[] | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/HotSheet/UpdateTypeColor";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateTypeColor(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateTypeColor(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processUpdateTypeColor(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+     /**
+     * @param body (optional) 
+     * @return Success
+     */
+     updateStartSheetToIE(body: StarSheetsItemDto[] | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/HotSheet/UpdateStartSheetToIE";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateStartSheetToIE(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateStartSheetToIE(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processUpdateStartSheetToIE(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    //*Termina*/
 
     /**
      * @param body (optional) 
@@ -11461,7 +11582,8 @@ export class GetHotSheetInput implements IGetHotSheetInput {
     shortageShiftId: number | undefined;
     startDate: moment.Moment | undefined;
     endDate: moment.Moment | undefined;
-    statusHS: number;
+    statusHS: number| undefined;
+    typeRecord:string | undefined;
 
     constructor(data?: IGetHotSheetInput) {
         if (data) {
@@ -11484,6 +11606,7 @@ export class GetHotSheetInput implements IGetHotSheetInput {
             this.startDate = _data["startDate"] ? moment(_data["startDate"].toString()) : <any>undefined;
             this.endDate = _data["endDate"] ? moment(_data["endDate"].toString()) : <any>undefined;
             this.statusHS = _data["statusHS"];
+            this.typeRecord = _data["typeRecord"];
         }
     }
 
@@ -11506,6 +11629,7 @@ export class GetHotSheetInput implements IGetHotSheetInput {
         data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
         data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
         data["statusHS"] = this.statusHS;
+        data["typeRecord"] = this.typeRecord;
         return data;
     }
 
@@ -11527,7 +11651,59 @@ export interface IGetHotSheetInput {
     shortageShiftId: number | undefined;
     startDate: moment.Moment | undefined;
     endDate: moment.Moment | undefined;
-    statusHS: number;
+    statusHS: number | undefined;
+    typeRecord: string | undefined;
+}
+
+export class HotSheetColorDto implements IHotSheetColorDto {
+    Id: number | undefined;
+    TypeRecord: string | undefined;
+    TypeColor: string | undefined;
+    
+    constructor(data?: IHotSheetColorDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.Id = _data["userId"];
+            this.TypeRecord = _data["TypeRecord"];
+            this.TypeColor = _data["TypeColor"];            
+        }
+    }
+
+    static fromJS(data: any): HotSheetColorDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new HotSheetColorDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["Id"] = this.Id;
+        data["TypeRecord"] = this.TypeRecord;
+        data["TypeColor"] = this.TypeColor;        
+        return data;
+    }
+
+    clone(): HotSheetColorDto {
+        const json = this.toJSON();
+        let result = new HotSheetColorDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IHotSheetColorDto {
+    Id: number | undefined;
+    TypeRecord: string | undefined;
+    TypeColor: string | undefined;   
 }
 
 export class GetPurchaseOrdersInput implements IGetPurchaseOrdersInput {
@@ -12159,6 +12335,8 @@ export class HotSheetsDto implements IHotSheetsDto {
     pcComments: string | undefined;
     stock2: number;
     completedManually: number | undefined;
+    typeRecord:string | undefined;
+    typeColor: string | undefined;
 
     constructor(data?: IHotSheetsDto) {
         if (data) {
@@ -12198,6 +12376,8 @@ export class HotSheetsDto implements IHotSheetsDto {
             this.pcComments = _data["pcComments"];
             this.stock2 = _data["stock2"];
             this.completedManually = _data["completedManually"];
+            this.typeRecord = _data["typeRecord"];
+            this.typeColor = _data["typeColor"];
         }
     }
 
@@ -12237,6 +12417,9 @@ export class HotSheetsDto implements IHotSheetsDto {
         data["pcComments"] = this.pcComments;
         data["stock2"] = this.stock2;
         data["completedManually"] = this.completedManually;
+        data["typeRecord"] = this.typeRecord;
+        data["typeColor"] = this.typeColor;
+
         return data;
     }
 
@@ -12276,6 +12459,9 @@ export interface IHotSheetsDto {
     pcComments: string | undefined;
     stock2: number;
     completedManually: number | undefined;
+    typeRecord: string | undefined;
+    typeColor: string | undefined;
+
 }
 
 export class HotSheetsItemDetailDto implements IHotSheetsItemDetailDto {
@@ -12456,10 +12642,12 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
     shortageVal: string | undefined;
     asn: string | undefined;
     pcComments: string | undefined;
-    creationDate: moment.Moment | undefined;
+    creationDateOnly: moment.Moment | undefined;
     existComment: number;
     stock2: number;
     completedManually: number | undefined;
+    typeRecord:string| undefined;
+    typeColor:string| undefined;
 
     constructor(data?: IHotSheetsItemDto) {
         if (data) {
@@ -12498,10 +12686,12 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
             this.shortageVal = _data["shortageVal"];
             this.asn = _data["asn"];
             this.pcComments = _data["pcComments"];
-            this.creationDate = _data["creationDate"] ? moment(_data["creationDate"].toString()) : <any>undefined;
+            this.creationDateOnly = _data["creationDateOnly"] ? moment(_data["creationDateOnly"].toString()) : <any>undefined;
             this.existComment = _data["existComment"];
             this.stock2 = _data["stock2"];
             this.completedManually = _data["completedManually"];
+            this.typeRecord = _data["typeRecord"];
+            this.typeColor = _data["typeColor"];
         }
     }
 
@@ -12540,10 +12730,12 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
         data["shortageVal"] = this.shortageVal;
         data["asn"] = this.asn;
         data["pcComments"] = this.pcComments;
-        data["creationDate"] = this.creationDate ? this.creationDate.toISOString() : <any>undefined;
+        data["creationDateOnly"] = this.creationDateOnly ? this.creationDateOnly.toISOString() : <any>undefined;
         data["existComment"] = this.existComment;
         data["stock2"] = this.stock2;
         data["completedManually"] = this.completedManually;
+        data["typeRecord"] = this.typeRecord;
+        data["typeColor"] = this.typeColor;
         return data;
     }
 
@@ -12582,10 +12774,12 @@ export interface IHotSheetsItemDto {
     shortageVal: string | undefined;
     asn: string | undefined;
     pcComments: string | undefined;
-    creationDate: moment.Moment | undefined;
+    creationDateOnly: moment.Moment | undefined;
     existComment: number;
     stock2: number;
     completedManually: number | undefined;
+    typeRecord:string| undefined;
+    typeColor:string| undefined;
 }
 
 export class Int64EntityDto implements IInt64EntityDto {

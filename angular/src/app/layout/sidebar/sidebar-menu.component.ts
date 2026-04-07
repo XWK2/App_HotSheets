@@ -58,6 +58,8 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
 
             new MenuItem(this.l('HotSheets'), '/app/hotSheets', 'fa-solid fa-square-poll-vertical', 'Pages.HotSheets'),
             
+            new MenuItem(this.l('ImportExports'), '/app/importExports', 'fa-solid fa-square-poll-vertical', 'Pages.ImportExports'),
+            
             new MenuItem(this.l('Reports'), '', 'fas fa-chart-bar', 'Pages.Reports', [
                 new MenuItem(this.l('HotSheetsReports'), '/app/reports/report-hot-sheets', 'fas fa-receipt', 'Pages.Reports.HotSheetsReports'),                                                
                 new MenuItem(this.l('PurchaseOrdersReports'), '/app/reports/report-purchase-orders', 'fas fa-receipt', 'Pages.Reports.PurchaseOrdersReports'),                                                

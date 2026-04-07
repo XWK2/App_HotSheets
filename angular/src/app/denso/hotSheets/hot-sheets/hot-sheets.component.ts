@@ -52,7 +52,7 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
     });
 
     shippingCode: string;
-    creationDate: Moment;
+    creationDateOnly: Moment;
     qualificationOptions: any[] = [];
     qualificationSelected: string;
 
@@ -228,6 +228,7 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
             //this.hotSheetChanges.realShortageDate = newhotSheet.realShortageDate;                
             this.hotSheetChanges.shortage = newhotSheet.shortage;
             this.hotSheetChanges.completedManually = newhotSheet.completedManually;
+            this.hotSheetChanges.typeRecord = "HS";
             
             // const shortage = newhotSheet.shortage;            
             // const shortageVal = newhotSheet.shortageVal;  
@@ -314,7 +315,7 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
         input.startDate = this.startDate ? moment(this.startDate) : undefined;
         input.endDate = this.endDate ? moment(this.endDate) : undefined;
         input.statusHS = statusIncompleted;
-        
+        input.typeRecord = "HS";
         this._hotSheetservice
             .getHotSheets(input)
             .pipe(
@@ -326,6 +327,7 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
                 this.hotSheets = response;
                
             });
+             
     }
 
 

@@ -3,37 +3,13 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-2">
-                    <h1 class="denso-page-title"><i class="fa-solid fa-square-poll-vertical"></i>&nbsp;{{ 'StarSheets' | localize }}</h1>
+                    <h1 class="denso-page-title"><i class="fa-solid fa-square-poll-vertical"></i>&nbsp;{{ 'ImportExport' | localize }}</h1>
                 </div>
-               
+                
                 <div class="col-10 text-right">
                     <dx-form colCount="12">
-                        
-                         <!-- <dxi-item [label]="{ text: 'Status' | localize }" [colSpan]="3">
-                            <div *dxTemplate>                               
-                                <dx-select-box
-                                    [(value)]="statusSelected"
-                                    [items]="statusOptions"
-                                    displayExpr="text"
-                                    valueExpr="value"
-                                    [placeholder]="'Select option'"
-                                    [width]="200"
-                                    showClearButton="true">
-                                </dx-select-box>
-                            </div>
-                        </dxi-item> -->
-                        
-                        <!-- <dxi-item [label]="{ text: 'ShippingInstructionCode' | localize }" [colSpan]="3">
-                            <div *dxTemplate>
-                                <dx-text-box [(value)]="shippingCode" showClearButton="true"></dx-text-box>
-                            </div>
-                        </dxi-item>
-                        <dxi-item [label]="{ text: 'Date' | localize }" [colSpan]="2">
-                            <div *dxTemplate>
-                                <dx-date-box type="date" [(value)]="creationDate" showClearButton="true"> </dx-date-box>
-                            </div>
-                        </dxi-item>                         -->
                        
+                        
                     </dx-form>
                 </div>
             </div>
@@ -43,45 +19,35 @@
         <div class="container-fluid">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body grid-content" [busy]="isTableLoading">                      
-                        <dx-button
-                        stylingMode="contained"
-                        [text]="'UpdateInformation' | localize"
-                        icon="refresh"
-                        type="default"
-                        [width]="220"
-                        class="dx-button-ml"
-                        (click)="wsPortalShippingUpdateStarSheets()"                        
-                    >
-                    </dx-button>
-                        <!-- <div class="leyenda-colores">
-                            <span class="color-cuadro" style="background-color: #fafbfd;"></span> Hoy                            
-                            <span class="color-cuadro" style="background-color: #FFF59D;"></span> Ayer
-                            <span class="color-cuadro" style="background-color: #FFE0B2;"></span> Hace 2 días
-                            <span class="color-cuadro" style="background-color: #FFCDD2;"></span> Hace 3 días 
-                            <span class="color-cuadro" style="background-color: #f08989;"></span> Más de 4 días                            
-                        </div> -->
+                    <div class="card-body grid-content" [busy]="isTableLoading">
+                       <!-- Leyenda de colores -->
+                        <!-- Leyenda de colores -->                        
+                        <div class="leyenda-colores">
+                           
+                            <span class="color-cuadro" style="background-color: #D00000;"></span> Hoy                            
+                            <span class="color-cuadro" style="background-color: #FF0000;"></span> Ayer
+                            <span class="color-cuadro" style="background-color: #FF8A3B;"></span> Hace 2 días
+                            <span class="color-cuadro" style="background-color: #47D45A;"></span> Hace 3 días                             
+                            
+                        </div>
                         <dx-data-grid
-                            keyExpr="starSheetId"
-                            [dataSource]="starSheets"
+                            keyExpr="hotSheetId"
+                            [dataSource]="hotSheets"
                             [allowColumnReordering]="false"
                             [allowColumnResizing]="false"
                             [columnAutoWidth]="true"
                             (onInitNewRow)="onInitNewRow($event)"
-                            (onSaving)="onSavingStarSheet($event)"
+                            (onSaving)="onSavingHotSheet($event)"
                             (onEditCanceling)="onEditCanceling($event)"                           
-                            (onEditingStart)="onEditingStart($event)"    
-                            (onSelectionChanged)="onSelectionChanged($event)"                       
+                            (onEditingStart)="onEditingStart($event)"                           
 
                             [showBorders]="true"
                             [noDataText]="'NoDataText' | localize"
                             [rowAlternationEnabled]="true"
                             (onExporting)="exportGrid($event)"
                             (onRowPrepared)="personalizarFila($event)"
-                            [selection]="{ mode: 'multiple', showCheckBoxesMode: 'always' }"
-                            [groupPanel]="{ visible: true }" [grouping]="{ autoExpandAll: true }"     
-                                                   
-                            
+                            [groupPanel]="{ visible: true }" [grouping]="{ autoExpandAll: true }"                            
+                            (onSelectionChanged)="onSelectionChanged($event)"
                         >
                             <!-- <dxo-scrolling mode="standard"></dxo-scrolling> -->
                             <dxo-paging [enabled]="true" [pageSize]="20"></dxo-paging>
@@ -89,9 +55,12 @@
                             <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
                             <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>                             
                             <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']"> </dxo-export>                            
-                            <dxo-selection mode="multiple" showCheckBoxesMode="always"></dxo-selection>
-
-                            <dxo-editing mode="popup" [allowUpdating]="false" [useIcons]="true" [allowAdding]="false" [allowDeleting]="false" >
+                            <dxo-selection 
+                                mode="multiple"
+                                showCheckBoxesMode="always">
+                            </dxo-selection>
+                            
+                            <dxo-editing mode="popup" [allowUpdating]="true" [useIcons]="true" [allowAdding]="false" [allowDeleting]="false" >
                                 <dxo-popup [title]="'HotSheetInfo' | localize" [showTitle]="true" [width]="1050" [height]="700"> 
                                   
                                 </dxo-popup>                                
@@ -109,52 +78,52 @@
                                                             <dxi-item [label]="{ text: 'DeliveryOrder' | localize }" [colSpan]="2">                                                        
                                                                 <div *dxTemplate>
                                                                     <dx-text-box 
-                                                                    [(value)]="starSheetChanges.deliveryOrder"
+                                                                    [(value)]="hotSheetChanges.deliveryOrder"
                                                                     [readOnly]="!enabledEditInfo">
                                                                     </dx-text-box>
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
                                                             </dxi-item>
 
-                                                            <!-- <dxi-item [label]="{ text: 'TrafficContainerFX' | localize }" [colSpan]="2">
+                                                            <dxi-item [label]="{ text: 'TrafficContainerFX' | localize }" [colSpan]="2">
                                                                 <div *dxTemplate>
                                                                     <dx-text-box 
-                                                                        [(value)]="starSheetChanges.trafficContainerFX"
+                                                                        [(value)]="hotSheetChanges.trafficContainerFX"
                                                                         [readOnly]="!enabledEditInfo">
                                                                     </dx-text-box>
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
-                                                            </dxi-item> -->
-                                                            <!-- <dxi-item [label]="{ text: 'UnitNumber' | localize }" [colSpan]="2">
+                                                            </dxi-item>
+                                                            <dxi-item [label]="{ text: 'UnitNumber' | localize }" [colSpan]="2">
                                                                 <div *dxTemplate>
                                                                     <dx-text-box 
-                                                                        [(value)]="starSheetChanges.unitNumber"
+                                                                        [(value)]="hotSheetChanges.unitNumber"
                                                                         [readOnly]="!enabledEditInfo">
                                                                     </dx-text-box>
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
-                                                            </dxi-item> -->
+                                                            </dxi-item>
                         
-                                                            <!-- <dxi-item [label]="{ text: 'TransportMode' | localize }" [colSpan]="1">
+                                                            <dxi-item [label]="{ text: 'TransportMode' | localize }" [colSpan]="1">
                                                                 <div *dxTemplate>
                                                                     <dx-select-box
                                                                         displayExpr="description"
                                                                         valueExpr="id"
-                                                                        [(value)]="starSheetChanges.transportModeId"
+                                                                        [(value)]="hotSheetChanges.transportModeId"
                                                                         [items]="transportMode"
                                                                         [searchEnabled]="true"
                                                                         [readOnly]="!enabledEditInfo">                                                                    
                                                                     </dx-select-box>
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
-                                                            </dxi-item> -->
+                                                            </dxi-item>
                         
-                                                            <!-- <dxi-item [label]="{ text: 'ShortageShift' | localize }" [colSpan]="1">
+                                                            <dxi-item [label]="{ text: 'ShortageShift' | localize }" [colSpan]="1">
                                                                 <div *dxTemplate>
                                                                     <dx-select-box
                                                                         displayExpr="description"
                                                                         valueExpr="id"
-                                                                        [(value)]="starSheetChanges.shortageShiftId"
+                                                                        [(value)]="hotSheetChanges.shortageShiftId"
                                                                         [items]="shortageShift"
                                                                         [searchEnabled]="true"
                                                                         searchMode="contains"
@@ -162,22 +131,22 @@
                                                                     </dx-select-box>
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
-                                                            </dxi-item>                                     -->
-                                                            <!-- <dxi-item [label]="{ text: 'EtaDNMX' | localize }" [colSpan]="1">
+                                                            </dxi-item>                                    
+                                                            <dxi-item [label]="{ text: 'EtaDNMX' | localize }" [colSpan]="1">
                                                                 <div *dxTemplate>
                                                                     <dx-date-box 
                                                                         type="date" 
-                                                                        [(value)]="starSheetChanges.etaDNMX" 
+                                                                        [(value)]="hotSheetChanges.etaDNMX" 
                                                                         showClearButton="true"
                                                                         [readOnly]="!enabledEditInfo">
                                                                     </dx-date-box>
                                                                 </div>
-                                                            </dxi-item> -->
+                                                            </dxi-item>
                                                             <!-- <dxi-item [label]="{ text: 'RealShortageDate' | localize }" [colSpan]="1">
                                                                 <div *dxTemplate>
                                                                     <dx-date-box 
                                                                         type="date" 
-                                                                        [(value)]="starSheetChanges.realShortageDate" 
+                                                                        [(value)]="hotSheetChanges.realShortageDate" 
                                                                         showClearButton="true"
                                                                         [readOnly]="!enabledEditInfo">
                                                                     </dx-date-box>
@@ -201,6 +170,90 @@
                                                                 </div>
                                                             </dxi-item>
 
+                                                            <dxi-item [label]="{ text: 'CompletedManually' | localize }" [colSpan]="1">
+                                                                <div *dxTemplate>                                                                   
+
+                                                                    <dx-select-box                                                                        
+                                                                        displayExpr="text"
+                                                                        valueExpr="value"
+                                                                        [(value)]="hotSheetChanges.completedManually"
+                                                                        [items]="statusOptions"
+                                                                        [searchEnabled]="true"                                                                        
+                                                                        [readOnly]="!enabledEditInfo">                                                                    
+                                                                    </dx-select-box>
+                                                                    
+                                                                </div>
+                                                                <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+
+                                                            <dxi-item [label]="{ text: 'Color' }" [colSpan]="2">
+                                                                <div *dxTemplate="let data of 'content'">
+
+                                                                    <dx-select-box
+                                                                        [(value)]="hotSheetChanges.typeColor"
+                                                                        [items]="colorOptions"
+                                                                        valueExpr="value"
+                                                                        displayExpr="text"
+                                                                        [readOnly]="!enabledEditInfo"
+                                                                        [width]="220"
+                                                                        [fieldTemplate]="'colorFieldPopup'">
+
+                                                                        <!-- 🔹 Lista -->
+                                                                        <div *dxTemplate="let item of 'item'">
+                                                                            <div style="display:flex; align-items:center; gap:10px;">
+                                                                                <div 
+                                                                                    style="
+                                                                                        width:18px; 
+                                                                                        height:18px; 
+                                                                                        border-radius:50%; 
+                                                                                        border:1px solid #ccc;
+                                                                                    "
+                                                                                    [style.background]="item.value">
+                                                                                </div>
+                                                                                <span>{{ item.text }}</span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <!-- 🔥 Seleccionado -->
+                                                                        <div *dxTemplate="let data of 'colorFieldPopup'">
+
+                                                                            <div style="
+                                                                                display:flex; 
+                                                                                align-items:center; 
+                                                                                gap:8px; 
+                                                                                height:36px;
+                                                                            ">
+
+                                                                                <!-- círculo -->
+                                                                                <div 
+                                                                                    style="
+                                                                                        width:14px; 
+                                                                                        height:14px; 
+                                                                                        border-radius:50%; 
+                                                                                        border:2px solid white;
+                                                                                        box-shadow:0 0 3px rgba(0,0,0,0.4);
+                                                                                        margin-left:6px;
+                                                                                    "
+                                                                                    [style.background]="data?.value || '#ccc'">
+                                                                                </div>
+
+                                                                                <!-- textbox requerido -->
+                                                                                <dx-text-box
+                                                                                    [value]="data?.text"
+                                                                                    [readOnly]="true"
+                                                                                    stylingMode="outlined"
+                                                                                    width="100%">
+                                                                                </dx-text-box>
+
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </dx-select-box>
+
+                                                                </div>
+                                                            </dxi-item>
+
                                                         </dx-form>
                                                     </div>       
                                                 </dxi-item>
@@ -220,7 +273,7 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            <tr *ngFor="let commentItem of starSheetComments">
+                                                                            <tr *ngFor="let commentItem of hotSheetComments">
                                                                                 <td>
                                                                                     <strong>{{ commentItem.creatorFullName }}</strong>
                                                                                 </td>
@@ -267,7 +320,7 @@
                                                         <dxi-item [label]="{ text: 'Notes' | localize }" [colSpan]="2">                                    
                                                             <div *dxTemplate>
                                                                 <dx-html-editor height="400px" 
-                                                                    [(value)]="starSheetChanges.pcComments"
+                                                                    [(value)]="hotSheetChanges.pcComments"
                                                                     [readOnly]="!enabledEditInfo">
                                                                     <dxo-toolbar [multiline]="true">
                                                                         <dxi-item name="undo"></dxi-item>
@@ -485,17 +538,97 @@
                                        
                                     </div>
                                 </dxi-item>
+                                
+                                    <dxi-item [label]="{ text: 'Color' }" [colSpan]="3">
+                                <div *dxTemplate="let data of 'content'">
 
-                                <dxi-item location="before" widget="dxButton" [options]="changeStatusButtonOptions"></dxi-item>
-                                <dxi-item location="before" widget="dxButton" [options]="changeStatusIEButtonOptions"></dxi-item>
+                                    <dx-select-box
+                                        [(value)]="colorSelectedTemp"
+                                        [items]="colorOptions"
+                                        valueExpr="value"
+                                        displayExpr="text"
+                                        [width]="220"
+                                        [fieldTemplate]="'colorField'">
+
+                                        <!-- 🔹 Lista -->
+                                        <div *dxTemplate="let item of 'item'">
+                                            <div style="display:flex; align-items:center; gap:10px;">
+                                                <div 
+                                                    style="
+                                                        width:18px; 
+                                                        height:18px; 
+                                                        border-radius:50%; 
+                                                        border:1px solid #ccc;
+                                                    "
+                                                    [style.background]="item.value">
+                                                </div>
+                                                <span>{{ item.text }}</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- 🔥 Seleccionado -->
+                                        <div *dxTemplate="let data of 'colorField'">
+
+                                            <div style="
+                                                display:flex; 
+                                                align-items:center; 
+                                                gap:8px; 
+                                                height:36px;
+                                            ">
+
+                                                <!-- círculo -->
+                                                <div 
+                                                    style="
+                                                        width:14px; 
+                                                        height:14px; 
+                                                        border-radius:50%; 
+                                                        border:2px solid white;
+                                                        box-shadow:0 0 3px rgba(0,0,0,0.4);
+                                                        margin-left:6px;
+                                                    "
+                                                    [style.background]="data?.value || '#ccc'">
+                                                </div>
+
+                                                <!-- textbox requerido por DevExtreme -->
+                                                <dx-text-box
+                                                    [value]="data?.text"
+                                                    [readOnly]="true"
+                                                    stylingMode="outlined"
+                                                    width="100%">
+                                                </dx-text-box>
+
+                                            </div>
+
+                                        </div>
+
+                                    </dx-select-box>
+
+                                </div>
+                            </dxi-item>
+                                   
+                               
+
+                            <!--AGREGA AQUÍ -->
+                            <dxi-item location="after" locateInMenu="auto">
+                                <div *dxTemplate>
+                                    <dx-button
+                                    text="Aplicar color a seleccionados"
+                                    stylingMode="contained"
+                                    type="success"
+                                    icon="paintbucket"
+                                    class="dx-button-ml"
+                                    (click)="updateSelectedColors()">
+                                </dx-button>
+                                </div>
+                            </dxi-item>
 
                                 <dxi-item name="exportButton"></dxi-item> 
                             </dxo-toolbar>
 
-                            <dxi-column [caption]="'Planner' | localize" >
+                            <dxi-column [caption]="'Planner' | localize" style="text-align:justify !important;">
                                 <dxi-column [caption]="'PlannerCode' | localize" dataField="plannerCode" [width]="90"></dxi-column>
                                 <dxi-column [caption]="'PlannerName' | localize" dataField="plannerName" [width]="250"></dxi-column>
-                            </dxi-column>
+                            </dxi-column>    
                             <dxi-column [caption]="'Supplier' | localize">
                                 <dxi-column [caption]="'SupplierCode' | localize" dataField="supplierCode" [width]="90"></dxi-column>
                                 <dxi-column [caption]="'SupplierName' | localize" dataField="supplierName" [width]="150"></dxi-column>
@@ -504,40 +637,32 @@
                                 <dxi-column [caption]="'PartNumberCodeHS' | localize" dataField="partNumber" [width]="130"></dxi-column>
                                 <dxi-column [caption]="'PartDescriptionHS' | localize" dataField="partDescription" [width]="250"></dxi-column>
                             </dxi-column>                                                    
-                            <dxi-column [caption]="'DateSearch' | localize" dataField="dateSearch" [visible]="false" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'OrderQty' | localize" dataField="orderQty" [width]="120"></dxi-column>
-                            <dxi-column [caption]="'DeliveryOrder' | localize" dataField="deliveryOrder" [width]="100"></dxi-column>  
-                            <dxi-column [caption]="'DelQty' | localize" dataField="delQty" [width]="100"></dxi-column>  
-                            <dxi-column [caption]="'ASN' | localize" dataField="asn" [width]="100"></dxi-column>                              
                             <dxi-column [caption]="'InTransitQty' | localize" dataField="inTransitQty" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'ADate' | localize" dataField="aDate" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'RCVD' | localize" dataField="rcvd" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'CIGMAReceived' | localize" dataField="cigmaReceived" [width]="120"></dxi-column>
-                            <!-- <dxi-column [caption]="'TransportMode' | localize">
-                                <dxi-column [caption]="'TransportModeId' | localize" dataField="transportModeId" [width]="50"></dxi-column>
-                                <dxi-column [caption]="'TransportModeName' | localize" dataField="transportModeName" [width]="250"></dxi-column>
-                            </dxi-column> -->
-                            <!-- <dxi-column
-                                [caption]="'DueDate' | localize"
-                                dataField="dueDate"
+                            <dxi-column [caption]="'DiaStockIn' | localize" dataField="diaStockIn" [width]="120"></dxi-column>
+                            <dxi-column [caption]="'DiaLocation' | localize" dataField="diaLocation" [width]="120"></dxi-column>
+                            <dxi-column [caption]="'CIGMAReceived' | localize" dataField="cigmaReceived" [width]="220"></dxi-column>
+                            <!-- <dxi-column [caption]="'TransportMode' | localize"> -->
+                                <dxi-column [caption]="'TransportModeId' | localize" dataField="transportModeId" [visible]="false" [width]="50"></dxi-column>
+                                <dxi-column [caption]="'TransportMode' | localize" dataField="transportModeName" [width]="250"></dxi-column>
+                            <!-- </dxi-column> -->
+                            
+                            <dxi-column [caption]="'DeliveryOrder' | localize" dataField="deliveryOrder" [width]="150"></dxi-column>
+                            <dxi-column [caption]="'TrafficContainerFX' | localize" dataField="trafficContainerFX" [width]="250"></dxi-column>
+                            <dxi-column [caption]="'UnitNumber' | localize" dataField="unitNumber" [width]="150"></dxi-column>                            
+                            <dxi-column
+                                [caption]="'EtaDNMX' | localize"
+                                dataField="etaDNMX"
                                 [width]="150"
                                 dataType="date"
                                 format="yyyy-MM-dd"
-                            ></dxi-column> -->
-                            <dxi-column [caption]="'DueDate' | localize" dataField="dueDate" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'ReceivedQty' | localize" dataField="receivedQty" [width]="150"></dxi-column>
-
-                            <dxi-column [caption]="'Container' | localize" dataField="container"  [width]="250"></dxi-column>
-                            <dxi-column [caption]="'Stock1' | localize" dataField="stock1" [visible]="false" [width]="150"></dxi-column>  
-                            <dxi-column [caption]="'Stock2' | localize" dataField="stock2" [visible]="false" [width]="150"></dxi-column>                             -->
-                           
-                            <!-- <dxi-column [caption]="'Status' | localize">
-                                <dxi-column [caption]="'StatusId' | localize" dataField="statusId" [width]="50"></dxi-column>
-                                <dxi-column [caption]="'StatusHotSheetName' | localize" dataField="statusHotSheetName" [width]="150"></dxi-column>                            
-                            </dxi-column> -->
+                            ></dxi-column>
+                            <!-- <dxi-column [caption]="'Status' | localize"> -->
+                                <dxi-column [caption]="'StatusId' | localize" dataField="statusId"[visible]="false"  [width]="50"></dxi-column>
+                                <dxi-column [caption]="'Status' | localize" dataField="statusHotSheetName" [width]="150"></dxi-column>                            
+                            <!-- </dxi-column> -->
                             
                             
-                            <!-- <dxi-column [caption]="'Shortage' | localize">
+                            <dxi-column [caption]="'Shortage' | localize">
                                 <dxi-column
                                 [caption]="'RealShortageDate' | localize"
                                 dataField="realShortageDate"
@@ -545,34 +670,26 @@
                                 dataType="date"
                                 format="yyyy-MM-dd"
                                 ></dxi-column>
-                                <dxi-column [caption]="'ShortageShiftId' | localize" dataField="shortageShiftId" [width]="50"></dxi-column>
-                                <dxi-column [caption]="'ShortageShiftName' | localize" dataField="shortageShiftName" [width]="150"></dxi-column>                            
+                                <dxi-column [caption]="'ShortageShiftId' | localize" dataField="shortageShiftId" [visible]="false" [width]="50"></dxi-column>                                
                                 <dxi-column [caption]="'ShortageTime' | localize" dataField="shortageVal" [width]="150"></dxi-column>                                                                  
-                            </dxi-column> -->
-                            <!-- <dxi-column [caption]="'ASN' | localize" dataField="asn" [width]="70"></dxi-column> -->
-                            <!-- <dxi-column [caption]="'ExistComment' | localize" dataField="existComment" [width]="70"></dxi-column> -->
+                            </dxi-column>
+                            <dxi-column [caption]="'ShortageShiftName' | localize" dataField="shortageShiftName" [width]="150"></dxi-column>                            
+                            <dxi-column [caption]="'ASN' | localize" dataField="asn" [width]="80"></dxi-column>
+                            <dxi-column [caption]="'Stock2' | localize" dataField="stock2" [visible]="false" [width]="90"></dxi-column>
+                            <dxi-column [caption]="'ExistComment' | localize" dataField="existComment" [visible]="false" [width]="70"></dxi-column>
                             <!-- <dxi-column [caption]="'PCComments' | localize" dataField="pcComments" [width]="250"></dxi-column> -->
-                            
-                            <!-- <dxi-column [caption]="'StockShortageDate' | localize" dataField="stockShortageDate" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'ShortagePriority' | localize" dataField="shortagePriority" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'OnHandTotalQty' | localize" dataField="onHandTotalQty" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'RequirementTotalQty' | localize" dataField="requirementTotalQty" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'OverDefProdQtyFromParentPartNo' | localize" dataField="overDefProdQtyFromParentPartNo" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'OverDefRecQty' | localize" dataField="overDefRecQty" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'ShortageNoticeDateFrom' | localize" dataField="shortageNoticeDateFrom" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'Stock2' | localize" dataField="stock2" [width]="100"></dxi-column> -->
-
+                            <dxi-column [caption]="'CompletedManually' | localize" dataField="completedManually" [width]="200"></dxi-column>
                             <dxi-column
                             [caption]="'CreationDate' | localize"
                             dataField="creationDate"
-                            [visible]="false"
                             [width]="130"
+                            [visible]="false"
                             dataType="date"
                             format="yyyy-MM-dd HH:mm"                                
                             ></dxi-column>
 
-                            
-                            <!-- <dxi-column
+                            <!-- Otras columnas -->
+                            <dxi-column
                                 [caption]="'' | localize"
                                 dataField="creationDate"
                                 [fixed]="true"
@@ -580,47 +697,76 @@
                                 cellTemplate="creatioDateCellTemplateColor">
                                 <div *dxTemplate="let info of 'creatioDateCellTemplateColor'">
                                     <div class="circle-color"
-                                        [style.background-color]="getFlagColor(info.data.creationDate)">
+                                        [style.background-color]="getColorFromCode(info.data.typeColor)">                                        
                                     </div>
                                 </div>                              
-                            </dxi-column> -->
+                            </dxi-column>
 
-                            <!-- <dxi-column
-                                [caption]="'Comments' | localize"
+                            <dxi-column
+                                [caption]="'Notas' | localize"
                                 dataField="pcComments"
                                 cellTemplate="pcCommentsCellTemplate"
                                 [width]="500"
                                 >
-                            </dxi-column> -->
+                            </dxi-column>
                             
                             <div *dxTemplate="let info of 'pcCommentsCellTemplate'"><div [innerHtml]="info.data.pcComments | safeComment"></div></div>
+
                             
-                            <!-- <dxi-column type="buttons" [caption]="'Acciones' | localize" [alignment]="'left'">                                
+                            <dxi-column type="buttons" [caption]="'Acciones' | localize" [alignment]="'left'">
+                                <!-- Botones por defecto -->
                                 <dxi-button name="edit"></dxi-button>
                                 <dxi-button name="delete"></dxi-button>
+                            
+                                <!-- Botón personalizado para comentarios -->
+                                <!-- Este boton de abajo se activa ya jala y es visible con condicion servira para validaciones con roles.-->
+                                <!-- <dxi-button                                                                 
+                                  hint="Agregar Comentario"                                  
+                                  icon="comment"                                     
+                                  [visible]="showCommentButtonExist"                                                                                                         
+                                  [onClick]="viewComent.bind(this)">                                  
+                                </dxi-button>   -->
                                 <dxi-button                                                                 
                                     hint="Agregar Comentario"                                  
                                     icon="comment"                                                                         
                                     [onClick]="viewComent.bind(this)">                                  
                                 </dxi-button>  
-                            </dxi-column>                                  -->
+                                <!-- <dxi-button                                                                 
+                                    hint="Agregar Comentario"                                  
+                                    icon="fa fa-star"                                                
+                                    class="star-button"                       
+                                    [visible]="showCommentButtonNotExist"                                        
+                                    [onClick]="viewComent.bind(this)">                                  
+                                </dxi-button>  -->
+                                <!-- Este boton de abajo se activa ya jala-->
+                                <!-- <dxi-button                                                                 
+                                    hint="Ya tiene comentario"                                  
+                                    icon="fa fa-star"                                                
+                                    class="star-button"                       
+                                    [visible]="showCommentButtonExist"                                        
+                                    >                                  
+                                </dxi-button>   -->
+
+                            </dxi-column>                                 
                         
-                          <!-- <dxi-column                                   
+                          <dxi-column                                   
                             [caption]="'' | localize"     
                             dataField="ExistComment"
                             [fixed]="true"
                             fixedPosition="left"
                             [cellTemplate]="'commentWithStarTemplate'"                            
                             >
-                          </dxi-column> -->
+                          </dxi-column>
                         
-                          
-                          <!-- <div *dxTemplate="let info of 'commentWithStarTemplate'">
+                          <!-- Plantilla personalizada para la columna -->
+                          <div *dxTemplate="let info of 'commentWithStarTemplate'">
                             <div class="dx-button dx-button-icon">                                
+                            
+                                <!-- Mostrar estrella solo si ExistComment >= 0 -->
                                 <i *ngIf="info.data.existComment >= 1" title="Ya tiene Comentarios" class="dx-icon fa fa-star fa-spin fa-3x custom-star-icon"  (click)="viewComent.bind(this)"></i>
                                 <i *ngIf="info.data.existComment == 0" title="Sin Comentarios" class="dx-icon fa fa-star fa-spin fa-3x custom-star-icon-gray"  (click)="viewComent.bind(this)"></i>
                               </div>
-                          </div> -->
+                          </div>
                         
                             <!-- Sumatoria al pie de la tabla -->
                             <dxo-summary>
@@ -630,7 +776,7 @@
                                 valueFormat="fixedPoint">
                                 </dxi-total-item>
 
-                                <!-- <dxi-total-item 
+                                <dxi-total-item 
                                 column="diaStockIn" 
                                 summaryType="sum" 
                                 valueFormat="fixedPoint">
@@ -640,13 +786,13 @@
                                 column="deliveryOrder" 
                                 summaryType="sum" 
                                 valueFormat="fixedPoint">
-                                </dxi-total-item> -->
+                                </dxi-total-item>
 
-                                <!-- <dxi-total-item 
+                                <dxi-total-item 
                                 column="unitNumber" 
                                 summaryType="sum" 
                                 valueFormat="fixedPoint">
-                                </dxi-total-item> -->
+                                </dxi-total-item>
 
                                 <!-- Sumatoria por grupo -->
                                 <dxi-group-item 

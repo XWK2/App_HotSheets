@@ -6,13 +6,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Denso.HotSheet.Sheets.Dto
 {
-    public class HotSheetsItemDto 
+    public class ImportExportItemDetailDto 
     {
-        public long? HotSheetId { get; set; }
+        public long? ImportExportId { get; set; }
         public string PlannerCode { get; set; }
         public string PlannerName { get; set; }
         public string SupplierCode { get; set; }
-        public string SupplierName { get; set; }
+        public string SupplerName { get; set; }
         public string PartNumber { get; set; }
         public string PartDescription { get; set; }
         public int InTransitQty { get; set; }
@@ -34,21 +34,9 @@ namespace Denso.HotSheet.Sheets.Dto
         public string Shortage { get; set; }
 
         public string ShortageVal { get; set; }
-
-        public string ASN { get; set; }
         public string PCComments { get; set; }
 
-        public DateTime? CreationDateOnly { get; set; }
-
-        public int ExistComment { get;set; }
-
-        public decimal Stock2 { get; set; }
-
-        public long? CompletedManually { get; set; }
-
-        public string TypeRecord { get; set; }
-
-        public string TypeColor { get; set; }
+        public List<FileDto> Files { get; set; }
 
     }
 }

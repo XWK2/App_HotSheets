@@ -63,6 +63,7 @@
         //public const string Pages_Surveys = "Pages.Surveys";
         public const string Pages_StarSheets = "Pages.StarSheets";
         public const string Pages_HotSheets= "Pages.HotSheets";
+        public const string Pages_ImportExports = "Pages.ImportExports";
         public const string Pages_PurchaseOrders = "Pages.PurchaseOrders";
 
         public const string Pages_Reports = "Pages.Reports";

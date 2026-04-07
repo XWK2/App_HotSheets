@@ -1,13 +1,13 @@
 import { Component, Injector, OnInit, ViewChild,LOCALE_ID } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
-import { UserServiceProxy, HotSheetServiceProxy, StarSheetsItemDto, StarSheetsDto, FileDto, TransportModeDto,CatalogServiceProxy, UserByCurrentUserDto, ShortageShiftDto, StarSheetsCommetsDto, GetStarSheetInput } from '@shared/service-proxies/service-proxies';
+import { UserServiceProxy, HotSheetServiceProxy, HotSheetsItemDto, HotSheetsDto,FileDto, HotSheetColorDto,TransportModeDto,CatalogServiceProxy, UserByCurrentUserDto, ShortageShiftDto, HotSheetsCommetsDto, GetHotSheetInput } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
 import { DxDataGridComponent,DxDataGridModule,DxButtonModule  } from 'devextreme-angular';
 import DataSource from 'devextreme/data/data_source';
-
+import { Moment } from 'moment';
 import { Workbook } from 'exceljs';
-import * as saveAs from 'file-saver';
+import saveAs from 'file-saver';
 import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter';
 import { jsPDF } from 'jspdf';
 import { exportDataGrid } from 'devextreme/excel_exporter';
@@ -20,51 +20,50 @@ import { PopupTemplate } from '@app/denso/shared/models/popup-template';
 import { cloneDeep, toInteger } from 'lodash-es';
 import { DxAccordionComponent } from 'devextreme-angular';
 import { AppUtilsService } from '@shared/utils/app-utils.service';
-//import moment, { Moment } from 'moment';
 import * as moment from 'moment';
 import { WsPortalShippingService } from '@app/denso/shared/services/ws-portal-shipping.service';
 
 declare var bootstrap: any;
 
 @Component({
-    selector: 'star-sheets',
-    templateUrl: './star-sheets.component.html',
-    styleUrls: ['./star-sheets.component.css'],
+    selector: 'import-exports',
+    templateUrl: './import-exports.component.html',
+    styleUrls: ['./import-exports.component.css'],
     animations: [appModuleAnimation()],
 })
-export class StarSheetsComponent extends AppComponentBase implements OnInit {
-    starSheets: StarSheetsItemDto[] = [];
+export class ImportExportsComponent extends AppComponentBase implements OnInit {
+    hotSheets: HotSheetsItemDto[] = [];
     isTableLoading: boolean = false;
-    groupingValues: any[] | undefined;
+    groupingValues: any[];
 
     statusOptions = [        
-        { text: 'Completed', value: 'Completed' },
-        { text: 'Incomplete', value: 'Incomplete' }
+        { text: 'Completed', value: 1 },
+        { text: 'Incomplete', value: 0 }
       ];
     
     statusSelected: string = 'completado';
 
     //statusSelected: string | null = null;
 
-    userIdSelected: number | undefined;
+    userIdSelected: number;
     usersDataSource: DataSource = new DataSource({
         store: [],
         pageSize: 50,
     });
 
-    shippingCode: string | undefined;
-    creationDate: moment.Moment | undefined;
+    shippingCode: string;
+    creationDate: Moment;
     qualificationOptions: any[] = [];
-    qualificationSelected: string | undefined;
+    qualificationSelected: string;
 
-    plannerCode: string| undefined;
-    supplierCode: string| undefined;
-    partNumber: string | undefined;
-    transportModeId: number | undefined;
-    statusId: number| undefined;
-    shortageShiftId: number | undefined;
+    plannerCode: string;
+    supplierCode: string;
+    partNumber: string;
+    transportModeId: number ;
+    statusId: number;
+    shortageShiftId: number ;
 
-    starSheetChanges: StarSheetsDto = new StarSheetsDto();
+    hotSheetChanges: HotSheetsDto = new HotSheetsDto();
     Editing: boolean = false;
     transportMode: TransportModeDto[] = [];
     shortageShift: ShortageShiftDto[] =[];
@@ -73,35 +72,52 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
 
     hotSheetFiles: FileDto[] =[];
 
-    starSheetComments: StarSheetsCommetsDto[] =[];
+    hotSheetComments: HotSheetsCommetsDto[] =[];
 
-    @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent | undefined;
+    @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
 
 
     //Files
     saving: boolean = false;
     //uploader: FileUploader;
     uploaderHotSheet: FileUploader;
-    starSheetEntityType: string = 'StarSheet';    
+    hotSheetEntityType: string = 'HotSheet';
     productFilesUploadedCount: number = 0;
 
     showDocumentViewerPopup: boolean = false;
     documentViewerExtensionsSupported: string[] = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.ppt', '.pptx', '.doc', '.docx', '.xls', '.xlsx'];
-    documentViewerFileSelected: FileDto | undefined;
+    documentViewerFileSelected: FileDto;
 
     showCommentsPopup: boolean=false;
     filaSeleccionada: any = null;
     comentario: string = '';
-    commentSelected: StarSheetsCommetsDto | undefined;
+    commentSelected: HotSheetsCommetsDto;
 
-    startDate: Date | undefined;
-    endDate: Date | undefined;
+    startDate: Date;
+    endDate: Date;
+
+    // colorOptions = [
+    // { text: 'Hoy', value: '#D00000' },
+    // { text: 'Ayer', value: '#FF0000' },
+    // { text: 'Hace 2 días', value: '#FF8A3B' },
+    // { text: 'Hace 3 días', value: '#47D45A' }
+    // ];
+
+    colorOptions = [
+    { text: 'Hoy', value: '#D00000', code: 'A+' },
+    { text: 'Ayer', value: '#FF0000', code: 'A' },
+    { text: 'Hace 2 días', value: '#FF8A3B', code: 'B' },
+    { text: 'Hace 3 días', value: '#47D45A', code: 'C' }
+    ];
+
+    colorSelected: string = null;
+    colorSelectedTemp: string = null;
 
     selectedRows: any[] = [];
 
     constructor(
         injector: Injector, 
-        private _hotheetservice: HotSheetServiceProxy, 
+        private _hotSheetservice: HotSheetServiceProxy, 
         private _tokenService: TokenService, 
         private _userService: UserServiceProxy, 
         private _catalogService: CatalogServiceProxy,
@@ -120,13 +136,13 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
         this.uploaderHotSheet = new FileUploader(uploaderOptions);
 
         /* this.uploader.onBuildItemForm = (item, form) => {
-            form.append('entityType', this.starSheetEntityType);
-            form.append('entityId', this.starSheetChanges.id);
+            form.append('entityType', this.hotSheetEntityType);
+            form.append('entityId', this.hotSheetChanges.id);
         }; */
 
         this.uploaderHotSheet.onBuildItemForm = (item, form) => {
-            form.append('entityType', this.starSheetEntityType);
-            form.append('entityId', this.starSheetChanges.id);
+            form.append('entityType', this.hotSheetEntityType);
+            form.append('entityId', this.hotSheetChanges.id);
         };
 
         // this.uploader.onCompleteAll = () => {
@@ -144,8 +160,8 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
         this.uploaderHotSheet.onCompleteAll = () => {
             this.saving = false;
             abp.ui.clearBusy();
-            this.notify.success(this.l('SavedSuccessfully'), this.l('StarSheetFile'));
-            this._hotheetservice.getHotSheetFiles(this.starSheetChanges.id).subscribe((filesReponse: FileDto[]) => {
+            this.notify.success(this.l('SavedSuccessfully'), this.l('HotSheetFile'));
+            this._hotSheetservice.getHotSheetFiles(this.hotSheetChanges.id).subscribe((filesReponse: FileDto[]) => {
                 this.hotSheetFiles = filesReponse;
                 this.hotSheetFiles.forEach((docItem) => {
                     docItem.url = AppConsts.remoteServiceBaseUrl + '/file/GetDocumentBy?docId=' + docItem.id;
@@ -204,8 +220,8 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
             this._catalogService.getShortageShift(undefined).toPromise(),     
             
         ]).then((responses) => {
-            this.transportMode = responses[0] || [];
-            this.shortageShift = responses[1] || [];           
+            this.transportMode = responses[0];
+            this.shortageShift = responses[1];           
 
             this.isLoadingData = false;
         });
@@ -214,62 +230,78 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
     }
 
     public onInitNewRow(event: any): void {
-        this.starSheetChanges = new StarSheetsDto();
+        this.hotSheetChanges = new HotSheetsDto();
     }
 
+    // getColorFromCode(code: string | undefined): string {
+    //     return this.colorOptions.find(x => x.code === code)?.value ?? '';
+    // }
+
     public onEditingStart(event: any): void {
-            this.starSheetChanges = new StarSheetsDto();
-            const newhotSheet = this.starSheets.find((pn: StarSheetsItemDto) => pn.starSheetId === event.data.hotSheetId);
-            if (!newhotSheet) {
-                return;
-            }
-            this.starSheetChanges.id = event.data.starSheetId;
-            // this.starSheetChanges.transportModeId = newhotSheet.transportModeId;            
-            this.starSheetChanges.deliveryOrder = newhotSheet.deliveryOrder;
-            // this.starSheetChanges.trafficContainerFX = newhotSheet.trafficContainerFX;
-            // this.starSheetChanges.unitNumber = newhotSheet.unitNumber;
-            // this.starSheetChanges.etaDNMX = newhotSheet.etaDNMX;
-            // this.starSheetChanges.shortageShiftId = newhotSheet.shortageShiftId;                                    
-            // this.starSheetChanges.realShortageDate = newhotSheet.realShortageDate;                
-            // this.starSheetChanges.shortage = newhotSheet.shortage;
-            // const shortage = newhotSheet.shortage;
-            // const shortageVal = newhotSheet.shortageVal;      
+            this.hotSheetChanges = new HotSheetsDto();
+            let newhotSheet = new HotSheetsItemDto(); 
+            newhotSheet = this.hotSheets.find((pn: HotSheetsItemDto) => pn.hotSheetId === event.data.hotSheetId);
+            this.hotSheetChanges.id = event.data.hotSheetId;
+            this.hotSheetChanges.transportModeId = newhotSheet.transportModeId;            
+            this.hotSheetChanges.deliveryOrder = newhotSheet.deliveryOrder;
+            this.hotSheetChanges.trafficContainerFX = newhotSheet.trafficContainerFX;
+            this.hotSheetChanges.unitNumber = newhotSheet.unitNumber;
+            this.hotSheetChanges.etaDNMX = newhotSheet.etaDNMX;
+            this.hotSheetChanges.shortageShiftId = newhotSheet.shortageShiftId;                                    
+            //this.hotSheetChanges.realShortageDate = newhotSheet.realShortageDate;                
+            this.hotSheetChanges.shortage = newhotSheet.shortage;
+            this.hotSheetChanges.completedManually = newhotSheet.completedManually;
+
+            this.hotSheetChanges.typeColor = this.getColorFromCode(newhotSheet.typeColor);
+            // const shortage = newhotSheet.shortage;            
+            // const shortageVal = newhotSheet.shortageVal;  
             // const parts = shortageVal.split(":");
             // const hora = parseInt(parts[0].toString());
             // const min =parseInt(parts[1].toString());
             // const seg = parseInt(parts[2].toString());
 
-            // this.timeShortage = new Date(2025,1,1,hora,min,seg);
-            // //this.timeShortage = newhotSheet.shortageVal;
-            // //this.starSheetChanges.shortage = new TimeSpan(this.timeShortage);
+            const ahora = new Date();
+            const hora = parseInt(this.agregarCeros(ahora.getHours()));
+            const min = parseInt(this.agregarCeros(ahora.getMinutes()));
+            const seg = parseInt(this.agregarCeros(ahora.getSeconds()));
 
-            this.starSheetChanges.pcComments = newhotSheet.pcComments;
+            this.timeShortage = new Date(2025,1,1,hora,min,seg);
+            //this.timeShortage = newhotSheet.shortageVal;
+            //this.hotSheetChanges.shortage = new TimeSpan(this.timeShortage);
+
+            this.hotSheetChanges.pcComments = newhotSheet.pcComments;
             this.Editing = true;
 
             Promise.all([
-                this._hotheetservice.getStarSheetFiles(event.data.starSheetId).toPromise(),
-                this._hotheetservice.getStarSheetComments(event.data.starSheetId).toPromise(),
+                this._hotSheetservice.getHotSheetFiles(event.data.hotSheetId).toPromise(),
+                this._hotSheetservice.getHotSheetComments(event.data.hotSheetId).toPromise(),
             ]).then((responses) => {
-                this.hotSheetFiles = responses[0] || [];                
+                this.hotSheetFiles = responses[0];                
                 this.hotSheetFiles.forEach((docItem) => {
                     docItem.url = AppConsts.remoteServiceBaseUrl + '/file/GetDocumentBy?docId=' + docItem.id;
                 });
 
-                this.starSheetComments = responses[1]|| [];           
+                this.hotSheetComments = responses[1];       
                 this.isLoadingData = false;
             });
-        }        
+        }       
+        
+        agregarCeros(valor: number): string {
+            return valor < 10 ? '0' + valor : valor.toString();
+         }
 
         public onEditCanceling(event: any) {
             this.Editing = false;
         }
 
 
-        public onSavingStarSheet(e: any): void {
+        public onSavingHotSheet(e: any): void {
                 const change = e.changes[0];
-        
+
+                this.hotSheetChanges.typeColor = this.getColorCode(this.hotSheetChanges.typeColor || '');
+
                 //veremos como viene el dato
-                var ok= this.timeShortage;
+                //var ok= this.timeShortage;
 
                 if (change || this.Editing) {
                     e.cancel = true;
@@ -277,14 +309,14 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
                     if (change != undefined && change.type === 'remove') {                      
                         abp.notify.success(this.l('SuccessfullyDeleted'));
                     } else if ((change != undefined && change.type === 'insert') || this.Editing) {
-                        this._hotheetservice
-                            .createOrUpdateStarSheet(this.starSheetChanges)
+                        this._hotSheetservice
+                            .createOrUpdateHotSheet(this.hotSheetChanges)
                             .pipe(
                                 finalize(() => {                                    
                                 })
                             )
                             .subscribe(() => {
-                                this.notify.success(this.l('SavedSuccessfully'), this.l('Star Sheet'));
+                                this.notify.success(this.l('SavedSuccessfully'), this.l('Hot Sheet'));
                                 this.refresh();
                             });
                     }
@@ -294,39 +326,39 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
                     this.Editing = false;
                 }
         
-                console.log('onSavingStarSheet', e, this.starSheetChanges);
+                console.log('onSavingHotSheet', e, this.hotSheetChanges);
             }
 
     public refresh(): void {
         this.isTableLoading = true;
-        // let statusIncompleted = 0;
+        let statusIncompleted = 0;
         // if(this.statusSelected == "Completed"){
         //     statusIncompleted = 1;
         // }
 
-        let input: GetStarSheetInput = new GetStarSheetInput();
+        let input: GetHotSheetInput = new GetHotSheetInput();
         input.startDate = this.startDate ? moment(this.startDate) : undefined;
         input.endDate = this.endDate ? moment(this.endDate) : undefined;
-        // input.statusHS = statusIncompleted;
-        
-        this._hotheetservice
-            .getStarSheets(input)
+        input.statusHS = statusIncompleted;
+        input.typeRecord = "IE";
+        this._hotSheetservice
+            .getHotSheets(input)
             .pipe(
                 finalize(() => {
                     this.isTableLoading = false;
                 })
             )
-            .subscribe((response: StarSheetsItemDto[]) => {
-                this.starSheets = response;
+            .subscribe((response: HotSheetsItemDto[]) => {
+                this.hotSheets = response;
                
             });
     }
 
 
-    public groupChanged(e: any): void {
-        this.dataGrid?.instance?.clearGrouping();
+    public groupChanged(e): void {
+        this.dataGrid.instance.clearGrouping();
         if (e.value !== 'withoutGrouping') {
-            this.dataGrid?.instance?.columnOption(e.value, 'groupIndex', 0);
+            this.dataGrid.instance.columnOption(e.value, 'groupIndex', 0);
         }
 
         //this.totalCount = this.getGroupCount(e.value);
@@ -335,7 +367,7 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
     searchValue: string = '';
     onSearch(e: any) {
         this.searchValue = e.value;
-        this.dataGrid?.instance?.searchByText(this.searchValue); // Asegúrate de tener una referencia a tu grid
+        this.dataGrid.instance.searchByText(this.searchValue); // Asegúrate de tener una referencia a tu grid
       }
 
 
@@ -348,7 +380,7 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
                 component: e.component,
             }).then(function () {
                 workbook.xlsx.writeBuffer().then(function (buffer) {
-                    saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'starSheetsReport_' + Date.now().toString() + '.xlsx');
+                    saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'hotSheetsReport_' + Date.now().toString() + '.xlsx');
                 });
             });
             e.cancel = true;
@@ -358,7 +390,7 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
                 jsPDFDocument: doc,
                 component: e.component,
             }).then(() => {
-                doc.save('starSheetsReport_' + Date.now().toString() + '.pdf');
+                doc.save('hotSheetsReport_' + Date.now().toString() + '.pdf');
             });
         }
     }
@@ -370,7 +402,7 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
         const seg = '0' +  ok.getSeconds(); 
         const val = hours.slice(-2) + ':'+  min.slice(-2) + ':'+ seg.slice(-2);          
 
-        // this.starSheetChanges.shortage = val;       
+        this.hotSheetChanges.shortage = val;       
     }
 
     public downloadFile(fileItem: any): void {
@@ -391,7 +423,7 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
     public deleteFile(fileItem: any): void {
         abp.message.confirm(this.l('AreYouSureWantToDelete', fileItem.name), this.l('AreYouSure'), (answerYes: boolean) => {
             if (answerYes) {
-                this._hotheetservice.deleteFile(fileItem.id).subscribe(() => {
+                this._hotSheetservice.deleteFile(fileItem.id).subscribe(() => {
                     this.notify.success(this.l('SuccessfullyDeleted'), this.l('HotSheetFile'));
                     this.hotSheetFiles = this.hotSheetFiles.filter((f) => f.id !== fileItem.id);
                 });
@@ -407,7 +439,7 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
 
 
 
-    // public getActionOptionsBy(item: starSheetsItemDto): any {
+    // public getActionOptionsBy(item: HotSheetsItemDto): any {
     //     let actionSettings: any[] = [];
 
     //     if (!item.isTemplate) {
@@ -502,8 +534,8 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
 
       public viewComent(hotSheet: any): void {
         this.showCommentsPopup = true;
-        var newCommentsItem = new StarSheetsCommetsDto();    
-        newCommentsItem.starSheetId = hotSheet.row.data.hotSheetId;
+        var newCommentsItem = new HotSheetsCommetsDto();    
+        newCommentsItem.hotSheetId = hotSheet.row.data.hotSheetId;
         //newCommentsItem.comments = hotSheet.row.data.pcComments;
         newCommentsItem.comments = "";
         this.commentSelected = newCommentsItem;
@@ -586,7 +618,27 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
       }
 
 
+      getColorCode(color: string): string {
+        const found = this.colorOptions.find(x => x.value === color);
+        return found ? found.code : ''
+     }
+
+      getColorText(value: string): string {
+        const found = this.colorOptions.find(x => x.value === value);
+        return found ? found.text : 'Seleccionar';
+    }
+
+    getColorFromCode(code: string | undefined): string {
+        return this.colorOptions.find(x => x.code === code)?.value ?? '#ccc';
+    }
+
       getFlagColor(dateStr: string): string {
+
+        // si el usuario seleccionó color, usar ese
+        if (this.colorSelected) {
+            return this.colorSelected;
+        }
+
         const today = new Date();
         const date = new Date(dateStr);
       
@@ -603,12 +655,103 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
         //         '#FFCDD2',  // Día 5 -> Rojo suave
         //         '#f08989'  // Día 5 -> Naranja
 
-        if (diffDays < 1) return '#fafbfd';   // Hoy
-        if (diffDays < 2) return '#FFF59D';   // Ayer
-        if (diffDays < 3) return '#FFE0B2';   // Hace 2 días
-        if (diffDays < 4) return '#FFCDD2';   // Hace 3 días
-        return '#f08989';                      // Más de 4 días
+        // if (diffDays < 1) return '#fafbfd';   // Hoy
+        // if (diffDays < 2) return '#FFF59D';   // Ayer
+        // if (diffDays < 3) return '#FFE0B2';   // Hace 2 días
+        // if (diffDays < 4) return '#FFCDD2';   // Hace 3 días
+
+        if (diffDays < 1) return '#D00000';   // Hoy
+        if (diffDays < 2) return '#FF0000';   // Ayer
+        if (diffDays < 3) return '#FF0000';   // Hace 2 días
+        if (diffDays < 4) return '#47D45A';   // Hace 3 días
+
+        // <span class="color-cuadro" style="background-color: #D00000;"></span> Hoy                            
+        // <span class="color-cuadro" style="background-color: #FF0000;"></span> Ayer
+        // <span class="color-cuadro" style="background-color: #FF0000;"></span> Hace 2 días
+        // <span class="color-cuadro" style="background-color: #47D45A;"></span> Hace 3 días          
+
+        //return '#f08989';                      // Más de 4 días
+          return '#999'; // fallback
       }
+
+      
+
+      onSelectionChanged(e: any): void {
+            this.selectedRows = e.selectedRowsData;
+            console.log('Seleccionados1:', this.selectedRows);
+        }
+
+       updateSelectedColors(): void {
+
+            console.log('ANTES DE GUARDAR oki:', this.selectedRows);
+
+            if (!(this.selectedRows && this.selectedRows.length > 0)) {
+                this.notify.warn('Selecciona al menos un registro');
+                return;
+            }
+
+            if (!this.colorSelectedTemp) {
+                this.notify.warn('Selecciona un color');
+                return;
+            }
+
+            const colorCode = this.getColorCode(this.colorSelectedTemp);
+
+            const payload: HotSheetColorDto[] = this.selectedRows.map(x => new HotSheetColorDto({
+                Id: x.hotSheetId,
+                TypeColor: colorCode,
+                TypeRecord: 'IE'
+            }));
+
+            this._hotSheetservice.UpdateTypeColor(payload)
+                .subscribe(() => {
+                    this.notify.success('Colores actualizados');
+
+                     // LIMPIAR SELECCIÓN
+                    this.dataGrid.instance.clearSelection();
+
+                    // LIMPIAR VARIABLE TAMBIÉN
+                    this.selectedRows = [];
+
+                    this.refresh();
+                });
+        }
+
+      updateColors(): void {
+
+        if (!this.hotSheets || this.hotSheets.length === 0) {
+            this.notify.warn('No hay datos para actualizar');
+            return;
+        }
+
+        // 🔹 Armar payload
+       const payload: HotSheetColorDto[] = this.hotSheets
+        .filter(x => x.typeColor || this.colorSelected)
+        .map(x => ({
+            Id: x.hotSheetId,
+            TypeColor: String(x.typeColor || this.colorSelected), // 🔥 asegurar string
+            TypeRecord: 'IE'
+        } as HotSheetColorDto));
+
+         this.isTableLoading = true;
+
+        this._hotSheetservice
+        .UpdateTypeColor(payload)
+        .pipe(
+            finalize(() => {
+                this.isTableLoading = false;
+            })
+        )
+        .subscribe(() => {
+            this.notify.success('Colores actualizados');
+            this.refresh(); // recarga grid
+        });
+}
+
+    applyColorFilter(): void {
+    this.colorSelected = this.colorSelectedTemp;
+}
+
 
 
     //   onCellPrepared(e: any) {
@@ -682,67 +825,6 @@ export class StarSheetsComponent extends AppComponentBase implements OnInit {
       }
 
       
-      changeStatusButtonOptions = {
-        text: this.l('SendToHotSheet'),
-        //text: 'Cambiar Status',        
-        icon: 'refresh',
-        onClick: () => {
-          if (this.selectedRows.length === 0) {
-            //alert('Selecciona al menos un elemento');
-            this.notify.info(this.l('SelectOne'), this.l('StarSheetInfo'));
-            return;
-          }
-      
-            //LHH
-            //Aqui enviamos las ids al servicio para poder hacer un cambio de status y enviar eso a hotsheet
-            this._hotheetservice.updateStartSheetToHotSheet(this.selectedRows)
-            .subscribe(() => {
-                this.notify.success(this.l('SendStarSheetToHotSheet'), this.l('StarSheet'));                
-                this.refresh();
-            });
-
-            //   this.selectedRows.forEach(row => {
-            //      // Aquí puedes modificar el status directamente o llamar un servicio
-            //      row.status = 'NuevoStatus'; // Cambia esto según tu lógica
-            //   });
-        
-            //   // Opcional: actualizar la fuente de datos si es necesario
-            //   this.dataGrid.instance.refresh(); // O actualiza la fuente manualmente
-        }
-      };
-
-      changeStatusIEButtonOptions = {
-        text: this.l('SendToIE'),
-        //text: 'Cambiar Status',        
-        icon: 'refresh',
-        onClick: () => {
-          if (this.selectedRows.length === 0) {
-            //alert('Selecciona al menos un elemento');
-            this.notify.info(this.l('SelectOne'), this.l('StarSheetInfo'));
-            return;
-          }
-      
-            //LHH
-            //Aqui enviamos las ids al servicio para poder hacer un cambio de status y enviar eso a hotsheet
-            this._hotheetservice.updateStartSheetToIE(this.selectedRows)
-            .subscribe(() => {
-                this.notify.success(this.l('SendStarSheetToIE'), this.l('StarSheet'));                
-                this.refresh();
-            });
-
-           
-        }
-      };
-
-      onSelectionChanged(e: any) {
-        this.selectedRows = e.selectedRowsData;
-      }
-
-
-      public wsPortalShippingUpdateStarSheets(): void {
-        let wsPortalShippingUrls: string[] = [AppConsts.wsPortalHotSheetsUrl + '/UpdateDataStarSheets'];
-
-        this._wsPortalShippingService.UpdateShippingInfo(wsPortalShippingUrls, this.l('StarSheetInfo'), this);
-    }
+     
 
 }

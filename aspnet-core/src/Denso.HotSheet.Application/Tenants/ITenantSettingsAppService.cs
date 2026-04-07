@@ -6,10 +6,10 @@ namespace Denso.HotSheet.Tenants
 {
     public interface ITenantSettingsAppService : IApplicationService
     {
-        Task<TenantSettingsEditDto> GetAllSettings();
-        Task UpdateDensoAs400Settings(DensoAS400SettingsEditDto settingsAS400);
-        Task UpdateDensoInterfacesSettings(DensoInterfacesSettingsEditDto interfacesSettings);
+        //Task<TenantSettingsEditDto> GetAllSettings();
+        //Task UpdateDensoAs400Settings(DensoAS400SettingsEditDto settingsAS400);
+        //Task UpdateDensoInterfacesSettings(DensoInterfacesSettingsEditDto interfacesSettings);
 
-        Task TestEmail(string emailAddress);
+        //Task TestEmail(string emailAddress);
     }
 }

@@ -133,13 +133,14 @@ namespace Denso.HotSheet.Sheets
         [HttpPost]
         public async Task<List<HotSheetsItemDto>> GetHotSheets(GetHotSheetInput input)
         {
-            string sqlQuery = "EXEC GetHotSheets @UserId, @StatusHS, @StartDate, @EndDate";
+            string sqlQuery = "EXEC GetHotSheets @UserId, @StatusHS, @StartDate, @EndDate, @TypeRecord";
             var sqlParams = new
             {
                 UserId = AbpSession.UserId,
                 StatusHS = input.StatusHS,
                 StartDate = input.StartDate,
                 EndDate = input.EndDate,
+                TypeRecord = input.TypeRecord
             };
 
             try
@@ -154,6 +155,31 @@ namespace Denso.HotSheet.Sheets
                 throw ex;
             }
         }
+
+        //[HttpPost]
+        //public async Task<List<ImportExportItemDto>> GetImportExports(GetImportExportInput input)
+        //{
+        //    string sqlQuery = "EXEC GetImportExports @UserId, @StatusHS, @StartDate, @EndDate";
+        //    var sqlParams = new
+        //    {
+        //        UserId = AbpSession.UserId,
+        //        StatusHS = input.StatusHS,
+        //        StartDate = input.StartDate,
+        //        EndDate = input.EndDate,
+        //    };
+
+        //    try
+        //    {
+        //        var itemsDapper = await _hotSheetsDapperRepository.QueryAsync<ImportExportItemDto>(sqlQuery, sqlParams);
+
+        //        return itemsDapper.ToList();
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+
+        //        throw ex;
+        //    }
+        //}
 
         [HttpPost]
         public async Task<List<PurchaseOrdersItemDto>> GetPurchaseOrders(GetPurchaseOrdersInput input)
@@ -201,7 +227,9 @@ namespace Denso.HotSheet.Sheets
                 throw ex;
             }
         }
-        
+
+      
+
         public async Task<HotSheetsItemDetailDto> GetHotSheetById(long HotSheetId)
         {
             string sqlQuery = "EXEC GetHotSheetById @HotSheetId, @UserId";
@@ -230,7 +258,36 @@ namespace Denso.HotSheet.Sheets
 
             return hotSheetFound;
         }
-                
+
+        //public async Task<ImportExportItemDetailDto> GetImportExportById(long ImportExportId)
+        //{
+        //    string sqlQuery = "EXEC GetImportExportById @ImportExportId, @UserId";
+        //    var sqlParams = new
+        //    {
+        //        ImportExportId = ImportExportId,
+        //        UserId = AbpSession.UserId,
+        //    };
+        //    var itemsDapper = await _hotSheetsDapperRepository.QueryAsync<ImportExportItemDetailDto>(sqlQuery, sqlParams);
+
+        //    //Nuevo para relacionar archivos.
+        //    var importExportFound = itemsDapper.FirstOrDefault();
+        //    if (importExportFound != null)
+        //    {
+        //        string sqlQueryFiles = "EXEC GetFiles @EntityType, @EntityIds";
+        //        var sqlParamsFiles = new
+        //        {
+        //            EntityType = "ImporExport",
+        //            EntityIds = ImportExportId.ToString(),
+        //        };
+
+        //        var itemsFilesDapper = await _hotSheetsDapperRepository.QueryAsync<FileDto>(sqlQueryFiles, sqlParamsFiles);
+        //        importExportFound.Files = itemsFilesDapper.ToList();
+
+        //    }
+
+        //    return importExportFound;
+        //}
+
         public async Task<PurchaseOrdersItemDto> GetPurchaseOrderById(long PurchaseOrderId)
         {
             string sqlQuery = "EXEC GetPurchaseOrderById @PurchaseOrderId, @UserId";
@@ -298,6 +355,28 @@ namespace Denso.HotSheet.Sheets
             }
         }
 
+        //public async Task<List<FileDto>> GetImportExportFiles(long ImportExportId)
+        //{
+        //    string sqlQueryFiles = "EXEC GetFiles @EntityType, @EntityIds";
+        //    var sqlParamsFiles = new
+        //    {
+        //        EntityType = "ImportExport",
+        //        EntityIds = ImportExportId.ToString(),
+        //    };
+
+        //    try
+        //    {
+        //        var itemsFilesDapper = await _hotSheetsDapperRepository.QueryAsync<FileDto>(sqlQueryFiles, sqlParamsFiles);
+
+        //        return itemsFilesDapper.ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw ex;
+        //    }
+        //}
+
         public async Task<List<FileDto>> GetStarSheetFiles(long StarSheetId)
         {
             string sqlQueryFiles = "EXEC GetFiles @EntityType, @EntityIds";
@@ -347,6 +426,63 @@ namespace Denso.HotSheet.Sheets
             return StarSheetId;
         }
 
+        public async Task<long> UpdateStartSheetToIE(List<StarSheetsItemDto> input)
+        {
+            long StarSheetId = 0;
+            try
+            {
+                var IdStarsSheetList = string.Join(",", input.Select(i => i.StarSheetId));
+
+                DynamicParameters spParams = new DynamicParameters();
+                spParams.Add("@UserId", AbpSession.UserId);
+                spParams.Add("@IdStarsSheetList", IdStarsSheetList);
+
+                spParams.Add("@StarSheetIdUpdated", dbType: DbType.Int64, direction: ParameterDirection.Output);
+
+                long affectedRows = await _hotSheetsDapperRepository.ExecuteAsync("UpdateStartSheetToIE",
+                    spParams, commandType: CommandType.StoredProcedure);
+
+                StarSheetId = spParams.Get<long>("@StarSheetIdUpdated");
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return StarSheetId;
+        }
+
+        public async Task<long> UpdateTypeColor(List<HotSheetColorDto> input)
+        {
+            long RowsUpdated = 0;
+            try
+            {
+                var IdList = string.Join(",", input.Select(i => i.Id));
+
+                DynamicParameters spParams = new DynamicParameters();
+                spParams.Add("@UserId", AbpSession.UserId);
+                spParams.Add("@Ids", IdList);
+                spParams.Add("@TypeRecord", input.FirstOrDefault().TypeRecord);
+                spParams.Add("@TypeColor", input.FirstOrDefault().TypeColor);
+                
+
+                spParams.Add("@RowsUpdated", dbType: DbType.Int64, direction: ParameterDirection.Output);
+
+                long affectedRows = await _hotSheetsDapperRepository.ExecuteAsync("UpdateTypeColor",
+                    spParams, commandType: CommandType.StoredProcedure);
+
+                RowsUpdated = spParams.Get<long>("@RowsUpdated");
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return RowsUpdated;
+        }
+
         public async Task CreateOrUpdateHotSheet(HotSheetsDto input)
         {
             if (input.Id.HasValue)
@@ -378,13 +514,18 @@ namespace Denso.HotSheet.Sheets
                         hotSheet.RealShortageDate = input.RealShortageDate;
                         hotSheet.Shortage = input.Shortage;
 
-
+                        hotSheet.TypeColor = input.TypeColor;
 
                         hotSheet.ShortageShift = null;
                         hotSheet.TransportMode = null;
                         hotSheet.StatusHotSheet = null;
 
                         hotSheet.CompletedManually = input.CompletedManually;
+                        if (input.CompletedManually == 1 && hotSheet.TypeRecord == "IE") {
+                            hotSheet.CompletedManually = 0;
+                            hotSheet.TypeRecord = "HS";
+                        }
+                       
 
                         await _hotSheetsRepository.UpdateAsync(hotSheet);
                     }
@@ -396,6 +537,57 @@ namespace Denso.HotSheet.Sheets
                 }
             }            
         }
+
+        //public async Task CreateOrUpdateImportExport(ImportExportDto input)
+        //{
+        //    if (input.Id.HasValue)
+        //    {
+        //        try
+        //        {
+        //            var importExport = await _hotSheetsRepository.GetAsync(input.Id.Value);
+        //            if (importExport != null)
+        //            {
+        //                if (input.TransportModeId != 0)
+        //                {
+        //                    importExport.TransportModeId = input.TransportModeId;
+        //                }
+
+        //                importExport.DeliveryOrder = input.DeliveryOrder;
+        //                importExport.TrafficContainerFX = input.TrafficContainerFX;
+        //                importExport.UnitNumber = input.UnitNumber;
+        //                importExport.EtaDNMX = input.EtaDNMX;
+        //                if (input.ShortageShiftId != 0)
+        //                {
+        //                    importExport.ShortageShiftId = input.ShortageShiftId;
+        //                }
+
+        //                if (input.StatusId != 0)
+        //                {
+        //                    importExport.StatusId = input.StatusId;
+        //                }
+
+        //                importExport.PCComments = input.PCComments;
+        //                importExport.RealShortageDate = input.RealShortageDate;
+        //                importExport.Shortage = input.Shortage;
+
+
+
+        //                importExport.ShortageShift = null;
+        //                importExport.TransportMode = null;
+        //                importExport.StatusHotSheet = null;
+
+        //                importExport.CompletedManually = input.CompletedManually;
+
+        //                await _hotSheetsRepository.UpdateAsync(importExport);
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+
+        //            throw ex;
+        //        }
+        //    }
+        //}
 
         public async Task CreateOrUpdatePurchaseOrder(PurchaseOrdersDto input)
         {
@@ -525,6 +717,28 @@ namespace Denso.HotSheet.Sheets
             }
         }
 
+        //public async Task<List<ImportExportCommetsDto>> GetImportExportComments(long ImportExportId)
+        //{
+
+        //    string sqlQueryFiles = "EXEC GetImportExportComments @ImportExportId";
+        //    var sqlParamsFiles = new
+        //    {
+        //        ImportExportId = ImportExportId.ToString(),
+        //    };
+
+        //    try
+        //    {
+        //        var itemsFilesDapper = await _hotSheetsDapperRepository.QueryAsync<ImportExportCommetsDto>(sqlQueryFiles, sqlParamsFiles);
+
+        //        return itemsFilesDapper.ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw ex;
+        //    }
+        //}
+
         public async Task<List<StarSheetsCommetsDto>> GetStarSheetComments(long HotSheetId)
         {
 
@@ -566,6 +780,26 @@ namespace Denso.HotSheet.Sheets
 
             return input;            
         }
+
+        //public async Task<ImportExportCommetsDto> CreateOrUpdateImportExportComments(ImportExportCommetsDto input)
+        //{
+        //    DynamicParameters spParams = new DynamicParameters();
+        //    spParams.Add("@UserId", AbpSession.UserId);
+        //    spParams.Add("@ImportExportId", input.ImportExportId);
+        //    spParams.Add("@DepartmentId", input.DepartmentId);
+        //    spParams.Add("@Comments", input.Comments);
+
+        //    spParams.Add("@ImportExportCommentIdUpdated", dbType: DbType.Int64, direction: ParameterDirection.Output);
+
+        //    long affectedRows = await _hotSheetsDapperRepository.ExecuteAsync("ImportExportCommentCreate",
+        //        spParams, commandType: CommandType.StoredProcedure);
+
+        //    var ImportExportCommentId = spParams.Get<long>("@ImportExportCommentIdUpdated");
+
+        //    input.Id = ImportExportCommentId;
+
+        //    return input;
+        //}
 
 
         public async Task<StarSheetsCommetsDto> CreateOrUpdateStarSheetComments(StarSheetsCommetsDto input)
@@ -1372,6 +1606,8 @@ namespace Denso.HotSheet.Sheets
                 await _fileRepository.DeleteAsync(item);
             }
         }
+
+       
 
         //[HttpPost]
         //public async Task<TrackingScrapSales> GetTrackingScrapSales(GetTrackingScrapSalesInput input)

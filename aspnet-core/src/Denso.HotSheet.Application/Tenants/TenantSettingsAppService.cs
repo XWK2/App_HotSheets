@@ -99,33 +99,33 @@ namespace Denso.HotSheet.Tenants
 
         #region Update Settings
 
-        [AbpAuthorize(PermissionNames.Pages_Administration_Settings)]
-        public async Task UpdateDensoAs400Settings(DensoAS400SettingsEditDto settingsAS400)
-        {
-            await UpdateSettingForTenantAsync(DensoHotSheet.AS400.DataSource, settingsAS400.DataSource);
-            await UpdateSettingForTenantAsync(DensoHotSheet.AS400.UserID, settingsAS400.UserID);
+        //[AbpAuthorize(PermissionNames.Pages_Administration_Settings)]
+        //public async Task UpdateDensoAs400Settings(DensoAS400SettingsEditDto settingsAS400)
+        //{
+        //    await UpdateSettingForTenantAsync(DensoHotSheet.AS400.DataSource, settingsAS400.DataSource);
+        //    await UpdateSettingForTenantAsync(DensoHotSheet.AS400.UserID, settingsAS400.UserID);
 
-            string passwordEncrypted = string.Empty;
-            if (!string.IsNullOrEmpty(settingsAS400.Password))
-            {
-                passwordEncrypted = SimpleStringCipher.Instance.Encrypt(settingsAS400.Password);
-            }
+        //    string passwordEncrypted = string.Empty;
+        //    if (!string.IsNullOrEmpty(settingsAS400.Password))
+        //    {
+        //        passwordEncrypted = SimpleStringCipher.Instance.Encrypt(settingsAS400.Password);
+        //    }
 
-            await UpdateSettingForTenantAsync(DensoHotSheet.AS400.Password, passwordEncrypted);
-        }
+        //    await UpdateSettingForTenantAsync(DensoHotSheet.AS400.Password, passwordEncrypted);
+        //}
 
-        [AbpAuthorize(PermissionNames.Pages_Administration_Settings)]
-        public async Task UpdateDensoInterfacesSettings(DensoInterfacesSettingsEditDto interfacesSettings)
-        {
-            await UpdateSettingForTenantAsync(DensoHotSheet.Interfaces.DaysForReminders, interfacesSettings.DaysForReminders);
-            await UpdateSettingForTenantAsync(DensoHotSheet.Interfaces.EmailsAddressToNotify, interfacesSettings.EmailsAddressToNotify);
-        }
+        //[AbpAuthorize(PermissionNames.Pages_Administration_Settings)]
+        //public async Task UpdateDensoInterfacesSettings(DensoInterfacesSettingsEditDto interfacesSettings)
+        //{
+        //    await UpdateSettingForTenantAsync(DensoHotSheet.Interfaces.DaysForReminders, interfacesSettings.DaysForReminders);
+        //    await UpdateSettingForTenantAsync(DensoHotSheet.Interfaces.EmailsAddressToNotify, interfacesSettings.EmailsAddressToNotify);
+        //}
 
-        [AbpAuthorize(PermissionNames.Pages_Administration_Settings)]
-        public async Task UpdateDensoGeneralSettings(DensoGeneralSettingsEditDto generalSettings)
-        {
-            await UpdateSettingForTenantAsync(DensoHotSheet.General.DaysInAdvanceForNonWorkDaysNotification, generalSettings.DaysInAdvanceForNonWorkDaysNotification);
-        }
+        //[AbpAuthorize(PermissionNames.Pages_Administration_Settings)]
+        //public async Task UpdateDensoGeneralSettings(DensoGeneralSettingsEditDto generalSettings)
+        //{
+        //    await UpdateSettingForTenantAsync(DensoHotSheet.General.DaysInAdvanceForNonWorkDaysNotification, generalSettings.DaysInAdvanceForNonWorkDaysNotification);
+        //}
 
         private async Task UpdateSettingForTenantAsync(string settingName, string settingValue)
         {

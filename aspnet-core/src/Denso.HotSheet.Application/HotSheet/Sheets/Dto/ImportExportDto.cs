@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Denso.HotSheet.Sheets.Dto
 {
-    public class HotSheetsDto : Entity<long?>
+    public class ImportExportDto : Entity<long?>
     {
         //public long Id { get; set; }
         public string PlannerCode { get; set; }
@@ -38,7 +38,5 @@ namespace Denso.HotSheet.Sheets.Dto
         public string PCComments { get; set; }
         public decimal Stock2 { get; set; }
         public long? CompletedManually { get; set; }
-        public string TypeRecord { get; set; }
-        public string TypeColor { get; set; }
     }
 }

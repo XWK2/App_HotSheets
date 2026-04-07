@@ -14,17 +14,26 @@ namespace Denso.HotSheet.Sheets
         //Task<List<HotSheetsItemDto>> GetHotSheets(int StatusHS);
         Task<List<HotSheetsItemDto>> GetHotSheets(GetHotSheetInput input);
 
+        //Task<List<ImportExportItemDto>> GetImportExports(GetImportExportInput input);
+
         Task<List<PurchaseOrdersItemDto>> GetPurchaseOrders(GetPurchaseOrdersInput input);
         Task<List<StarSheetsItemDto>> GetStarSheets(GetStarSheetInput input);
 
         Task<HotSheetsItemDetailDto> GetHotSheetById(long HotSheetId);
 
+        //Task<ImportExportItemDetailDto> GetImportExportById(long ImportExportId);
         Task<PurchaseOrdersItemDto> GetPurchaseOrderById(long PurchaseOrderId);
         Task<StarSheetsItemDetailDto> GetStarSheetById(long StarSheetId);
 
         Task<long> UpdateStartSheetToHotSheet(List<StarSheetsItemDto> input);
 
+        Task<long> UpdateTypeColor(List<HotSheetColorDto> input);
+
+        Task<long> UpdateStartSheetToIE(List<StarSheetsItemDto> input);
+
         Task CreateOrUpdateHotSheet(HotSheetsDto input);
+
+        //Task CreateOrUpdateImportExport(ImportExportDto input);
 
         Task CreateOrUpdatePurchaseOrder(PurchaseOrdersDto input);
 
@@ -43,10 +52,13 @@ namespace Denso.HotSheet.Sheets
         //Task<List<FileDto>> GetHotSheetShipFiles(long HotSheetShiptId);
 
         Task<List<FileDto>> GetHotSheetFiles(long HotSheetId);
+        //Task<List<FileDto>> GetImportExportFiles(long ImportExportId);
 
         Task<List<FileDto>> GetStarSheetFiles(long StarSheetId);
 
         Task<HotSheetsCommetsDto> CreateOrUpdateHotSheetComments(HotSheetsCommetsDto input);
+
+        //Task<ImportExportCommetsDto> CreateOrUpdateImportExportComments(ImportExportCommetsDto input);
 
         Task<StarSheetsCommetsDto> CreateOrUpdateStarSheetComments(StarSheetsCommetsDto input);
 

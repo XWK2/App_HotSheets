@@ -64,8 +64,7 @@ namespace Denso.HotSheet
 
             configuration.CreateMap<ProductCodeSAT, ProductCodeSATDto>().ReverseMap();
             configuration.CreateMap<Staff, StaffDto>().ReverseMap();
-            configuration.CreateMap<PaidBy, PaidByDto>().ReverseMap();
-            configuration.CreateMap<RMAAssignment, RmaAssignmentDto>().ReverseMap();
+            configuration.CreateMap<PaidBy, PaidByDto>().ReverseMap();            
             configuration.CreateMap<SpecialExpeditedReason, SpecialExpeditedReasonDto>().ReverseMap();
             configuration.CreateMap<Packaging, PackagingDto>().ReverseMap();
             configuration.CreateMap<RMAAssignment, RmaAssignmentDto>().ReverseMap();
@@ -79,8 +78,7 @@ namespace Denso.HotSheet
             configuration.CreateMap<DocumentStatus, DocumentStatusDto>().ReverseMap();
             configuration.CreateMap<PartNumberPrice, PartNumberPriceDto>().ReverseMap();
             configuration.CreateMap<CustomerPlantContact, CustomerPlantContactDto>().ReverseMap();
-            configuration.CreateMap<Country, CountryDto>().ReverseMap();
-            configuration.CreateMap<Country, CountryDto>().ReverseMap();
+            configuration.CreateMap<Country, CountryDto>().ReverseMap();            
             configuration.CreateMap<HelpInfo, HelpInfoDto>().ReverseMap();
             configuration.CreateMap<HelpInfoField, HelpInfoFieldDto>().ReverseMap();
             configuration.CreateMap<Employee, EmployeeDto>()

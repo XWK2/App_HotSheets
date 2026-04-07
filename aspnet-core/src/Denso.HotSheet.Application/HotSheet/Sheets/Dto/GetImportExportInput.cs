@@ -2,7 +2,7 @@
 
 namespace Denso.HotSheet.Sheets.Dto
 {
-    public class GetHotSheetInput
+    public class GetImportExportInput
     {
         public long? UserId { get; set; }
         public string PlannerCode { get; set; }        
@@ -14,7 +14,6 @@ namespace Denso.HotSheet.Sheets.Dto
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int StatusHS { get; set; }
-        public string TypeRecord { get; set; }
 
     }
 }

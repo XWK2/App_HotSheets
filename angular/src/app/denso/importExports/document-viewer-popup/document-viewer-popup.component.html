@@ -1,0 +1,33 @@
+<dx-popup
+    [width]="850"
+    [height]="750"
+    [showTitle]="true"
+    [dragEnabled]="false"
+    [(visible)]="showPopup"
+    [showCloseButton]="true"
+    (onHiding)="onClosePopup($event)"
+>
+    <div *dxTemplate="let data of 'content'">
+        <pdf-viewer
+            *ngIf="document.extension == '.pdf'"
+            [src]="document.url"
+            [render-text]="true"
+            [original-size]="false"
+            style="width: 100%; height: 700px"
+            [show-borders]="true"
+        ></pdf-viewer>
+
+        <ngx-image-viewer
+            style="width: 100%; height: 700px !important"
+            *ngIf="['.jpg', '.jpeg', '.png', '.gif'].includes(document.extension)"
+            [src]="[document.url]"
+        ></ngx-image-viewer>
+
+        <ngx-doc-viewer
+            *ngIf="['.ppt', '.pptx', '.doc', '.docx', '.xls', '.xlsx'].includes(document.extension)"
+            [url]="document.url"
+            viewer="google"
+            style="width: 100%; height: 700px"
+        ></ngx-doc-viewer>
+    </div>
+</dx-popup>
