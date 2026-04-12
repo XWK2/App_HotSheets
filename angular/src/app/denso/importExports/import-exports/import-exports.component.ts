@@ -104,10 +104,10 @@ export class ImportExportsComponent extends AppComponentBase implements OnInit {
     // ];
 
     colorOptions = [
-    { text: 'Hoy', value: '#D00000', code: 'A+' },
-    { text: 'Ayer', value: '#FF0000', code: 'A' },
-    { text: 'Hace 2 días', value: '#FF8A3B', code: 'B' },
-    { text: 'Hace 3 días', value: '#47D45A', code: 'C' }
+    { text: 'A+', value: '#D00000', code: 'A+' },
+    { text: 'A', value: '#FF0000', code: 'A' },
+    { text: 'B', value: '#FF8A3B', code: 'B' },
+    { text: 'C', value: '#47D45A', code: 'C' }
     ];
 
     colorSelected: string = null;
