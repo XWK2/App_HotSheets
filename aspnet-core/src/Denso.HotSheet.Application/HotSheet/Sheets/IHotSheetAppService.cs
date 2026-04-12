@@ -12,6 +12,7 @@ namespace Denso.HotSheet.Sheets
     public interface IHotSheetAppService : IApplicationService
     {
         //Task<List<HotSheetsItemDto>> GetHotSheets(int StatusHS);
+        Task<DashboardKpiDto> GetDashboard(GetDashboardInput input);
         Task<List<HotSheetsItemDto>> GetHotSheets(GetHotSheetInput input);
 
         //Task<List<ImportExportItemDto>> GetImportExports(GetImportExportInput input);

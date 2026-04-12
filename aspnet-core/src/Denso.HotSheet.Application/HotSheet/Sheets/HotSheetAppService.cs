@@ -131,6 +131,77 @@ namespace Denso.HotSheet.Sheets
         }
 
         [HttpPost]
+        public async Task<DashboardKpiDto> GetDashboard(GetDashboardInput input)
+        {
+            //Convertir string → DateTime
+            DateTime? startDate = string.IsNullOrEmpty(input.StartDate)
+                ? null
+                : DateTime.Parse(input.StartDate);
+
+            DateTime? endDate = string.IsNullOrEmpty(input.EndDate)
+                ? null
+                : DateTime.Parse(input.EndDate);
+
+
+            var sqlParams = new
+            {
+                StartDate = startDate,
+                EndDate = endDate
+            };
+
+            try
+            {
+                var wh = await _hotSheetsDapperRepository
+                    .QueryAsync<SupplierKpiDto>("EXEC GetDashboard_WH @StartDate, @EndDate", sqlParams);
+
+                var ie = await _hotSheetsDapperRepository
+                    .QueryAsync<SupplierKpiDto>("EXEC GetDashboard_IE @StartDate, @EndDate", sqlParams);
+
+                var status = await _hotSheetsDapperRepository
+                    .QueryAsync<StatusKpiDto>("EXEC GetDashboard_Status @StartDate, @EndDate", sqlParams);
+
+                var result = new DashboardKpiDto
+                {
+                    WH = wh.ToList(),
+                    IE = ie.ToList(),
+                    Status = status.ToList()
+                };
+
+                foreach (var item in result.WH)
+                {
+                    item.SupplierName = RemoveDiacritics(item.SupplierName);
+                }
+
+                foreach (var item in result.IE)
+                {
+                    item.SupplierName = RemoveDiacritics(item.SupplierName);
+                }
+
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public string RemoveDiacritics(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return text;
+
+            var normalized = text.Normalize(System.Text.NormalizationForm.FormD);
+            var chars = normalized.Where(c =>
+                System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c) !=
+                System.Globalization.UnicodeCategory.NonSpacingMark);
+
+            return new string(chars.ToArray())
+                .Normalize(System.Text.NormalizationForm.FormC);
+        }
+
+
+        [HttpPost]
         public async Task<List<HotSheetsItemDto>> GetHotSheets(GetHotSheetInput input)
         {
             string sqlQuery = "EXEC GetHotSheets @UserId, @StatusHS, @StartDate, @EndDate, @TypeRecord";

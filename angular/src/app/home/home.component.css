@@ -1,0 +1,33 @@
+.chart-container {
+    height: 470px;
+    overflow: hidden;
+}
+
+/* HEADER COMPACTO */
+::ng-deep .custom-header {
+    padding: 0px !important;
+    font-size: 13px;
+}
+
+/* TEXTO LEGEND */
+::ng-deep .dx-legend text {
+    font-size: 4px !important;
+}
+
+/* FIX LABEL */
+::ng-deep .dx-chart-label rect {
+    fill: transparent !important;
+    stroke: none !important;
+}
+
+/* 🔥 SCROLL SOLO AL LEGEND */
+::ng-deep .dx-piechart .dx-legend {
+    max-height: 120px;   /* 🔥 ajusta si quieres */
+    overflow-y: auto;
+}
+
+.container-fluid.content {
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+}

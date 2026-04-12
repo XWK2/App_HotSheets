@@ -4807,6 +4807,75 @@ export class HotSheetServiceProxy {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
+    /*Vamos agregar Manual los metodos del Dashboard*/
+    /*Inicia*/
+
+    /**
+     * @param body (optional)
+     * @return Success
+     */
+    getDashboard(body: GetDashboardInput | undefined): Observable<DashboardKpiDto> {
+        let url_ = this.baseUrl + "/api/services/app/HotSheet/GetDashboard";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processGetDashboard(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDashboard(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DashboardKpiDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DashboardKpiDto>;
+        }));
+    }
+
+    protected processGetDashboard(response: HttpResponseBase): Observable<DashboardKpiDto> {
+        const status = response.status;
+
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {};
+        if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = DashboardKpiDto.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return throwException("Error", status, _responseText, _headers);
+            }));
+        }
+
+        return _observableOf(null as any);
+    }
+
+    /*Termina*/
+
     /**
      * @param body (optional) 
      * @return Success
@@ -11655,6 +11724,109 @@ export interface IGetHotSheetInput {
     typeRecord: string | undefined;
 }
 
+/*Vamos agregar Manual las clases que lleva el Dashboard*/
+/*Inicia*/
+
+export interface IGetDashboardInput {
+    startDate?: string;
+    endDate?: string;
+}
+
+export class GetDashboardInput implements IGetDashboardInput {
+
+    startDate?: string;
+    endDate?: string;
+
+    constructor(data?: IGetDashboardInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property)) {
+                    (this as any)[property] = (data as any)[property];
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.startDate = _data["startDate"];
+            this.endDate = _data["endDate"];
+        }
+    }
+
+    static fromJS(data: any): GetDashboardInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetDashboardInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(): any {
+        return {
+            startDate: this.startDate,
+            endDate: this.endDate
+        };
+    }
+
+    clone(): GetDashboardInput {
+        return new GetDashboardInput(this);
+    }
+}
+
+
+export class DashboardKpiDto implements IDashboardKpiDto {
+    wh!: SupplierKpiDto[];
+    ie!: SupplierKpiDto[];
+    status!: StatusKpiDto[];
+
+    static fromJS(data: any): DashboardKpiDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DashboardKpiDto();
+
+        result.wh = data["wh"] ? data["wh"].map((x: any) => SupplierKpiDto.fromJS(x)) : [];
+        result.ie = data["ie"] ? data["ie"].map((x: any) => SupplierKpiDto.fromJS(x)) : [];
+        result.status = data["status"] ? data["status"].map((x: any) => StatusKpiDto.fromJS(x)) : [];
+
+        return result;
+    }
+}
+
+export interface IDashboardKpiDto {
+    wh: SupplierKpiDto[];
+    ie: SupplierKpiDto[];
+    status: StatusKpiDto[];
+}
+
+export class SupplierKpiDto {
+    supplierName!: string;
+    typeColor!: string;
+    total!: number;
+
+    static fromJS(data: any): SupplierKpiDto {
+        let result = new SupplierKpiDto();
+        result.supplierName = data["supplierName"];
+        result.typeColor = data["typeColor"];
+        result.total = data["total"];
+        return result;
+    }
+}
+
+export class StatusKpiDto {
+    area!: string;
+    abierto!: number;
+    cerrado!: number;
+
+    static fromJS(data: any): StatusKpiDto {
+        let result = new StatusKpiDto();
+        result.area = data["area"];
+        result.abierto = data["abierto"];
+        result.cerrado = data["cerrado"];
+        return result;
+    }
+}
+/*Termina*/
+
+
 export class HotSheetColorDto implements IHotSheetColorDto {
     Id: number | undefined;
     TypeRecord: string | undefined;
@@ -16090,7 +16262,7 @@ export class StatusHotSheetDto implements IStatusHotSheetDto {
     id: number | undefined;
     code: string | undefined;
     description: string | undefined;
-    isActive: boolean;
+    isActive: boolean = false;
 
     constructor(data?: IStatusHotSheetDto) {
         if (data) {
@@ -17121,3 +17293,4 @@ function blobToText(blob: any): Observable<string> {
         }
     });
 }
+

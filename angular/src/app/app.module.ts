@@ -40,17 +40,17 @@ import { DevExpressModule } from './dev-express/dev-express.module';
 import { DensoSharedModule } from './denso/shared/denso-shared.module';
 
 // Dashboard components
-import { DashboardCountersComponent } from '@app/home/dashboard-counters.component';
-import { CounterDetailsDialogComponent } from '@app/home/counter-details-dialog.component';
-import { ChartsDialogComponent } from '@app/home/charts-dialog.component';
+// import { DashboardCountersComponent } from '@app/home/dashboard-counters.component';
+// import { CounterDetailsDialogComponent } from '@app/home/counter-details-dialog.component';
+// import { ChartsDialogComponent } from '@app/home/charts-dialog.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         HomeComponent,
-        DashboardCountersComponent,
-        CounterDetailsDialogComponent,
-        ChartsDialogComponent,
+        // DashboardCountersComponent,
+        // CounterDetailsDialogComponent,
+        // ChartsDialogComponent,
 
         // layout
         HeaderComponent,
