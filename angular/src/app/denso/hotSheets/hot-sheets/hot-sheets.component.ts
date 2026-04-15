@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit, ViewChild,LOCALE_ID } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
-import { UserServiceProxy, HotSheetServiceProxy, HotSheetsItemDto, HotSheetsDto,FileDto, TransportModeDto,CatalogServiceProxy, UserByCurrentUserDto, ShortageShiftDto, HotSheetsCommetsDto, GetHotSheetInput } from '@shared/service-proxies/service-proxies';
+import { UserServiceProxy, HotSheetServiceProxy, HotSheetsItemDto, HotSheetsDto,FileDto, TransportModeDto,CatalogServiceProxy, UserByCurrentUserDto, ShortageShiftDto, HotSheetsCommetsDto, GetHotSheetInput, HotSheetColorDto } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
 import { DxDataGridComponent,DxDataGridModule,DxButtonModule  } from 'devextreme-angular';
 import DataSource from 'devextreme/data/data_source';
@@ -95,6 +95,18 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
 
     startDate: Date;
     endDate: Date;
+
+     colorOptions = [
+    { text: 'A+', value: '#D00000', code: 'A+' },
+    { text: 'A', value: '#FF0000', code: 'A' },
+    { text: 'B', value: '#FF8A3B', code: 'B' },
+    { text: 'C', value: '#47D45A', code: 'C' }
+    ];
+
+    colorSelected: string = null;
+    colorSelectedTemp: string = null;
+
+    selectedRows: any[] = [];
 
     constructor(
         injector: Injector, 
@@ -228,7 +240,8 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
             //this.hotSheetChanges.realShortageDate = newhotSheet.realShortageDate;                
             this.hotSheetChanges.shortage = newhotSheet.shortage;
             this.hotSheetChanges.completedManually = newhotSheet.completedManually;
-            this.hotSheetChanges.typeRecord = "HS";
+            //--this.hotSheetChanges.typeRecord = "HS";
+            this.hotSheetChanges.typeColor = this.getColorFromCode(newhotSheet.typeColor);
             
             // const shortage = newhotSheet.shortage;            
             // const shortageVal = newhotSheet.shortageVal;  
@@ -275,6 +288,7 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
         public onSavingHotSheet(e: any): void {
                 const change = e.changes[0];
         
+                this.hotSheetChanges.typeColor = this.getColorCode(this.hotSheetChanges.typeColor || '');
                 //veremos como viene el dato
                 //var ok= this.timeShortage;
 
@@ -594,40 +608,40 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
       }
 
 
-      getFlagColor(dateStr: string): string {
-        const today = new Date();
-        const date = new Date(dateStr);
+    //   getFlagColor(dateStr: string): string {
+    //     const today = new Date();
+    //     const date = new Date(dateStr);
       
-        // Ajustar las horas para comparar solo las fechas
-        today.setHours(0, 0, 0, 0);
-        date.setHours(0, 0, 0, 0);
+    //     // Ajustar las horas para comparar solo las fechas
+    //     today.setHours(0, 0, 0, 0);
+    //     date.setHours(0, 0, 0, 0);
       
-        const diffTime = today.getTime() - date.getTime();
-        const diffDays = Math.floor(diffTime / (1000 * 3600 * 24));
+    //     const diffTime = today.getTime() - date.getTime();
+    //     const diffDays = Math.floor(diffTime / (1000 * 3600 * 24));
           
-        //         '#fafbfd', // Día 1 -> Casi Blanco  
-        //         '#FFF59D', // Día 3 -> Amarillo muy suave
-        //         '#FFE0B2', // Día 4 -> Naranja suave
-        //         '#FFCDD2',  // Día 5 -> Rojo suave
-        //         '#f08989'  // Día 5 -> Naranja
+    //     //         '#fafbfd', // Día 1 -> Casi Blanco  
+    //     //         '#FFF59D', // Día 3 -> Amarillo muy suave
+    //     //         '#FFE0B2', // Día 4 -> Naranja suave
+    //     //         '#FFCDD2',  // Día 5 -> Rojo suave
+    //     //         '#f08989'  // Día 5 -> Naranja
 
-        // if (diffDays < 1) return '#fafbfd';   // Hoy
-        // if (diffDays < 2) return '#FFF59D';   // Ayer
-        // if (diffDays < 3) return '#FFE0B2';   // Hace 2 días
-        // if (diffDays < 4) return '#FFCDD2';   // Hace 3 días
+    //     // if (diffDays < 1) return '#fafbfd';   // Hoy
+    //     // if (diffDays < 2) return '#FFF59D';   // Ayer
+    //     // if (diffDays < 3) return '#FFE0B2';   // Hace 2 días
+    //     // if (diffDays < 4) return '#FFCDD2';   // Hace 3 días
 
-        if (diffDays < 1) return '#D00000';   // Hoy
-        if (diffDays < 2) return '#FF0000';   // Ayer
-        if (diffDays < 3) return '#FF0000';   // Hace 2 días
-        if (diffDays < 4) return '#47D45A';   // Hace 3 días
+    //     if (diffDays < 1) return '#D00000';   // Hoy
+    //     if (diffDays < 2) return '#FF0000';   // Ayer
+    //     if (diffDays < 3) return '#FF0000';   // Hace 2 días
+    //     if (diffDays < 4) return '#47D45A';   // Hace 3 días
 
-        // <span class="color-cuadro" style="background-color: #D00000;"></span> Hoy                            
-        // <span class="color-cuadro" style="background-color: #FF0000;"></span> Ayer
-        // <span class="color-cuadro" style="background-color: #FF0000;"></span> Hace 2 días
-        // <span class="color-cuadro" style="background-color: #47D45A;"></span> Hace 3 días          
+    //     // <span class="color-cuadro" style="background-color: #D00000;"></span> Hoy                            
+    //     // <span class="color-cuadro" style="background-color: #FF0000;"></span> Ayer
+    //     // <span class="color-cuadro" style="background-color: #FF0000;"></span> Hace 2 días
+    //     // <span class="color-cuadro" style="background-color: #47D45A;"></span> Hace 3 días          
 
-        //return '#f08989';                      // Más de 4 días
-      }
+    //     //return '#f08989';                      // Más de 4 días
+    //   }
 
 
     //   onCellPrepared(e: any) {
@@ -668,6 +682,140 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
     //   }
 
     //(onCellPrepared)="onCellPrepared($event)"
+
+     getColorCode(color: string): string {
+        const found = this.colorOptions.find(x => x.value === color);
+        return found ? found.code : ''
+        }
+
+        getColorText(value: string): string {
+        const found = this.colorOptions.find(x => x.value === value);
+        return found ? found.text : 'Seleccionar';
+    }
+
+    getColorFromCode(code: string | undefined): string {
+        return this.colorOptions.find(x => x.code === code)?.value ?? '#ccc';
+    }
+    
+    getFlagColor(dateStr: string): string {
+
+    // si el usuario seleccionó color, usar ese
+    if (this.colorSelected) {
+        return this.colorSelected;
+    }
+
+    const today = new Date();
+    const date = new Date(dateStr);
+    
+    // Ajustar las horas para comparar solo las fechas
+    today.setHours(0, 0, 0, 0);
+    date.setHours(0, 0, 0, 0);
+    
+    const diffTime = today.getTime() - date.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 3600 * 24));
+        
+    //         '#fafbfd', // Día 1 -> Casi Blanco  
+    //         '#FFF59D', // Día 3 -> Amarillo muy suave
+    //         '#FFE0B2', // Día 4 -> Naranja suave
+    //         '#FFCDD2',  // Día 5 -> Rojo suave
+    //         '#f08989'  // Día 5 -> Naranja
+
+    // if (diffDays < 1) return '#fafbfd';   // Hoy
+    // if (diffDays < 2) return '#FFF59D';   // Ayer
+    // if (diffDays < 3) return '#FFE0B2';   // Hace 2 días
+    // if (diffDays < 4) return '#FFCDD2';   // Hace 3 días
+
+    if (diffDays < 1) return '#D00000';   // Hoy
+    if (diffDays < 2) return '#FF0000';   // Ayer
+    if (diffDays < 3) return '#FF0000';   // Hace 2 días
+    if (diffDays < 4) return '#47D45A';   // Hace 3 días
+
+    // <span class="color-cuadro" style="background-color: #D00000;"></span> Hoy                            
+    // <span class="color-cuadro" style="background-color: #FF0000;"></span> Ayer
+    // <span class="color-cuadro" style="background-color: #FF0000;"></span> Hace 2 días
+    // <span class="color-cuadro" style="background-color: #47D45A;"></span> Hace 3 días          
+
+    //return '#f08989';                      // Más de 4 días
+        return '#999'; // fallback
+    }
+
+          
+    
+          onSelectionChanged(e: any): void {
+                this.selectedRows = e.selectedRowsData;
+                console.log('Seleccionados1:', this.selectedRows);
+            }
+    
+           updateSelectedColors(): void {
+    
+                console.log('ANTES DE GUARDAR oki:', this.selectedRows);
+    
+                if (!(this.selectedRows && this.selectedRows.length > 0)) {
+                    this.notify.warn('Selecciona al menos un registro');
+                    return;
+                }
+    
+                if (!this.colorSelectedTemp) {
+                    this.notify.warn('Selecciona un color');
+                    return;
+                }
+    
+                const colorCode = this.getColorCode(this.colorSelectedTemp);
+    
+                const payload: HotSheetColorDto[] = this.selectedRows.map(x => new HotSheetColorDto({
+                    Id: x.hotSheetId,
+                    TypeColor: colorCode,
+                    TypeRecord: 'HS'
+                }));
+    
+                this._hotSheetservice.UpdateTypeColor(payload)
+                    .subscribe(() => {
+                        this.notify.success('Colores actualizados');
+    
+                         // LIMPIAR SELECCIÓN
+                        this.dataGrid.instance.clearSelection();
+    
+                        // LIMPIAR VARIABLE TAMBIÉN
+                        this.selectedRows = [];
+    
+                        this.refresh();
+                    });
+            }
+    
+          updateColors(): void {
+    
+            if (!this.hotSheets || this.hotSheets.length === 0) {
+                this.notify.warn('No hay datos para actualizar');
+                return;
+            }
+    
+            // 🔹 Armar payload
+           const payload: HotSheetColorDto[] = this.hotSheets
+            .filter(x => x.typeColor || this.colorSelected)
+            .map(x => ({
+                Id: x.hotSheetId,
+                TypeColor: String(x.typeColor || this.colorSelected), // 🔥 asegurar string
+                TypeRecord: 'HS'
+            } as HotSheetColorDto));
+    
+             this.isTableLoading = true;
+    
+            this._hotSheetservice
+            .UpdateTypeColor(payload)
+            .pipe(
+                finalize(() => {
+                    this.isTableLoading = false;
+                })
+            )
+            .subscribe(() => {
+                this.notify.success('Colores actualizados');
+                this.refresh(); // recarga grid
+            });
+    }
+    
+        applyColorFilter(): void {
+        this.colorSelected = this.colorSelectedTemp;
+    }
 
     onCellPrepared(e: any) {
         if (e.rowType === 'data' && e.column.type === 'buttons' && e.cellElement) {

@@ -2,36 +2,12 @@
     <section class="content-header">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-2">
+                <div class="col-4">
                     <h1 class="denso-page-title"><i class="fa-solid fa-square-poll-vertical"></i>&nbsp;{{ 'HotSheets' | localize }}</h1>
                 </div>
                 
                 <div class="col-10 text-right">
-                    <dx-form colCount="12">
-                         <!-- <dxi-item [label]="{ text: 'Status' | localize }" [colSpan]="3">
-                            <div *dxTemplate>                               
-                                <dx-select-box
-                                    [(value)]="statusSelected"
-                                    [items]="statusOptions"
-                                    displayExpr="text"
-                                    valueExpr="value"
-                                    [placeholder]="'Select option'"
-                                    [width]="200"
-                                    showClearButton="true">
-                                </dx-select-box>
-                            </div>
-                        </dxi-item> -->
-                        
-                        <!-- <dxi-item [label]="{ text: 'ShippingInstructionCode' | localize }" [colSpan]="3">
-                            <div *dxTemplate>
-                                <dx-text-box [(value)]="shippingCode" showClearButton="true"></dx-text-box>
-                            </div>
-                        </dxi-item>
-                        <dxi-item [label]="{ text: 'Date' | localize }" [colSpan]="2">
-                            <div *dxTemplate>
-                                <dx-date-box type="date" [(value)]="creationDate" showClearButton="true"> </dx-date-box>
-                            </div>
-                        </dxi-item>                         -->
+                    <dx-form colCount="12">                       
                        
                     </dx-form>
                 </div>
@@ -51,10 +27,10 @@
                             <span class="color-cuadro" style="background-color: #FFE0B2;"></span> Hace 2 días
                             <span class="color-cuadro" style="background-color: #FFCDD2;"></span> Hace 3 días
                             <span class="color-cuadro" style="background-color: #f08989;"></span> Más de 4 días -->
-                            <span class="color-cuadro" style="background-color: #D00000;"></span> Hoy                            
-                            <span class="color-cuadro" style="background-color: #FF0000;"></span> Ayer
-                            <span class="color-cuadro" style="background-color: #FF8A3B;"></span> Hace 2 días
-                            <span class="color-cuadro" style="background-color: #47D45A;"></span> Hace 3 días                             
+                            <span class="color-cuadro" style="background-color: #D00000;"></span> A+                            
+                            <span class="color-cuadro" style="background-color: #FF0000;"></span> A
+                            <span class="color-cuadro" style="background-color: #FF8A3B;"></span> B
+                            <span class="color-cuadro" style="background-color: #47D45A;"></span> C                             
                             
                         </div>
                         <dx-data-grid
@@ -74,7 +50,7 @@
                             (onExporting)="exportGrid($event)"
                             (onRowPrepared)="personalizarFila($event)"
                             [groupPanel]="{ visible: true }" [grouping]="{ autoExpandAll: true }"                            
-                            
+                            (onSelectionChanged)="onSelectionChanged($event)"
                         >
                             <!-- <dxo-scrolling mode="standard"></dxo-scrolling> -->
                             <dxo-paging [enabled]="true" [pageSize]="20"></dxo-paging>
@@ -82,7 +58,10 @@
                             <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
                             <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>                             
                             <dxo-export [enabled]="true" [formats]="['xlsx', 'pdf']"> </dxo-export>                            
-                            
+                             <dxo-selection 
+                                mode="multiple"
+                                showCheckBoxesMode="always">
+                            </dxo-selection>
 
                             <dxo-editing mode="popup" [allowUpdating]="true" [useIcons]="true" [allowAdding]="false" [allowDeleting]="false" >
                                 <dxo-popup [title]="'HotSheetInfo' | localize" [showTitle]="true" [width]="1050" [height]="700"> 
@@ -208,6 +187,75 @@
                                                                     
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+                                                            
+                                                            <!-- combo de color -->
+                                                            <dxi-item [label]="{ text: 'Color' }" [colSpan]="2">
+                                                                <div *dxTemplate="let data of 'content'">
+
+                                                                    <dx-select-box
+                                                                        [(value)]="hotSheetChanges.typeColor"
+                                                                        [items]="colorOptions"
+                                                                        valueExpr="value"
+                                                                        displayExpr="text"
+                                                                        [readOnly]="!enabledEditInfo"
+                                                                        [width]="220"
+                                                                        [fieldTemplate]="'colorFieldPopup'">
+
+                                                                        <!-- 🔹 Lista -->
+                                                                        <div *dxTemplate="let item of 'item'">
+                                                                            <div style="display:flex; align-items:center; gap:10px;">
+                                                                                <div 
+                                                                                    style="
+                                                                                        width:18px; 
+                                                                                        height:18px; 
+                                                                                        border-radius:50%; 
+                                                                                        border:1px solid #ccc;
+                                                                                    "
+                                                                                    [style.background]="item.value">
+                                                                                </div>
+                                                                                <span>{{ item.text }}</span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <!-- 🔥 Seleccionado -->
+                                                                        <div *dxTemplate="let data of 'colorFieldPopup'">
+
+                                                                            <div style="
+                                                                                display:flex; 
+                                                                                align-items:center; 
+                                                                                gap:8px; 
+                                                                                height:36px;
+                                                                            ">
+
+                                                                                <!-- círculo -->
+                                                                                <div 
+                                                                                    style="
+                                                                                        width:14px; 
+                                                                                        height:14px; 
+                                                                                        border-radius:50%; 
+                                                                                        border:2px solid white;
+                                                                                        box-shadow:0 0 3px rgba(0,0,0,0.4);
+                                                                                        margin-left:6px;
+                                                                                    "
+                                                                                    [style.background]="data?.value || '#ccc'">
+                                                                                </div>
+
+                                                                                <!-- textbox requerido -->
+                                                                                <dx-text-box
+                                                                                    [value]="data?.text"
+                                                                                    [readOnly]="true"
+                                                                                    stylingMode="outlined"
+                                                                                    width="100%">
+                                                                                </dx-text-box>
+
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </dx-select-box>
+
+                                                                </div>
                                                             </dxi-item>
 
                                                         </dx-form>
@@ -494,6 +542,88 @@
                                        
                                     </div>
                                 </dxi-item>
+                                
+                                <!--Combo de colores-->
+                                <dxi-item [label]="{ text: 'Color' }" [colSpan]="3">
+                                    <div *dxTemplate="let data of 'content'">
+
+                                        <dx-select-box
+                                            [(value)]="colorSelectedTemp"
+                                            [items]="colorOptions"
+                                            valueExpr="value"
+                                            displayExpr="text"
+                                            [width]="100"
+                                            [fieldTemplate]="'colorField'">
+
+                                            <!-- 🔹 Lista -->
+                                            <div *dxTemplate="let item of 'item'">
+                                                <div style="display:flex; align-items:center; gap:10px;">
+                                                    <div 
+                                                        style="
+                                                            width:18px; 
+                                                            height:18px; 
+                                                            border-radius:50%; 
+                                                            border:1px solid #ccc;
+                                                        "
+                                                        [style.background]="item.value">
+                                                    </div>
+                                                    <span>{{ item.text }}</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- 🔥 Seleccionado -->
+                                            <div *dxTemplate="let data of 'colorField'">
+
+                                                <div style="
+                                                    display:flex; 
+                                                    align-items:center; 
+                                                    gap:8px; 
+                                                    height:36px;
+                                                ">
+
+                                                    <!-- círculo -->
+                                                    <div 
+                                                        style="
+                                                            width:14px; 
+                                                            height:14px; 
+                                                            border-radius:50%; 
+                                                            border:2px solid white;
+                                                            box-shadow:0 0 3px rgba(0,0,0,0.4);
+                                                            margin-left:6px;
+                                                        "
+                                                        [style.background]="data?.value || '#ccc'">
+                                                    </div>
+
+                                                    <!-- textbox requerido por DevExtreme -->
+                                                    <dx-text-box
+                                                        [value]="data?.text"
+                                                        [readOnly]="true"
+                                                        stylingMode="outlined"
+                                                        width="100%">
+                                                    </dx-text-box>
+
+                                                </div>
+
+                                            </div>
+
+                                        </dx-select-box>
+
+                                    </div>
+                                </dxi-item>
+                                              
+                                <!--Agrega Color a Seleccionados -->
+                                <dxi-item location="after" locateInMenu="auto">
+                                    <div *dxTemplate>
+                                        <dx-button
+                                        text="Aplicar color a seleccionados"
+                                        stylingMode="contained"
+                                        type="success"
+                                        icon="paintbucket"
+                                        class="dx-button-ml"
+                                        (click)="updateSelectedColors()">
+                                    </dx-button>
+                                    </div>
+                                </dxi-item>
 
                                 <dxi-item name="exportButton"></dxi-item> 
                             </dxo-toolbar>
@@ -570,7 +700,7 @@
                                 cellTemplate="creatioDateCellTemplateColor">
                                 <div *dxTemplate="let info of 'creatioDateCellTemplateColor'">
                                     <div class="circle-color"
-                                        [style.background-color]="getFlagColor(info.data.creationDate)">
+                                        [style.background-color]="getColorFromCode(info.data.typeColor)">
                                     </div>
                                 </div>                              
                             </dxi-column>

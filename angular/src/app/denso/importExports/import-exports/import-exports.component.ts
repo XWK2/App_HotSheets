@@ -316,7 +316,7 @@ export class ImportExportsComponent extends AppComponentBase implements OnInit {
                                 })
                             )
                             .subscribe(() => {
-                                this.notify.success(this.l('SavedSuccessfully'), this.l('Hot Sheet'));
+                                this.notify.success(this.l('SavedSuccessfully'), this.l('Import Export'));
                                 this.refresh();
                             });
                     }
