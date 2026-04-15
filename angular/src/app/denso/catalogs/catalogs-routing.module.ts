@@ -29,6 +29,7 @@ import { NoticesComponent } from '@app/denso/catalogs/notices/notices.component'
 import { StatusHotSheetComponent } from './status-hot-sheet/status-hot-sheet.component';
 import { TransportModeComponent } from './transport-mode/transport-mode.component';
 import { ShortageShiftComponent } from './shortage-shift/shortage-shift.component';
+import { PlaneadoresComponent } from '@app/denso/catalogs/planeadores/planeadores.component';
 
 @NgModule({
     imports: [
@@ -49,6 +50,12 @@ import { ShortageShiftComponent } from './shortage-shift/shortage-shift.componen
                 path: 'document-types',
                 component: DocumentTypesComponent,
                 data: { permission: 'Pages.Catalogs.DocumentTypes' },
+                canActivate: [AppRouteGuard],
+            },
+            {
+                path: 'planeadores',
+                component: PlaneadoresComponent,
+                data: { permission: 'Pages.Catalogs.Planeadores' },
                 canActivate: [AppRouteGuard],
             },
             {

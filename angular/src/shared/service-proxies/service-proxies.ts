@@ -267,6 +267,112 @@ export class CatalogServiceProxy {
         return _observableOf(null as any);
     }
 
+    // =============================
+    // GET Planeadores LHERNANDEZ
+    // =============================
+
+    getPlaneadores(): Observable<PlaneadorDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Catalog/GetPlaneadores";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processGetPlaneadores(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPlaneadores(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PlaneadorDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PlaneadorDto[]>;
+        }));
+    }
+
+    protected processGetPlaneadores(response: HttpResponseBase): Observable<PlaneadorDto[]> {
+        const status = response.status;
+
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result: PlaneadorDto[] = [];
+                let data = _responseText === "" ? [] : JSON.parse(_responseText);
+
+                if (Array.isArray(data)) {
+                    for (let item of data) {
+                        result.push(PlaneadorDto.fromJS(item));
+                    }
+                }
+
+                return _observableOf(result);
+            }));
+        }
+
+        return _observableOf([] as any);
+    }
+
+
+    // =============================
+    // POST Guardar Planeador LHERNANDEZ 
+    // =============================
+
+    guardarPlaneador(input: PlaneadorDto | undefined): Observable<string> {
+        let url_ = this.baseUrl + "/api/services/app/Catalog/GuardarPlaneador";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+
+        let options_: any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processGuardarPlaneador(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGuardarPlaneador(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<string>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<string>;
+        }));
+    }
+
+    protected processGuardarPlaneador(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return _observableOf(_responseText);
+            }));
+        }
+
+        return _observableOf("" as any);
+    }
+    
     /**
      * @param isActive (optional) 
      * @return Success
@@ -5536,6 +5642,8 @@ export class HotSheetServiceProxy {
     }
 
     //*Termina*/
+   
+
 
     /**
      * @param body (optional) 
@@ -11878,6 +11986,7 @@ export interface IHotSheetColorDto {
     TypeColor: string | undefined;   
 }
 
+
 export class GetPurchaseOrdersInput implements IGetPurchaseOrdersInput {
     userId: number | undefined;
     plannerCode: string | undefined;
@@ -12757,6 +12866,63 @@ export class HotSheetsItemDetailDto implements IHotSheetsItemDetailDto {
         return result;
     }
 }
+
+// =============================
+// Planeador DTO LHERNANDEZ
+// =============================
+
+export interface IPlaneadorDto {
+    nombre: string | undefined;
+    correos: string[] | undefined;
+}
+
+export class PlaneadorDto implements IPlaneadorDto {
+    nombre!: string | undefined;
+    correos!: string[] | undefined;
+
+    constructor(data?: IPlaneadorDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.nombre = _data["nombre"];
+
+            if (Array.isArray(_data["correos"])) {
+                this.correos = [];
+                for (let item of _data["correos"]) {
+                    this.correos.push(item);
+                }
+            }
+        }
+    }
+
+    static fromJS(data: any): PlaneadorDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PlaneadorDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["nombre"] = this.nombre;
+
+        if (Array.isArray(this.correos)) {
+            data["correos"] = [];
+            for (let item of this.correos)
+                data["correos"].push(item);
+        }
+
+        return data;
+    }
+}
+
 
 export interface IHotSheetsItemDetailDto {
     hotSheetId: number | undefined;

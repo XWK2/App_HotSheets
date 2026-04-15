@@ -1,0 +1,20 @@
+.card {
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.lista {
+  border: 1px solid #ccc;
+  padding: 10px;
+  min-height: 120px;
+  margin-top: 10px;
+}
+
+.correo-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  background: #f5f5f5;
+  padding: 5px;
+  border-radius: 5px;
+}

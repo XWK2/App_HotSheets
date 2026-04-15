@@ -43,6 +43,8 @@ import { TransportModeComponent } from '@app/denso/catalogs/transport-mode/trans
 import { StatusHotSheetComponent } from '@app/denso/catalogs/status-hot-sheet/status-hot-sheet.component';
 import { ShortageShiftComponent } from '@app/denso/catalogs/shortage-shift/shortage-shift.component';
 
+import { PlaneadoresComponent } from '@app/denso/catalogs/planeadores/planeadores.component';
+
 // Pipes
 import { DatePipe } from '@angular/common';
 
@@ -89,6 +91,7 @@ import { DatePipe } from '@angular/common';
         TransportModeComponent,
         StatusHotSheetComponent,
         ShortageShiftComponent,
+        PlaneadoresComponent,
     ],
     entryComponents: [
         // CreateOrEditSmartDialogComponent,

@@ -54,6 +54,7 @@
         //public const string Pages_Catalogs_Packaging = "Pages.Catalogs.Packaging";
         //public const string Pages_Catalogs_HelpInfo = "Pages.Catalogs.HelpInfo";
         public const string Pages_Catalogs_Employees = "Pages.Catalogs.Employees";
+        public const string Pages_Catalogs_Planeadores = "Pages.Catalogs.Planeadores";
         //public const string Pages_Catalogs_Currencies = "Pages.Catalogs.Currencies";
         //public const string Pages_Catalogs_LogServices = "Pages.Catalogs.LogServices";
         //public const string Pages_Catalogs_PartNumbersInternal = "Pages.Catalogs.PartNumbersInternal";

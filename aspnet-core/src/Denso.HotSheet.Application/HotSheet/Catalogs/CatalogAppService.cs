@@ -18,6 +18,11 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Data.SqlTypes;
+using Denso.HotSheet.HotSheet.Sheets.Dto;
+using Newtonsoft.Json;
+using Dapper;
+using System.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Denso.HotSheet.Catalogs
 {
@@ -202,6 +207,73 @@ namespace Denso.HotSheet.Catalogs
         //_statusHotSheetRepository = statusHotSheetRepository;
         //    _transportModeRepository = transportModeRepository;
         //    _shortageShiftRepository = shortageShiftRepository;
+
+        public async Task<string> GuardarPlaneador(PlaneadorDto input)
+        {
+            string resultado = "";
+
+            try
+            {
+                var nombre = input.Nombre.Trim().ToUpper();
+
+                var jsonCorreos = JsonConvert.SerializeObject(
+                    input.Correos?.Distinct() ?? new List<string>()
+                );
+
+                DynamicParameters spParams = new DynamicParameters();
+                spParams.Add("@Nombre", nombre);
+                spParams.Add("@Correos", jsonCorreos);
+                spParams.Add("@Resultado", dbType: DbType.String, size: 100, direction: ParameterDirection.Output);
+
+                await _hotSheetDapperRepository.ExecuteAsync(
+                    "sp_GuardarPlaneador",
+                    spParams,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                resultado = spParams.Get<string>("@Resultado");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultado;
+        }
+
+        [HttpGet]
+        public async Task<List<PlaneadorDto>> GetPlaneadores()
+        {
+            try
+            {
+                DynamicParameters spParams = new DynamicParameters();
+
+                var data = await _hotSheetDapperRepository.QueryAsync<dynamic>(
+                    "EXEC sp_ObtenerPlaneadores",
+                    spParams
+                );
+
+                var result = data
+                    .GroupBy(x => (string)x.Nombre)
+                    .Select(g => new PlaneadorDto
+                    {
+                        Nombre = g.Key,
+                        Correos = g
+                            .Where(x => !string.IsNullOrEmpty((string)x.Correo))
+                            .Select(x => ((string)x.Correo).Trim())
+                            .Distinct()
+                            .ToList()
+                    })
+                    .ToList();
+
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
 
         public async Task<List<ShortageShiftDto>> GetShortageShift(bool? isActive = null)
         {

@@ -2,6 +2,7 @@
 using Denso.HotSheet.Catalogs.Dto;
 using Denso.HotSheet.Files;
 using Denso.HotSheet.HotSheet.DBServices.Dto;
+using Denso.HotSheet.HotSheet.Sheets.Dto;
 using Denso.HotSheet.Sheets.Dto;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace Denso.HotSheet.Sheets
     public interface IHotSheetAppService : IApplicationService
     {
         //Task<List<HotSheetsItemDto>> GetHotSheets(int StatusHS);
+      
+
         Task<DashboardKpiDto> GetDashboard(GetDashboardInput input);
         Task<List<HotSheetsItemDto>> GetHotSheets(GetHotSheetInput input);
 

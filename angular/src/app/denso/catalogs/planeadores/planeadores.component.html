@@ -1,0 +1,74 @@
+<div class="card">
+  <div class="card-header">
+    <h3>Catálogo de Planeadores</h3>
+  </div>
+
+  <div class="card-body">
+
+    <!-- SELECT -->
+    <div class="form-group">
+      <label>Seleccionar Planeador</label>
+
+      <select class="form-control"
+              [(ngModel)]="planeador.nombre"
+              (ngModelChange)="seleccionarPlaneador($event)">
+
+        <option [ngValue]="''">-- Nuevo --</option>
+
+        <option *ngFor="let p of planeadores" [ngValue]="p.nombre">
+          {{p.nombre}}
+        </option>
+
+      </select>
+    </div>
+
+    <!-- NOMBRE -->
+    <div class="form-group">
+      <label>Planeador</label>
+      <input type="text"
+             class="form-control"
+             [(ngModel)]="planeador.nombre">
+    </div>
+
+    <!-- AGREGAR CORREO -->
+    <div class="form-group row">
+      <div class="col-md-9">
+        <input type="text"
+               class="form-control"
+               [(ngModel)]="nuevoCorreo"
+               placeholder="Correo">
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-primary w-100"
+                (click)="agregarCorreo()">
+          Agregar
+        </button>
+      </div>
+    </div>
+
+    <!-- LISTA -->
+    <div class="lista">
+      <div *ngFor="let correo of planeador.correos" class="correo-item">
+        <span>{{correo}}</span>
+        <button class="btn btn-danger btn-sm"
+                (click)="eliminarCorreo(correo)">
+          X
+        </button>
+      </div>
+    </div>
+
+    <!-- BOTONES -->
+    <div class="mt-3 d-flex gap-2">
+      <button class="btn btn-success w-100"
+              (click)="guardar()">
+        Guardar
+      </button>
+
+      <button class="btn btn-secondary w-100"
+              (click)="limpiar()">
+        Nuevo
+      </button>
+    </div>
+
+  </div>
+</div>

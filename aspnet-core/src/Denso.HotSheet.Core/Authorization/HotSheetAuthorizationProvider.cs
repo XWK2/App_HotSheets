@@ -47,7 +47,9 @@ namespace Denso.HotSheet.Authorization
             catalogs.CreateChildPermission(PermissionNames.Pages_Catalogs_StatusHotSheet, L("StatusHotSheet"));
             catalogs.CreateChildPermission(PermissionNames.Pages_Catalogs_ShortageShift, L("ShortageShift"));
             catalogs.CreateChildPermission(PermissionNames.Pages_Catalogs_TransportMode, L("TransportMode"));
-            
+
+            catalogs.CreateChildPermission(PermissionNames.Pages_Catalogs_Planeadores, L("Planeadores"));
+
             //catalogs.CreateChildPermission(PermissionNames.Pages_Catalogs_UnitMeasures, L("UnitMeasures"));
             //catalogs.CreateChildPermission(PermissionNames.Pages_Catalogs_UnitMeasuresSAT, L("UnitMeasuresSat"));
             //catalogs.CreateChildPermission(PermissionNames.Pages_Catalogs_RMAAssignments, L("RMAAssignments"));

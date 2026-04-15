@@ -1,6 +1,7 @@
 ﻿using Abp.Application.Services;
 using Denso.HotSheet.Catalogs.Dto;
 using Denso.HotSheet.HotSheet.Catalogs.Dto;
+using Denso.HotSheet.HotSheet.Sheets.Dto;
 using Denso.HotSheet.Sheets.Dto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,7 +10,9 @@ namespace Denso.HotSheet.Catalogs
 {
     public interface ICatalogAppService : IApplicationService
     {
+        Task<List<PlaneadorDto>> GetPlaneadores();
 
+        Task<string> GuardarPlaneador(PlaneadorDto input);
         Task<List<ShortageShiftDto>> GetShortageShift(bool? isActive = null);
 
         Task CreateOrUpdateShortageShift(ShortageShiftDto input);

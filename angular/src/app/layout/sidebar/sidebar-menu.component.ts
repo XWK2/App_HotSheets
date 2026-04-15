@@ -70,7 +70,7 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                 new MenuItem(this.l('Departments'), '/app/catalogs/departments', 'fas fa-building-user', 'Pages.Catalogs.Departments'),
                 new MenuItem(this.l('Carriers'), '/app/catalogs/carriers', 'fas fa-truck-fast', 'Pages.Catalogs.Carriers'),
                 new MenuItem(this.l('DocumentTypes'), '/app/catalogs/document-types', 'fas fa-file-invoice', 'Pages.Catalogs.DocumentTypes'),
-                //new MenuItem(this.l('PartNumbers'), '/app/catalogs/part-numbers', 'fas fa-parking', 'Pages.Catalogs.PartNumbers'),
+                new MenuItem(this.l('Planeadores'), '/app/catalogs/planeadores', 'fas fa-parking', 'Pages.Catalogs.Planeadores'),
                 // new MenuItem(
                 //     this.l('PartNumberPricesMenu'),
                 //     '/app/catalogs/part-number-prices',
