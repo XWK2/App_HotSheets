@@ -553,6 +553,7 @@
                                             valueExpr="value"
                                             displayExpr="text"
                                             [width]="100"
+                                            placeholder="Select Color"
                                             [fieldTemplate]="'colorField'">
 
                                             <!-- 🔹 Lista -->
@@ -584,10 +585,10 @@
                                                     <!-- círculo -->
                                                     <div 
                                                         style="
-                                                            width:14px; 
-                                                            height:14px; 
+                                                            width: 18px;
+                                                            height:18px; 
                                                             border-radius:50%; 
-                                                            border:2px solid white;
+                                                            border:1px solid white;
                                                             box-shadow:0 0 3px rgba(0,0,0,0.4);
                                                             margin-left:6px;
                                                         "
@@ -612,18 +613,43 @@
                                 </dxi-item>
                                               
                                 <!--Agrega Color a Seleccionados -->
-                                <dxi-item location="after" locateInMenu="auto">
+                                <dxi-item location="after" locateInMenu="never">
                                     <div *dxTemplate>
                                         <dx-button
-                                        text="Aplicar color a seleccionados"
+                                        text="Aplicar Color"
                                         stylingMode="contained"
-                                        type="success"
-                                        icon="paintbucket"
+                                        type="normal"
+                                        icon="palette"                                        
                                         class="dx-button-ml"
                                         (click)="updateSelectedColors()">
                                     </dx-button>
                                     </div>
                                 </dxi-item>
+
+                             <dxi-item location="after" locateInMenu="always">                                    
+                                <div *dxTemplate>
+                                    <dx-button aline="left"
+                                        text="Enviar correo a Todos"
+                                        stylingMode="contained"
+                                        type="normal"                                            
+                                        icon="email"
+                                        (click)="enviarTodos()">
+                                    </dx-button>
+                                </div>
+                            </dxi-item>
+
+                            <dxi-item location="after" locateInMenu="always">
+                                <div *dxTemplate>
+                                    <dx-button
+                                        text="Enviar Seleccionados"
+                                        stylingMode="contained"
+                                        type="normal"
+                                        icon="email"                                         
+                                        (click)="enviarSeleccionados()">
+                                    </dx-button>
+                                </div>
+                            </dxi-item>
+
 
                                 <dxi-item name="exportButton"></dxi-item> 
                             </dxo-toolbar>
@@ -682,6 +708,30 @@
                             <dxi-column [caption]="'ExistComment' | localize" dataField="existComment" [visible]="false" [width]="70"></dxi-column>
                             <!-- <dxi-column [caption]="'PCComments' | localize" dataField="pcComments" [width]="250"></dxi-column> -->
                             <dxi-column [caption]="'CompletedManually' | localize" dataField="completedManually" [width]="200"></dxi-column>
+                                                                             
+                            <dxi-column 
+                                dataField="emailSent" 
+                                caption="Email" 
+                                [width]="100"
+                                cellTemplate="emailTemplate">
+                            </dxi-column>
+                            <div *dxTemplate="let data of 'emailTemplate'">
+
+                                <!-- NO ENVIADO -->
+                                <i *ngIf="data.data.emailSent != 1"
+                                class="dx-icon dx-icon-email"
+                                style="color: #9e9e9e;"
+                                title="No enviado">
+                                </i>
+
+                                <!-- ENVIADO -->
+                                <i *ngIf="data.data.emailSent == 1"
+                                class="dx-icon dx-icon-email"
+                                style="color: #d32f2f;"
+                                title="Correo enviado">
+                                </i>
+
+                            </div>
                             <dxi-column
                             [caption]="'CreationDate' | localize"
                             dataField="creationDate"
@@ -809,6 +859,36 @@
 
                            
                         </dx-data-grid>
+
+                        <!-- 🔥 POPUP RESULTADO ENVÍO -->
+                        <dx-popup
+                        [(visible)]="popupVisible"
+                        [width]="500"
+                        [height]="400"
+                        title="Resultado de envío"
+                        [showCloseButton]="true">
+
+                        <div *dxTemplate="let data of 'content'">
+
+                            <!-- ENVIADOS -->
+                            <div *ngIf="enviados.length > 0">
+                            <h4 style="color:green;">✔ Enviados</h4>
+                            <ul>
+                                <li *ngFor="let item of enviados">{{item}}</li>
+                            </ul>
+                            </div>
+
+                            <!-- ERRORES -->
+                            <div *ngIf="errores.length > 0" style="margin-top:15px;">
+                            <h4 style="color:red;">⚠ Errores</h4>
+                            <ul>
+                                <li *ngFor="let item of errores">{{item}}</li>
+                            </ul>
+                            </div>
+
+                        </div>
+                        </dx-popup>
+
                     </div>
                     <div class="card-footer table-card-footer bg-light border-top">
                         <div class="row">

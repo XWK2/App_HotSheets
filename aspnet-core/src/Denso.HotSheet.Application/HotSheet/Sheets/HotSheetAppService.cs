@@ -3,8 +3,11 @@ using Abp.Authorization;
 using Abp.BackgroundJobs;
 using Abp.Dapper.Repositories;
 using Abp.Domain.Repositories;
+using Abp.Net.Mail;
 using Abp.Runtime.Security;
+using Abp.UI;
 using Dapper;
+using Denso.HotSheet.Authorization.Users;
 using Denso.HotSheet.BackgroundJobs;
 using Denso.HotSheet.BackgroundJobs.Args;
 using Denso.HotSheet.BackgroundJobs.Enums;
@@ -37,6 +40,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using Abp.Dependency;
 
 namespace Denso.HotSheet.Sheets
 {
@@ -72,6 +76,12 @@ namespace Denso.HotSheet.Sheets
         //private readonly IRepository<HotSheetsComments, long> _hotSheetCommentsRepository;
         //private readonly IDapperRepository<HotSheetsComments, long> _hotSheetCommentsDapperRepository;
 
+        private readonly IEmailSender _emailSender;
+
+        //public HotSheetAppService()
+        //{         
+        //}
+
         public HotSheetAppService(
             //IRepository<HotSheetsShip, long> HotSheetShipRepository,
             //IRepository<HotSheetShipProduct, long> HotSheetShipProductRepository,
@@ -97,10 +107,11 @@ namespace Denso.HotSheet.Sheets
             IDapperRepository<HotSheets, long> hotSheetsDapperRepository,
 
             IRepository<PurchaseOrders, long> purchaseOrdersRepository,
-            IDapperRepository<PurchaseOrders, long> purchaseOrdersDapperRepository
+            IDapperRepository<PurchaseOrders, long> purchaseOrdersDapperRepository,
+            IEmailSender emailSender //AQUI
 
-        //IRepository<HotSheetsComments, long> hotSheetCommentsRepository
-        //IDapperRepository<HotSheetsComments, long> hotSheetCommentsDapperRepository
+            //IRepository<HotSheetsComments, long> hotSheetCommentsRepository
+            //IDapperRepository<HotSheetsComments, long> hotSheetCommentsDapperRepository
         )
         {
 
@@ -129,9 +140,11 @@ namespace Denso.HotSheet.Sheets
 
             _purchaseOrdersDapperRepository = purchaseOrdersDapperRepository;
             _purchaseOrdersRepository = purchaseOrdersRepository;
+            _emailSender = emailSender;
             //_hotSheetCommentsRepository = hotSheetCommentsRepository;
             //_hotSheetCommentsDapperRepository = hotSheetCommentsDapperRepository;
         }
+
 
         [HttpPost]
         public async Task<DashboardKpiDto> GetDashboard(GetDashboardInput input)
@@ -201,6 +214,106 @@ namespace Denso.HotSheet.Sheets
 
             return new string(chars.ToArray())
                 .Normalize(System.Text.NormalizationForm.FormC);
+        }
+
+
+        
+         public async Task EnviarNotificacion(NotificacionDto input)
+        {
+            try
+            {
+                if (input == null)
+                    throw new UserFriendlyException("Datos inválidos");
+
+                if (input.Correos == null || !input.Correos.Any())
+                    throw new UserFriendlyException("Sin correos");
+
+                if (input.Registros == null || !input.Registros.Any())
+                    throw new UserFriendlyException("Sin registros");
+
+                // 🔥 1. ARMAR HTML
+                var body = $@"
+            <html>
+            <head>
+                <style>
+                    body {{ font-family: Arial; }}
+                    table {{ border-collapse: collapse; width: 100%; }}
+                    th {{ background:#2f75b5; color:white; padding:8px; }}
+                    td {{ border:1px solid #ddd; padding:8px; }}
+                    tr:nth-child(even) {{ background:#f2f2f2; }}
+                </style>
+            </head>
+            <body>
+
+            <h3>HotSheets Completados - {input.Planner}</h3>
+
+            <table>
+                <tr>
+                    <th>Folio</th>
+                    <th>Parte</th>
+                    <th>Proveedor</th>
+                </tr>
+            ";
+
+                foreach (var r in input.Registros)
+                {
+                    body += $@"
+                <tr>
+                    <td>{r.Folio}</td>
+                    <td>{r.Parte}</td>
+                    <td>{r.Proveedor}</td>
+                </tr>";
+                }
+
+                body += "</table></body></html>";
+
+                if (input.Correos == null || !input.Correos.Any())
+                {
+                    throw new UserFriendlyException("No hay correos para enviar");
+                }
+
+                // 🔥 2. ENVIAR CORREOS
+                foreach (var correo in input.Correos)
+                {
+                    await _emailSender.SendAsync(
+                        correo,
+                        $"HotSheets - {input.Planner}",
+                        body,
+                        true
+                    );
+                }
+
+                // 🔥 3. OBTENER IDS
+                var ids = input.Registros.Select(x => x.Id).ToList();
+
+                if (ids.Any())
+                {
+                    var idsString = string.Join(",", ids);
+
+                    var userId = AbpSession.UserId;
+                    var user = await UserManager.GetUserByIdAsync(userId.Value);
+                    var userName = user?.Name + " " + user?.Surname;
+
+                    await _hotSheetsDapperRepository.ExecuteAsync(
+                        $@"UPDATE DensoHotSheets 
+                            SET EmailSent = 1,
+                                EmailSentDate = GETDATE(),
+                                EmailSentBy = @UserId,
+                                EmailSentByName = @UserName
+                            WHERE Id IN ({idsString})
+                            ",
+                        new
+                        {
+                            UserId = userId,
+                            UserName = userName
+                        }
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new UserFriendlyException("Error al enviar correos: " + ex.Message);
+            }
         }
 
 

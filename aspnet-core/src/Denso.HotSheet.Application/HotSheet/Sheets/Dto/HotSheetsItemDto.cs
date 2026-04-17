@@ -50,5 +50,7 @@ namespace Denso.HotSheet.Sheets.Dto
 
         public string TypeColor { get; set; }
 
+        public long? emailSent { get; set; }
+
     }
 }

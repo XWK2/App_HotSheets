@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit, ViewChild,LOCALE_ID } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
-import { UserServiceProxy, HotSheetServiceProxy, HotSheetsItemDto, HotSheetsDto,FileDto, TransportModeDto,CatalogServiceProxy, UserByCurrentUserDto, ShortageShiftDto, HotSheetsCommetsDto, GetHotSheetInput, HotSheetColorDto } from '@shared/service-proxies/service-proxies';
+import { UserServiceProxy, HotSheetServiceProxy, HotSheetsItemDto, HotSheetsDto,FileDto, TransportModeDto,CatalogServiceProxy, UserByCurrentUserDto, ShortageShiftDto, HotSheetsCommetsDto, GetHotSheetInput, HotSheetColorDto, PlaneadorDto } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
 import { DxDataGridComponent,DxDataGridModule,DxButtonModule  } from 'devextreme-angular';
 import DataSource from 'devextreme/data/data_source';
@@ -107,6 +107,15 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
     colorSelectedTemp: string = null;
 
     selectedRows: any[] = [];
+
+    //para enviar correos.
+    selectedRowsData: any[] = [];
+    planeadores: PlaneadorDto[] = [];
+
+    // POPUP
+    popupVisible: boolean = false;
+    enviados: string[] = [];
+    errores: string[] = [];
 
     constructor(
         injector: Injector, 
@@ -217,6 +226,10 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
             this.shortageShift = responses[1];           
 
             this.isLoadingData = false;
+        });
+
+        this._catalogService.getPlaneadores().subscribe(data => {
+            this.planeadores = data;
         });
 
         
@@ -741,48 +754,49 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
 
           
     
-          onSelectionChanged(e: any): void {
-                this.selectedRows = e.selectedRowsData;
-                console.log('Seleccionados1:', this.selectedRows);
-            }
+    onSelectionChanged(e: any): void {
+        this.selectedRows = e.selectedRowsData;
+        this.selectedRowsData = e.selectedRowsData;
+        console.log('Seleccionados1:', this.selectedRows);
+    }
+
+    updateSelectedColors(): void {
+
+        console.log('ANTES DE GUARDAR oki:', this.selectedRows);
+
+        if (!(this.selectedRows && this.selectedRows.length > 0)) {
+            this.notify.warn('Selecciona al menos un registro');
+            return;
+        }
+
+        if (!this.colorSelectedTemp) {
+            this.notify.warn('Selecciona un color');
+            return;
+        }
+
+        const colorCode = this.getColorCode(this.colorSelectedTemp);
+
+        const payload: HotSheetColorDto[] = this.selectedRows.map(x => new HotSheetColorDto({
+            Id: x.hotSheetId,
+            TypeColor: colorCode,
+            TypeRecord: 'HS'
+        }));
+
+        this._hotSheetservice.UpdateTypeColor(payload)
+            .subscribe(() => {
+                this.notify.success('Colores actualizados');
+
+                    // LIMPIAR SELECCIÓN
+                this.dataGrid.instance.clearSelection();
+
+                // LIMPIAR VARIABLE TAMBIÉN
+                this.selectedRows = [];
+
+                this.refresh();
+            });
+    }
     
-           updateSelectedColors(): void {
-    
-                console.log('ANTES DE GUARDAR oki:', this.selectedRows);
-    
-                if (!(this.selectedRows && this.selectedRows.length > 0)) {
-                    this.notify.warn('Selecciona al menos un registro');
-                    return;
-                }
-    
-                if (!this.colorSelectedTemp) {
-                    this.notify.warn('Selecciona un color');
-                    return;
-                }
-    
-                const colorCode = this.getColorCode(this.colorSelectedTemp);
-    
-                const payload: HotSheetColorDto[] = this.selectedRows.map(x => new HotSheetColorDto({
-                    Id: x.hotSheetId,
-                    TypeColor: colorCode,
-                    TypeRecord: 'HS'
-                }));
-    
-                this._hotSheetservice.UpdateTypeColor(payload)
-                    .subscribe(() => {
-                        this.notify.success('Colores actualizados');
-    
-                         // LIMPIAR SELECCIÓN
-                        this.dataGrid.instance.clearSelection();
-    
-                        // LIMPIAR VARIABLE TAMBIÉN
-                        this.selectedRows = [];
-    
-                        this.refresh();
-                    });
-            }
-    
-          updateColors(): void {
+    updateColors(): void {
     
             if (!this.hotSheets || this.hotSheets.length === 0) {
                 this.notify.warn('No hay datos para actualizar');
@@ -813,11 +827,12 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
             });
     }
     
-        applyColorFilter(): void {
+    applyColorFilter(): void {
         this.colorSelected = this.colorSelectedTemp;
     }
 
-    onCellPrepared(e: any) {
+    onCellPrepared(e: any) 
+    {
         if (e.rowType === 'data' && e.column.type === 'buttons' && e.cellElement) {
           const iconContainer = e.cellElement.querySelector('.dx-icon-comment')?.parentElement;
       
@@ -831,6 +846,132 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
           }
         }
     }
+
+    // VALIDACIÓN COMPLETADO
+    esCompletado(x: any): boolean {
+        return Number(x.completedManually) === 1 || x.statusId === 2;
+    }
+
+    // PROCESO GENERAL
+    procesarEnvio(registros: any[]) {
+
+        if (!registros || registros.length === 0) {
+            abp.notify.warn('No hay registros');
+            return;
+        }
+
+        const agrupados: any = {};
+        const enviados: string[] = [];
+        const errores: string[] = [];
+
+        registros.forEach(item => {
+
+            const planner = item.plannerName;
+
+            if (!planner) {
+            errores.push('Registro sin planner');
+            return;
+            }
+
+            if (!agrupados[planner]) {
+            agrupados[planner] = [];
+            }
+
+            agrupados[planner].push(item);
+        });
+
+        Object.keys(agrupados).forEach(planner => {
+
+            const registrosPlanner = agrupados[planner];
+
+            const p = this.planeadores.find(x => x.nombre === planner);
+
+            if (!p || !p.correos || p.correos.length === 0) {
+            errores.push(`Sin correos para: ${planner}`);
+            return;
+            }
+
+            const payload = {
+            planner: planner,
+            correos: p.correos,
+            registros: registrosPlanner.map(r => ({
+                id: r.hotSheetId, //  IMPORTANTE
+                folio: r.deliveryOrder,
+                parte: r.partNumber,
+                proveedor: r.supplierName
+            }))
+            };
+
+            this._hotSheetservice.enviarNotificacion(payload)
+            .subscribe({
+                next: () => {
+
+                enviados.push(planner);
+
+                //  marcar en UI
+                registrosPlanner.forEach(r => {
+                    r.emailSent = 1;
+                });
+                },
+                error: () => {
+                errores.push(`Error al enviar: ${planner}`);
+                }
+            });
+        });
+
+        // mostrar popup
+        setTimeout(() => {
+            this.enviados = enviados;
+            this.errores = errores;
+            this.popupVisible = true;
+        }, 800);
+    }
+
+    // enviar todos
+    enviarTodos() {
+
+    const completados = this.hotSheets.filter(x =>
+        this.esCompletado(x) && x.emailSent !== 1
+    );
+
+    if (completados.length === 0) {
+        abp.notify.warn('No hay registros completados pendientes');
+        return;
+    }
+
+    this.procesarEnvio(completados);
+    }
+
+    // enviar seleccionados
+    enviarSeleccionados() {
+
+    if (!this.selectedRowsData || this.selectedRowsData.length === 0) {
+        abp.notify.warn('Seleccione registros');
+        return;
+    }
+
+    const noCompletados = this.selectedRowsData.filter(x =>
+        !this.esCompletado(x)
+    );
+
+    if (noCompletados.length > 0) {
+        abp.notify.warn('Todos deben estar completados');
+        return;
+    }
+
+    const yaEnviados = this.selectedRowsData.filter(x =>
+        x.emailSent === 1
+    );
+
+    if (yaEnviados.length > 0) {
+        abp.notify.warn('Algunos ya fueron enviados');
+        return;
+    }
+
+    this.procesarEnvio(this.selectedRowsData);
+    }
+
+
 
     showCommentButtonExist(e: any): boolean {
         let visible = false;
@@ -847,8 +988,4 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
         }
         return visible; // o cualquier lógica que necesites
       }
-
-      
-     
-
 }

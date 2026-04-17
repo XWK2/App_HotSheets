@@ -5046,7 +5046,59 @@ export class HotSheetServiceProxy {
     }
 
     
-    
+    /*Se Agrego Manual LHERNANDEZ enviar correos*/
+    /**
+     * @param input (optional) 
+     * @return Success
+     */
+    enviarNotificacion(input: any | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/HotSheet/EnviarNotificacion";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+
+        let options_: any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processEnviarNotificacion(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEnviarNotificacion(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processEnviarNotificacion(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return throwException("Error al enviar notificación.", status, _responseText, {});
+            }));
+        }
+        return _observableOf(null as any);
+    }
     
     /**
      * @param body (optional) 
@@ -12986,6 +13038,7 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
     completedManually: number | undefined;
     typeRecord:string| undefined;
     typeColor:string| undefined;
+    emailSent: number | undefined;
 
     constructor(data?: IHotSheetsItemDto) {
         if (data) {
@@ -13030,6 +13083,8 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
             this.completedManually = _data["completedManually"];
             this.typeRecord = _data["typeRecord"];
             this.typeColor = _data["typeColor"];
+            this.emailSent = _data["emailSent"];
+
         }
     }
 
@@ -13074,6 +13129,7 @@ export class HotSheetsItemDto implements IHotSheetsItemDto {
         data["completedManually"] = this.completedManually;
         data["typeRecord"] = this.typeRecord;
         data["typeColor"] = this.typeColor;
+        data["emailSent"] = this.emailSent;
         return data;
     }
 
