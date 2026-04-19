@@ -81,7 +81,7 @@
                                                                 <div *dxTemplate>
                                                                     <dx-text-box 
                                                                     [(value)]="hotSheetChanges.deliveryOrder"
-                                                                    [readOnly]="true">
+                                                                    [readOnly]="!canEditField('deliveryOrder')">
                                                                     </dx-text-box>
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
@@ -91,7 +91,7 @@
                                                                 <div *dxTemplate>
                                                                     <dx-text-box 
                                                                         [(value)]="hotSheetChanges.trafficContainerFX"
-                                                                        [readOnly]="!enabledEditInfo">
+                                                                        [readOnly]="!canEditField('trafficContainerFX')">
                                                                     </dx-text-box>
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
@@ -100,7 +100,7 @@
                                                                 <div *dxTemplate>
                                                                     <dx-text-box 
                                                                         [(value)]="hotSheetChanges.unitNumber"
-                                                                        [readOnly]="!enabledEditInfo">
+                                                                        [readOnly]="!canEditField('unitNumber')">
                                                                     </dx-text-box>
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
@@ -113,8 +113,8 @@
                                                                         valueExpr="id"
                                                                         [(value)]="hotSheetChanges.transportModeId"
                                                                         [items]="transportMode"
-                                                                        [searchEnabled]="true"
-                                                                        [readOnly]="!enabledEditInfo">                                                                    
+                                                                        [searchEnabled]="true"                                                                        
+                                                                        [readOnly]="!canEditField('transportModeId')">                                                                    
                                                                     </dx-select-box>
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
@@ -140,7 +140,7 @@
                                                                         type="date" 
                                                                         [(value)]="hotSheetChanges.etaDNMX" 
                                                                         showClearButton="true"
-                                                                        [readOnly]="!enabledEditInfo">
+                                                                        [readOnly]="!canEditField('etaDNMX')">
                                                                     </dx-date-box>
                                                                 </div>
                                                             </dxi-item>
@@ -187,7 +187,7 @@
                                                                                     type="date"
                                                                                     [(value)]="hotSheetChanges.realShortageDate"
                                                                                     showClearButton="true"
-                                                                                    [readOnly]="!enabledEditInfo">
+                                                                                    [readOnly]="!canEditField('realShortageDate')">
                                                                                 </dx-date-box>
                                                                             </div>
 
@@ -200,7 +200,7 @@
                                                                                     [(value)]="hotSheetChanges.shortageShiftId"
                                                                                     [items]="shortageShift"
                                                                                     [searchEnabled]="true"
-                                                                                    [readOnly]="!enabledEditInfo">
+                                                                                    [readOnly]="!canEditField('shortageShiftId')">
                                                                                 </dx-select-box>
                                                                             </div>
 
@@ -214,7 +214,7 @@
                                                                                     displayFormat="HH:mm:ss"
                                                                                     [showClearButton]="true"
                                                                                     [useMaskBehavior]="true"
-                                                                                    [readOnly]="!enabledEditInfo">
+                                                                                    [readOnly]="!canEditField('shortage')">
                                                                                 </dx-date-box>
                                                                             </div>
 
@@ -233,7 +233,7 @@
                                                                         [(value)]="hotSheetChanges.completedManually"
                                                                         [items]="statusOptions"
                                                                         [searchEnabled]="true"                                                                        
-                                                                        [readOnly]="!enabledEditInfo">                                                                    
+                                                                        [readOnly]="!canEditField('completedManually')">                                                                    
                                                                     </dx-select-box>
                                                                     
                                                                 </div>
@@ -248,7 +248,7 @@
                                                                         [items]="colorOptions"
                                                                         valueExpr="value"
                                                                         displayExpr="text"
-                                                                        [readOnly]="!enabledEditInfo"
+                                                                        [readOnly]="!canEditField('typeColor')"
                                                                         [width]="220"
                                                                         [fieldTemplate]="'colorFieldPopup'">
 

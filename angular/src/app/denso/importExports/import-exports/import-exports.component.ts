@@ -228,7 +228,7 @@ export class ImportExportsComponent extends AppComponentBase implements OnInit {
             this.isLoadingData = false;
         });
 
-            
+        this.isIEUser = this.permission.isGranted('Pages.ImportExports.IE');
     }
 
     public onInitNewRow(event: any): void {
@@ -439,22 +439,22 @@ export class ImportExportsComponent extends AppComponentBase implements OnInit {
     }
 
     canEditField(field: string): boolean {
-
-        // PC → todo editable
+        // PC (o cualquier usuario sin IE) → todo editable
         if (!this.isIEUser) {
             return true;
         }
 
-        // IE → solo estos campos
+        // IE → solo estos campos son permitidos para  ie actualmente, pero se pueden ir agregando más según se requiera
         const allowed = [
+            'trafficContainerFX',
+            'unitNumber',
             'transportModeId',
             'statusId',
-            'shortageShiftId'
+            'etaDNMX'
         ];
 
-        return allowed.indexOf(field) !== -1;
+        return allowed.includes(field);
     }
-
 
 
     // public getActionOptionsBy(item: HotSheetsItemDto): any {
