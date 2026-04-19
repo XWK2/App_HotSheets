@@ -531,7 +531,7 @@
     <text name="SupplierCode" value="Code"/>
     <text name="SupplierName" value="Name"/>
     <text name="PartNumber" value="Part Number"/>
-    <text name="PartNumberHS" value="Part Number"/>
+    <text name="PartNumberHS" value="P/N"/>
     <text name="PartNumberCodeHS" value="Code"/>
     <text name="PartDescriptionHS" value="Description"/>
     <text name="InTransitQty" value="InTransitQty"/>
@@ -575,6 +575,7 @@
     <text name="Schedule" value="Schedule" />
     <text name="ADate" value="Arrival Date" />
     <text name="RCVD" value="CIGMA Received" />
+    <text name="Rango" value="Range" />
 
   </texts>
 </localizationDictionary>

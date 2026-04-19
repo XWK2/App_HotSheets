@@ -266,7 +266,7 @@ export class HotSheetsReportsComponent extends AppComponentBase implements OnIni
         input.startDate = this.startDate ? moment(this.startDate) : undefined;
         input.endDate = this.endDate ? moment(this.endDate) : undefined;
         input.statusHS = statusIncompleted;
-
+        input.typeRecord = "HS";
         this._hotSheetservice
             .getHotSheets(input)
             .pipe(

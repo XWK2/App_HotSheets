@@ -524,19 +524,19 @@
     <text name="PartNumbers" value="Número de Partes" />
     <text name="Planner" value="Planeador"/>
     <text name="PlannerCode" value="Código"/>
-    <text name="PlannerName" value="Nombre Pleneador"/>
+    <text name="PlannerName" value="Nombre Planeador"/>
     <text name="Supplier" value="Proveedor"/>
     <text name="SupplierCode" value="Código"/>
     <text name="SupplierName" value="Nombre Proveedor"/>
     <text name="PartNumber" value="Número de Parte"/>
-    <text name="PartNumberHS" value="Número de Parte"/>
+    <text name="PartNumberHS" value="P/N"/>
     <text name="PartNumberCodeHS" value="Código"/>
     <text name="PartDescriptionHS" value="Descripcion"/>
     <text name="InTransitQty" value="Cantidad en Tránsito"/>
     <text name="DiaStockIn" value="Inventario DIA"/>
     <text name="DiaLocation" value="Ubicacion"/>
     <text name="CIGMAReceived" value="Recibido por CIGMA"/>
-    <text name="TransportMode" value="Modo Transporte"/>
+    <text name="TransportMode" value="Método Transporte"/>
     <text name="TransportModeId" value="Id"/>
     <text name="TransportModeName" value="Nombre"/>
     <text name="DeliveryOrder" value="Orden Entrega"/>
@@ -573,5 +573,7 @@
     <text name="Schedule" value="Agenda" />
     <text name="ADate" value="Arrival Date" />
     <text name="RCVD" value="Recibido en CIGMA" />
+    <text name="Rango" value="Rango" />
+    
   </texts>
 </localizationDictionary>

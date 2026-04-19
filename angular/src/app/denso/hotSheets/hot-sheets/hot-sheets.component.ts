@@ -250,7 +250,7 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
             this.hotSheetChanges.unitNumber = newhotSheet.unitNumber;
             this.hotSheetChanges.etaDNMX = newhotSheet.etaDNMX;
             this.hotSheetChanges.shortageShiftId = newhotSheet.shortageShiftId;                                    
-            //this.hotSheetChanges.realShortageDate = newhotSheet.realShortageDate;                
+            this.hotSheetChanges.realShortageDate = newhotSheet.realShortageDate;                
             this.hotSheetChanges.shortage = newhotSheet.shortage;
             this.hotSheetChanges.completedManually = newhotSheet.completedManually;
             //--this.hotSheetChanges.typeRecord = "HS";
@@ -930,16 +930,19 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
     // enviar todos
     enviarTodos() {
 
-    const completados = this.hotSheets.filter(x =>
-        this.esCompletado(x) && x.emailSent !== 1
-    );
+    // //Aqui no se validara si estan completados se enviara la lista completa de hot sheets independientemente si estan o no completados
+    // const completados = this.hotSheets.filter(x =>
+    //     this.esCompletado(x) && x.emailSent !== 1
+    // );
 
-    if (completados.length === 0) {
+    const todos = this.hotSheets;
+
+    if (todos.length === 0) {
         abp.notify.warn('No hay registros completados pendientes');
         return;
     }
 
-    this.procesarEnvio(completados);
+    this.procesarEnvio(todos);
     }
 
     // enviar seleccionados
@@ -950,14 +953,14 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
         return;
     }
 
-    const noCompletados = this.selectedRowsData.filter(x =>
-        !this.esCompletado(x)
-    );
+    // const noCompletados = this.selectedRowsData.filter(x =>
+    //     !this.esCompletado(x)
+    // );
 
-    if (noCompletados.length > 0) {
-        abp.notify.warn('Todos deben estar completados');
-        return;
-    }
+    // if (noCompletados.length > 0) {
+    //     abp.notify.warn('Todos deben estar completados');
+    //     return;
+    // }
 
     const yaEnviados = this.selectedRowsData.filter(x =>
         x.emailSent === 1

@@ -27,7 +27,7 @@
 <div class="row">
 
 <!-- WH -->
-<div class="col-lg-4">
+<div class="col-lg-12">
 <div class="card">
 
 <!-- <div class="card-header custom-header d-flex justify-content-between align-items-center">
@@ -73,7 +73,7 @@
             </dxo-label>
         </dxi-series>
 
-        <dxo-legend verticalAlignment="top" horizontalAlignment="center" orientation="vertical"></dxo-legend>
+        <dxo-legend verticalAlignment="top" horizontalAlignment="left" orientation="vertical"></dxo-legend>
 
         <dxo-tooltip [enabled]="true" [customizeTooltip]="customizeTooltip"></dxo-tooltip>
 
@@ -89,7 +89,7 @@
 </div>
 
 <!-- IE -->
-<div class="col-lg-4">
+<div class="col-lg-12">
 <div class="card">
 
 <!-- <div class="card-header custom-header d-flex justify-content-between align-items-center">
@@ -113,10 +113,23 @@
                 [animation]="animationConfig">
 
             <dxi-series argumentField="label" valueField="total">
-                <dxo-label [visible]="true" position="inside" [customizeText]="customizePieLabel"></dxo-label>
+                <dxo-label
+                    [visible]="true"
+                    position="outside"
+                    [customizeText]="customizePieLabel">
+
+                    <dxo-connector
+                        [visible]="true"
+                        [width]="1"
+                        color="#999">
+                    </dxo-connector>
+
+                    <dxo-font size="12" weight="600"></dxo-font>
+
+                </dxo-label>
             </dxi-series>
 
-            <dxo-legend verticalAlignment="top" horizontalAlignment="center" orientation="vertical"></dxo-legend>
+            <dxo-legend verticalAlignment="top" horizontalAlignment="left" orientation="vertical"></dxo-legend>
 
             <dxo-tooltip [enabled]="true" [customizeTooltip]="customizeTooltip"></dxo-tooltip>
 
@@ -130,8 +143,10 @@
 </div>
 </div>
 
+</div>
+<div class="row">
 <!-- STATUS -->
-<div class="col-lg-4">
+<div class="col-lg-12">
 <div class="card">
 
 <!-- <div class="card-header custom-header d-flex justify-content-between align-items-center">

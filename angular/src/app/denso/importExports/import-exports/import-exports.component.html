@@ -21,9 +21,11 @@
                 <div class="card">
                     <div class="card-body grid-content" [busy]="isTableLoading">
                        <!-- Leyenda de colores -->
-                        <!-- Leyenda de colores -->                        
-                        <div class="leyenda-colores">
-                           
+                        <!-- Leyenda de colores -->         
+                         <div class="leyenda-colores">                                                        
+                            <label class="lb-filter" style="margin: 0 8px 0 0;">{{ 'Rango' | localize }}:</label>
+                         </div>              
+                        <div class="leyenda-colores">                           
                             <span class="color-cuadro" style="background-color: #D00000;"></span> A+                            
                             <span class="color-cuadro" style="background-color: #FF0000;"></span> A
                             <span class="color-cuadro" style="background-color: #FF8A3B;"></span> B
@@ -79,7 +81,7 @@
                                                                 <div *dxTemplate>
                                                                     <dx-text-box 
                                                                     [(value)]="hotSheetChanges.deliveryOrder"
-                                                                    [readOnly]="!enabledEditInfo">
+                                                                    [readOnly]="true">
                                                                     </dx-text-box>
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
@@ -118,7 +120,7 @@
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
                                                             </dxi-item>
                         
-                                                            <dxi-item [label]="{ text: 'ShortageShift' | localize }" [colSpan]="1">
+                                                            <!-- <dxi-item [label]="{ text: 'ShortageShift' | localize }" [colSpan]="1">
                                                                 <div *dxTemplate>
                                                                     <dx-select-box
                                                                         displayExpr="description"
@@ -127,11 +129,11 @@
                                                                         [items]="shortageShift"
                                                                         [searchEnabled]="true"
                                                                         searchMode="contains"
-                                                                        [readOnly]="!enabledEditInfo">
+                                                                        [readOnly]="true">
                                                                     </dx-select-box>
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
-                                                            </dxi-item>                                    
+                                                            </dxi-item>                                     -->
                                                             <dxi-item [label]="{ text: 'EtaDNMX' | localize }" [colSpan]="1">
                                                                 <div *dxTemplate>
                                                                     <dx-date-box 
@@ -154,7 +156,7 @@
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
                                                             </dxi-item> -->
                         
-                                                            <dxi-item [label]="{ text: 'Shortage' | localize }" [colSpan]="2">
+                                                            <!-- <dxi-item [label]="{ text: 'Shortage' | localize }" [colSpan]="2">
                                                                 <div *dxTemplate>
                                                                     <dx-date-box
                                                                         placeholder="0:00:00"
@@ -165,8 +167,60 @@
                                                                         (onValueChanged)="onReasonChanged($event)"
                                                                         displayFormat="HH:mm:ss"
                                                                         [inputAttr]="{ 'aria-label': 'Time' }"
-                                                                        [readOnly]="!enabledEditInfo">                                                                    
+                                                                        [readOnly]="true">                                                                    
                                                                     </dx-date-box>
+                                                                </div>
+                                                            </dxi-item> -->
+                                                            
+                                                            <dxi-item [colSpan]="2">
+                                                                <div *dxTemplate>
+
+                                                                    <fieldset style="border:1px dashed #333; padding:15px; border-radius:10px;">
+                                                                        <legend style="font-weight:bold;">Afectación</legend>
+
+                                                                        <div style="display:flex; gap:20px; flex-wrap:wrap;">
+
+                                                                            <!-- FECHA -->
+                                                                            <div style="flex:1; min-width:200px;">
+                                                                                <label style="font-weight:500;">Fecha</label>
+                                                                                <dx-date-box 
+                                                                                    type="date"
+                                                                                    [(value)]="hotSheetChanges.realShortageDate"
+                                                                                    showClearButton="true"
+                                                                                    [readOnly]="!enabledEditInfo">
+                                                                                </dx-date-box>
+                                                                            </div>
+
+                                                                            <!-- TURNO -->
+                                                                            <div style="flex:1; min-width:200px;">
+                                                                                <label style="font-weight:500;">Turno</label>
+                                                                                <dx-select-box
+                                                                                    displayExpr="description"
+                                                                                    valueExpr="id"
+                                                                                    [(value)]="hotSheetChanges.shortageShiftId"
+                                                                                    [items]="shortageShift"
+                                                                                    [searchEnabled]="true"
+                                                                                    [readOnly]="!enabledEditInfo">
+                                                                                </dx-select-box>
+                                                                            </div>
+
+                                                                            <!-- HORA -->
+                                                                            <div style="flex:1; min-width:200px;">
+                                                                                <label style="font-weight:500;">Hora</label>
+                                                                                <dx-date-box
+                                                                                    type="time"
+                                                                                    [value]="timeShortage"
+                                                                                    (onValueChanged)="onReasonChanged($event)"
+                                                                                    displayFormat="HH:mm:ss"
+                                                                                    [showClearButton]="true"
+                                                                                    [useMaskBehavior]="true"
+                                                                                    [readOnly]="!enabledEditInfo">
+                                                                                </dx-date-box>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </fieldset>
+
                                                                 </div>
                                                             </dxi-item>
 
@@ -626,7 +680,7 @@
                             </dxo-toolbar>
 
                             <dxi-column [caption]="'Planner' | localize" style="text-align:justify !important;">
-                                <dxi-column [caption]="'PlannerCode' | localize" dataField="plannerCode" [width]="90"></dxi-column>
+                                <dxi-column [caption]="'PlannerCode' | localize" dataField="plannerCode" [width]="90" [visible]="false"></dxi-column>
                                 <dxi-column [caption]="'PlannerName' | localize" dataField="plannerName" [width]="250"></dxi-column>
                             </dxi-column>    
                             <dxi-column [caption]="'Supplier' | localize">
@@ -637,16 +691,16 @@
                                 <dxi-column [caption]="'PartNumberCodeHS' | localize" dataField="partNumber" [width]="130"></dxi-column>
                                 <dxi-column [caption]="'PartDescriptionHS' | localize" dataField="partDescription" [width]="250"></dxi-column>
                             </dxi-column>                                                    
-                            <dxi-column [caption]="'InTransitQty' | localize" dataField="inTransitQty" [width]="100"></dxi-column>
-                            <dxi-column [caption]="'DiaStockIn' | localize" dataField="diaStockIn" [width]="120"></dxi-column>
-                            <dxi-column [caption]="'DiaLocation' | localize" dataField="diaLocation" [width]="120"></dxi-column>
-                            <dxi-column [caption]="'CIGMAReceived' | localize" dataField="cigmaReceived" [width]="220"></dxi-column>
+                            <dxi-column [caption]="'InTransitQty' | localize" dataField="inTransitQty" [width]="100" alignment="center"></dxi-column>
+                            <dxi-column [caption]="'DiaStockIn' | localize" dataField="diaStockIn" [width]="120" [visible]="false"></dxi-column>
+                            <dxi-column [caption]="'DiaLocation' | localize" dataField="diaLocation" [width]="120" [visible]="false"></dxi-column>
+                            <dxi-column [caption]="'CIGMAReceived' | localize" dataField="cigmaReceived" [width]="220" [visible]="false"></dxi-column>
                             <!-- <dxi-column [caption]="'TransportMode' | localize"> -->
                                 <dxi-column [caption]="'TransportModeId' | localize" dataField="transportModeId" [visible]="false" [width]="50"></dxi-column>
                                 <dxi-column [caption]="'TransportMode' | localize" dataField="transportModeName" [width]="250"></dxi-column>
                             <!-- </dxi-column> -->
                             
-                            <dxi-column [caption]="'DeliveryOrder' | localize" dataField="deliveryOrder" [width]="150"></dxi-column>
+                            <dxi-column [caption]="'DeliveryOrder' | localize" dataField="deliveryOrder" [width]="150" alignment="center"></dxi-column>
                             <dxi-column [caption]="'TrafficContainerFX' | localize" dataField="trafficContainerFX" [width]="250"></dxi-column>
                             <dxi-column [caption]="'UnitNumber' | localize" dataField="unitNumber" [width]="150"></dxi-column>                            
                             <dxi-column
@@ -672,13 +726,14 @@
                                 ></dxi-column>
                                 <dxi-column [caption]="'ShortageShiftId' | localize" dataField="shortageShiftId" [visible]="false" [width]="50"></dxi-column>                                
                                 <dxi-column [caption]="'ShortageTime' | localize" dataField="shortageVal" [width]="150"></dxi-column>                                                                  
+                                <dxi-column [caption]="'ShortageShiftName' | localize" dataField="shortageShiftName" [width]="150"></dxi-column>                            
                             </dxi-column>
-                            <dxi-column [caption]="'ShortageShiftName' | localize" dataField="shortageShiftName" [width]="150"></dxi-column>                            
-                            <dxi-column [caption]="'ASN' | localize" dataField="asn" [width]="80"></dxi-column>
+                            
+                            <dxi-column [caption]="'ASN' | localize" dataField="asn" [width]="80" [visible]="false"></dxi-column>
                             <dxi-column [caption]="'Stock2' | localize" dataField="stock2" [visible]="false" [width]="90"></dxi-column>
                             <dxi-column [caption]="'ExistComment' | localize" dataField="existComment" [visible]="false" [width]="70"></dxi-column>
                             <!-- <dxi-column [caption]="'PCComments' | localize" dataField="pcComments" [width]="250"></dxi-column> -->
-                            <dxi-column [caption]="'CompletedManually' | localize" dataField="completedManually" [width]="200"></dxi-column>
+                            <dxi-column [caption]="'CompletedManually' | localize" dataField="completedManually" [width]="200" [visible]="false"></dxi-column>
                             <dxi-column
                             [caption]="'CreationDate' | localize"
                             dataField="creationDate"

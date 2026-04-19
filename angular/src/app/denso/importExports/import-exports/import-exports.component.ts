@@ -115,6 +115,8 @@ export class ImportExportsComponent extends AppComponentBase implements OnInit {
 
     selectedRows: any[] = [];
 
+    isIEUser: boolean = false;
+
     constructor(
         injector: Injector, 
         private _hotSheetservice: HotSheetServiceProxy, 
@@ -226,7 +228,7 @@ export class ImportExportsComponent extends AppComponentBase implements OnInit {
             this.isLoadingData = false;
         });
 
-        
+            
     }
 
     public onInitNewRow(event: any): void {
@@ -248,7 +250,7 @@ export class ImportExportsComponent extends AppComponentBase implements OnInit {
             this.hotSheetChanges.unitNumber = newhotSheet.unitNumber;
             this.hotSheetChanges.etaDNMX = newhotSheet.etaDNMX;
             this.hotSheetChanges.shortageShiftId = newhotSheet.shortageShiftId;                                    
-            //this.hotSheetChanges.realShortageDate = newhotSheet.realShortageDate;                
+            this.hotSheetChanges.realShortageDate = newhotSheet.realShortageDate;                
             this.hotSheetChanges.shortage = newhotSheet.shortage;
             this.hotSheetChanges.completedManually = newhotSheet.completedManually;
 
@@ -431,10 +433,26 @@ export class ImportExportsComponent extends AppComponentBase implements OnInit {
         });
     }
 
+
     public get enabledEditInfo(): boolean {
-        return (
-            this.appSession.user.isPC || this.appSession.user.isPC            
-        );
+    return true; // dejamos el control fino en canEditField
+    }
+
+    canEditField(field: string): boolean {
+
+        // PC → todo editable
+        if (!this.isIEUser) {
+            return true;
+        }
+
+        // IE → solo estos campos
+        const allowed = [
+            'transportModeId',
+            'statusId',
+            'shortageShiftId'
+        ];
+
+        return allowed.indexOf(field) !== -1;
     }
 
 

@@ -231,7 +231,7 @@ namespace Denso.HotSheet.Sheets
                 if (input.Registros == null || !input.Registros.Any())
                     throw new UserFriendlyException("Sin registros");
 
-                // 🔥 1. ARMAR HTML
+                // 1. ARMAR HTML
                 var body = $@"
             <html>
             <head>
@@ -245,7 +245,7 @@ namespace Denso.HotSheet.Sheets
             </head>
             <body>
 
-            <h3>HotSheets Completados - {input.Planner}</h3>
+            <h3>Lista de HotSheets  - {input.Planner}</h3>
 
             <table>
                 <tr>
@@ -272,7 +272,7 @@ namespace Denso.HotSheet.Sheets
                     throw new UserFriendlyException("No hay correos para enviar");
                 }
 
-                // 🔥 2. ENVIAR CORREOS
+                // 2. ENVIAR CORREOS
                 foreach (var correo in input.Correos)
                 {
                     await _emailSender.SendAsync(
@@ -283,7 +283,7 @@ namespace Denso.HotSheet.Sheets
                     );
                 }
 
-                // 🔥 3. OBTENER IDS
+                // 3. OBTENER IDS
                 var ids = input.Registros.Select(x => x.Id).ToList();
 
                 if (ids.Any())
@@ -624,12 +624,20 @@ namespace Denso.HotSheet.Sheets
                 spParams.Add("@UserId", AbpSession.UserId);
                 spParams.Add("@IdStarsSheetList", IdStarsSheetList);
 
-                spParams.Add("@StarSheetIdUpdated", dbType: DbType.Int64, direction: ParameterDirection.Output);
+                spParams.Add("@StarSheetIdUpdated", 
+                    dbType: DbType.Int64, 
+                    direction: ParameterDirection.Output);
 
-                long affectedRows = await _hotSheetsDapperRepository.ExecuteAsync("UpdateStartSheetToIE",
-                    spParams, commandType: CommandType.StoredProcedure);
+                long affectedRows = await _hotSheetsDapperRepository.ExecuteAsync(
+                    "UpdateStartSheetToIE",
+                    spParams, 
+                    commandType: CommandType.StoredProcedure);
 
                 StarSheetId = spParams.Get<long>("@StarSheetIdUpdated");
+
+                // AQUÍ VA LA NOTIFICACIÓN
+                await NotificarUsuariosIE(input.Count, IdStarsSheetList);
+
             }
             catch (Exception ex)
             {
@@ -638,6 +646,106 @@ namespace Denso.HotSheet.Sheets
             }
 
             return StarSheetId;
+        }
+
+        public async Task NotificarUsuariosIE(int totalRegistros, string ids)
+        {
+            try
+            {
+                // ===============================
+                // 1. CONSULTAR REGISTROS ENVIADOS
+                // ===============================
+                string sqlDetalle = $@"
+                    SELECT
+                        plannerName,
+                        supplierCode,
+                        supplierName,
+                        partNumber,
+                        partDescription,
+                        inTransitQty
+                    FROM DensoStarSheets
+                    WHERE Id IN ({ids})
+                ";
+
+                var registros = await _hotSheetsDapperRepository.QueryAsync<dynamic>(sqlDetalle);
+
+                // ===============================
+                // 2. ARMAR FILAS HTML
+                // ===============================
+                string rows = "";
+
+                foreach (var item in registros)
+                {
+                    rows += $@"
+                    <tr>
+                        <td>{item.plannerName}</td>
+                        <td>{item.supplierCode}</td>
+                        <td>{item.supplierName}</td>
+                        <td>{item.partNumber}</td>
+                        <td>{item.partDescription}</td>
+                        <td style='text-align:right'>{item.inTransitQty}</td>
+                    </tr>";
+                }
+
+                // ===============================
+                // 3. BODY CORREO
+                // ===============================
+                string body = $@"
+                    <h2 style='color:#d32f2f;'>I/E Report - Nuevos registros</h2>
+
+                    <p>
+                        Se enviaron <b>{totalRegistros}</b> registros al módulo I/E Report.
+                    </p>
+
+                    <table border='1' cellspacing='0' cellpadding='5'
+                           style='border-collapse:collapse;font-family:Arial;font-size:12px;width:100%;'>
+
+                        <tr style='background:#d32f2f;color:white;'>
+                            <th>Planner</th>
+                            <th>Supplier Code</th>
+                            <th>Supplier</th>
+                            <th>Part Number</th>
+                            <th>Description</th>
+                            <th>Qty</th>
+                        </tr>
+
+                        {rows}
+
+                    </table>
+                    ";
+
+                // ===============================
+                // 4. CORREOS ROL IE
+                // ===============================
+                string sqlCorreos = @"
+                    SELECT DISTINCT u.EmailAddress
+                    FROM AbpUsers u
+                    INNER JOIN AbpUserRoles ur ON ur.UserId = u.Id
+                    INNER JOIN AbpRoles r ON r.Id = ur.RoleId
+                    WHERE r.Name = 'IE'
+                    AND u.IsDeleted = 0
+                    AND ISNULL(u.EmailAddress,'') <> ''
+                ";
+
+                var correos = await _hotSheetsDapperRepository.QueryAsync<string>(sqlCorreos);
+
+                // ===============================
+                // 5. ENVIAR CORREOS
+                // ===============================
+                foreach (var correo in correos)
+                {
+                    await _emailSender.SendAsync(
+                        correo,
+                        "I/E Report - Nuevos registros asignados",
+                        body,
+                        true
+                    );
+                }
+            }
+            catch
+            {
+                // opcional no romper proceso principal
+            }
         }
 
         public async Task<long> UpdateTypeColor(List<HotSheetColorDto> input)
@@ -671,59 +779,207 @@ namespace Denso.HotSheet.Sheets
         }
 
       
-        public async Task CreateOrUpdateHotSheet(HotSheetsDto input)
-        {
-            if (input.Id.HasValue)
+            public async Task CreateOrUpdateHotSheet(HotSheetsDto input)
             {
-                try
+                if (input.Id.HasValue)
                 {
-                    var hotSheet = await _hotSheetsRepository.GetAsync(input.Id.Value);
-                    if (hotSheet != null)
+                    try
                     {
-                        if (input.TransportModeId != 0) {
-                            hotSheet.TransportModeId = input.TransportModeId;
-                        }
+                        var hotSheet = await _hotSheetsRepository.GetAsync(input.Id.Value);
+                        if (hotSheet != null)
+                        {
+                            if (input.TransportModeId != 0) {
+                                hotSheet.TransportModeId = input.TransportModeId;
+                            }
               
-                        hotSheet.DeliveryOrder = input.DeliveryOrder;
-                        hotSheet.TrafficContainerFX = input.TrafficContainerFX;
-                        hotSheet.UnitNumber = input.UnitNumber;
-                        hotSheet.EtaDNMX = input.EtaDNMX;
-                        if (input.ShortageShiftId != 0)
+                            hotSheet.DeliveryOrder = input.DeliveryOrder;
+                            hotSheet.TrafficContainerFX = input.TrafficContainerFX;
+                            hotSheet.UnitNumber = input.UnitNumber;
+                            hotSheet.EtaDNMX = input.EtaDNMX;
+                            if (input.ShortageShiftId != 0)
+                            {
+                                hotSheet.ShortageShiftId = input.ShortageShiftId;
+                            }
+
+                            if (input.StatusId != 0)
+                            {
+                                hotSheet.StatusId = input.StatusId;
+                            }
+
+                            hotSheet.PCComments = input.PCComments;
+                            hotSheet.RealShortageDate = input.RealShortageDate;
+                            hotSheet.Shortage = input.Shortage;
+
+                            hotSheet.TypeColor = input.TypeColor;
+
+                            hotSheet.ShortageShift = null;
+                            hotSheet.TransportMode = null;
+                            hotSheet.StatusHotSheet = null;
+
+                            hotSheet.CompletedManually = input.CompletedManually;
+                            if (input.CompletedManually == 1 && hotSheet.TypeRecord == "IE") {
+                                hotSheet.CompletedManually = 0;
+                                hotSheet.TypeRecord = "HS";
+                            }
+
+                            if (input.CompletedManually == 1)
+                            {
+                                // enviar correo
+                            }
+
+
+                            await _hotSheetsRepository.UpdateAsync(hotSheet);
+
+                        // ===============================
+                        // ENVIAR CORREO A PLANEADORES
+                        // ===============================
+                        if (input.CompletedManually == 1)
                         {
-                            hotSheet.ShortageShiftId = input.ShortageShiftId;
+                            await NotificarPlaneadoresHotSheet(new List<long> { hotSheet.Id });
                         }
 
-                        if (input.StatusId != 0)
-                        {
-                            hotSheet.StatusId = input.StatusId;
-                        }
+                    }
+                    }
+                    catch (Exception ex)
+                    {
 
-                        hotSheet.PCComments = input.PCComments;
-                        hotSheet.RealShortageDate = input.RealShortageDate;
-                        hotSheet.Shortage = input.Shortage;
+                        throw ex;
+                    }
+                }            
+            }
 
-                        hotSheet.TypeColor = input.TypeColor;
+        public async Task NotificarPlaneadoresHotSheet(List<long> ids)
+        {
+            try
+            {
+                if (ids == null || !ids.Any())
+                    return;
 
-                        hotSheet.ShortageShift = null;
-                        hotSheet.TransportMode = null;
-                        hotSheet.StatusHotSheet = null;
+                var idsString = string.Join(",", ids);
 
-                        hotSheet.CompletedManually = input.CompletedManually;
-                        if (input.CompletedManually == 1 && hotSheet.TypeRecord == "IE") {
-                            hotSheet.CompletedManually = 0;
-                            hotSheet.TypeRecord = "HS";
-                        }
-                       
+                // ===============================
+                // 1. OBTENER REGISTROS
+                // ===============================
+                string sql = $@"
+                                SELECT 
+                                    Id,
+                                    plannerName,
+                                    supplierName,
+                                    partNumber,
+                                    partDescription,
+                                    deliveryOrder
+                                FROM DensoHotSheets
+                                WHERE Id IN ({idsString})
+                            ";
 
-                        await _hotSheetsRepository.UpdateAsync(hotSheet);
+                var registros = (await _hotSheetsDapperRepository.QueryAsync<dynamic>(sql)).ToList();
+
+                if (!registros.Any())
+                    return;
+
+                // ===============================
+                // 2. AGRUPAR POR PLANNER
+                // ===============================
+                var grupos = registros.GroupBy(x => (string)x.plannerName);
+
+                foreach (var grupo in grupos)
+                {
+                    var planner = grupo.Key;
+
+                    // ===============================
+                    // 3. OBTENER CORREOS DEL CATÁLOGO
+                    // ===============================
+                    string sqlCorreos = @"
+                                            SELECT Correo
+                                            FROM PlaneadorCorreos
+                                            WHERE NombrePlaneador = @Nombre
+                                        ";
+
+                    var correos = (await _hotSheetsDapperRepository
+                        .QueryAsync<string>(sqlCorreos, new { Nombre = planner }))
+                        .Distinct()
+                        .ToList();
+
+                    if (!correos.Any())
+                        continue;
+
+                    // ===============================
+                    // 4. ARMAR HTML
+                    // ===============================
+                    string rows = "";
+
+                    foreach (var item in grupo)
+                    {
+                        rows += $@"
+                        <tr>
+                            <td>{item.deliveryOrder}</td>
+                            <td>{item.partNumber}</td>
+                            <td>{item.partDescription}</td>
+                            <td>{item.supplierName}</td>
+                        </tr>";
+                            }
+
+                            string body = $@"
+                    <html>
+                    <body style='font-family:Arial'>
+
+                        <h3 style='color:#2f75b5;'>HotSheet Completado</h3>
+
+                        <p>
+                            Se han completado manualmente registros para el planeador:
+                            <b>{planner}</b>
+                        </p>
+
+                        <table border='1' cellspacing='0' cellpadding='5'
+                               style='border-collapse:collapse;font-size:12px;width:100%;'>
+
+                            <tr style='background:#2f75b5;color:white;'>
+                                <th>Delivery Order</th>
+                                <th>Part Number</th>
+                                <th>Description</th>
+                                <th>Supplier</th>
+                            </tr>
+
+                            {rows}
+
+                        </table>
+
+                    </body>
+                    </html>";
+
+                    // ===============================
+                    // 5. ENVIAR
+                    // ===============================
+                    foreach (var correo in correos)
+                    {
+                        await _emailSender.SendAsync(
+                            correo,
+                            $"HotSheet Completado - {planner}",
+                            body,
+                            true
+                        );
                     }
                 }
-                catch (Exception ex)
-                {
 
-                    throw ex;
-                }
-            }            
+                // ===============================
+                // 6. MARCAR COMO ENVIADO
+                // ===============================
+                await _hotSheetsDapperRepository.ExecuteAsync($@"
+                    UPDATE DensoHotSheets
+                    SET EmailSent = 1,
+                        EmailSentDate = GETDATE(),
+                        EmailSentBy = @UserId
+                    WHERE Id IN ({idsString})
+                ",
+                new
+                {
+                    UserId = AbpSession.UserId
+                });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error NotificarPlaneadoresHotSheet", ex);
+            }
         }
 
         //public async Task CreateOrUpdateImportExport(ImportExportDto input)
