@@ -450,7 +450,8 @@ export class ImportExportsComponent extends AppComponentBase implements OnInit {
             'unitNumber',
             'transportModeId',
             'statusId',
-            'etaDNMX'
+            'etaDNMX',
+            'completedManually'
         ];
 
         return allowed.includes(field);
