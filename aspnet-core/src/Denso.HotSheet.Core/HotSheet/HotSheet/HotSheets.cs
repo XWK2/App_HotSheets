@@ -67,5 +67,6 @@ namespace Denso.HotSheet.HotSheet
         public string TypeRecord { get; set; }
 
         public string TypeColor { get; set; }
+        public string LocationStatus { get; set; }
     }
 }

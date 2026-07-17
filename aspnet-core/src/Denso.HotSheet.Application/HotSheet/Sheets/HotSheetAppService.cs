@@ -41,6 +41,9 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using Abp.Dependency;
+using Abp.Configuration;
+using Denso.HotSheet.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace Denso.HotSheet.Sheets
 {
@@ -76,6 +79,8 @@ namespace Denso.HotSheet.Sheets
         //private readonly IRepository<HotSheetsComments, long> _hotSheetCommentsRepository;
         //private readonly IDapperRepository<HotSheetsComments, long> _hotSheetCommentsDapperRepository;
 
+        private readonly IConfigurationRoot _appConfiguration;
+
         private readonly IEmailSender _emailSender;
 
         //public HotSheetAppService()
@@ -108,6 +113,9 @@ namespace Denso.HotSheet.Sheets
 
             IRepository<PurchaseOrders, long> purchaseOrdersRepository,
             IDapperRepository<PurchaseOrders, long> purchaseOrdersDapperRepository,
+
+            IAppConfigurationAccessor appConfigurationAccessor,
+
             IEmailSender emailSender //AQUI
 
             //IRepository<HotSheetsComments, long> hotSheetCommentsRepository
@@ -140,6 +148,9 @@ namespace Denso.HotSheet.Sheets
 
             _purchaseOrdersDapperRepository = purchaseOrdersDapperRepository;
             _purchaseOrdersRepository = purchaseOrdersRepository;
+
+            _appConfiguration = appConfigurationAccessor.Configuration;
+
             _emailSender = emailSender;
             //_hotSheetCommentsRepository = hotSheetCommentsRepository;
             //_hotSheetCommentsDapperRepository = hotSheetCommentsDapperRepository;
@@ -217,8 +228,8 @@ namespace Denso.HotSheet.Sheets
         }
 
 
-        
-         public async Task EnviarNotificacion(NotificacionDto input)
+        //Este envia lista de Hotsheets sin completar para su revision a los planners.
+        public async Task EnviarNotificacion_Antes(NotificacionDto input)
         {
             try
             {
@@ -231,90 +242,517 @@ namespace Denso.HotSheet.Sheets
                 if (input.Registros == null || !input.Registros.Any())
                     throw new UserFriendlyException("Sin registros");
 
-                // 1. ARMAR HTML
-                var body = $@"
-            <html>
-            <head>
-                <style>
-                    body {{ font-family: Arial; }}
-                    table {{ border-collapse: collapse; width: 100%; }}
-                    th {{ background:#2f75b5; color:white; padding:8px; }}
-                    td {{ border:1px solid #ddd; padding:8px; }}
-                    tr:nth-child(even) {{ background:#f2f2f2; }}
-                </style>
-            </head>
-            <body>
+                var urlHotSheet = _appConfiguration["App:ClientRootAddress"] + "app/hotSheets";
 
-            <h3>Lista de HotSheets  - {input.Planner}</h3>
+                // ===============================
+                // OBTENER IDS
+                // ===============================
+                var ids = input.Registros
+                    .Select(x => x.Id)
+                    .ToList();
 
-            <table>
-                <tr>
-                    <th>Folio</th>
-                    <th>Parte</th>
-                    <th>Proveedor</th>
-                </tr>
-            ";
+                var idsString = string.Join(",", ids);
 
-                foreach (var r in input.Registros)
+                // ===============================
+                // CONSULTAR DATOS COMPLETOS
+                // ===============================
+                string sql = $@"
+                                SELECT
+                                    hs.Id,
+                                    hs.PlannerName,
+                                    hs.SupplierCode,
+                                    hs.SupplierName,
+                                    hs.PartNumber,
+                                    hs.PartDescription,
+                                    hs.InTransitQty,
+                                    ISNULL(tm.Description, '') AS TransportModeName,
+                                    ISNULL(hs.TrafficContainerFX, '') AS TrafficContainerFX,
+                                    ISNULL(hs.UnitNumber, '') AS UnitNumber,
+                                    hs.EtaDNMX,
+                                    hs.RealShortageDate,
+                                    ISNULL(ss.Description, '') AS ShortageShiftName
+                                FROM DensoHotSheets hs
+                                LEFT JOIN DensoTransportMode tm
+                                    ON tm.Id = hs.TransportModeId
+                                LEFT JOIN DensoShortageShift ss
+                                    ON ss.Id = hs.ShortageShiftId
+                                WHERE hs.Id IN ({idsString})
+                            ";
+
+                var registros = (await _hotSheetsDapperRepository
+                    .QueryAsync<dynamic>(sql))
+                    .ToList();
+
+                if (!registros.Any())
+                    throw new UserFriendlyException("No se encontraron registros");
+
+                // ===============================
+                // ARMAR FILAS
+                // ===============================
+                string rows = "";
+
+                foreach (var item in registros)
                 {
-                    body += $@"
-                <tr>
-                    <td>{r.Folio}</td>
-                    <td>{r.Parte}</td>
-                    <td>{r.Proveedor}</td>
-                </tr>";
+                    rows += $@"
+                    <tr>
+                        <td>{item.SupplierCode}</td>
+                        <td>{item.SupplierName}</td>
+                        <td>{item.PartNumber}</td>
+                        <td>{item.PartDescription}</td>
+                        <td style='text-align:right'>{item.InTransitQty}</td>
+                        <td>{item.TransportModeName}</td>
+                        <td>{item.TrafficContainerFX}</td>
+                        <td>{item.UnitNumber}</td>
+                        <td>{item.EtaDNMX}</td>
+                        <td>{item.RealShortageDate}</td>
+                        <td>{item.ShortageShiftName}</td>
+                    </tr>";
                 }
 
-                body += "</table></body></html>";
+                // ===============================
+                // ARMAR BODY
+                // ===============================
+                string body = $@"
+                    <html>
+                    <body style='font-family:Arial'>
 
-                if (input.Correos == null || !input.Correos.Any())
-                {
-                    throw new UserFriendlyException("No hay correos para enviar");
-                }
+                        <p>Estimado Planeador,</p>
 
-                // 2. ENVIAR CORREOS
-                foreach (var correo in input.Correos)
+                        <p>
+                            Por medio del presente se informa que los siguientes materiales se encuentran actualmente registrados en la Hot Sheet y requieren seguimiento para su atención y cierre.
+                        </p>
+
+                        <p>
+                            Favor de revisar el estatus de los registros mostrados a continuación y realizar las acciones correspondientes para su actualización y completado.
+                        </p>
+
+                        <p>
+                            Puede consultar el detalle completo y dar seguimiento a los registros mediante la siguiente liga:
+                        </p>
+
+                        <p>
+                            <a href='{urlHotSheet}'
+                               style='font-size:14px;
+                                      font-weight:bold;
+                                      color:#0d6efd;
+                                      text-decoration:none;'>
+                                Consultar Hot Sheet
+                            </a>
+                        </p>
+
+                        <div style='overflow-x:auto;'>
+
+                            <table border='1'
+                                   cellspacing='0'
+                                   cellpadding='5'
+                                   style='border-collapse:collapse;
+                                          width:100%;
+                                          table-layout:auto;
+                                          font-size:12px;'>
+
+                                <tr style='background:#2f75b5;color:white;'>
+
+                                    <th style='white-space:nowrap;'>Supplier Code</th>
+                                    <th style='white-space:nowrap;'>Supplier</th>
+                                    <th style='white-space:nowrap;'>Part Number</th>
+                                    <th style='white-space:nowrap;'>Description</th>
+                                    <th style='white-space:nowrap;'>In Transit Qty</th>
+                                    <th style='white-space:nowrap;'>Transport Mode</th>
+                                    <th style='white-space:nowrap;'>Container FX</th>
+                                    <th style='white-space:nowrap;'>Unit Number</th>
+                                    <th style='white-space:nowrap;'>ETA DNMX</th>
+                                    <th style='white-space:nowrap;'>Shortage Date</th>
+                                    <th style='white-space:nowrap;'>Shift</th>
+
+                                </tr>
+
+                                {rows}
+
+                            </table>
+
+                        </div>
+
+                        <br/>
+
+                        <p>
+                            Agradecemos su apoyo para dar seguimiento oportuno a estos materiales.
+                        </p>
+
+                        <p>
+                            Saludos cordiales.
+                        </p>
+
+                    </body>
+                    </html>";
+
+                // ===============================
+                // ENVIAR CORREOS
+                // ===============================
+                foreach (var correo in input.Correos.Distinct())
                 {
                     await _emailSender.SendAsync(
                         correo,
-                        $"HotSheets - {input.Planner}",
+                        $"Hot Sheet - Materiales pendientes de atención ({input.Planner})",
                         body,
                         true
                     );
                 }
 
-                // 3. OBTENER IDS
-                var ids = input.Registros.Select(x => x.Id).ToList();
+                // ===============================
+                // MARCAR COMO ENVIADO
+                // ===============================
+                var userId = AbpSession.UserId;
+                var user = await UserManager.GetUserByIdAsync(userId.Value);
+                var userName = $"{user?.Name} {user?.Surname}";
 
-                if (ids.Any())
-                {
-                    var idsString = string.Join(",", ids);
-
-                    var userId = AbpSession.UserId;
-                    var user = await UserManager.GetUserByIdAsync(userId.Value);
-                    var userName = user?.Name + " " + user?.Surname;
-
-                    await _hotSheetsDapperRepository.ExecuteAsync(
-                        $@"UPDATE DensoHotSheets 
-                            SET EmailSent = 1,
-                                EmailSentDate = GETDATE(),
-                                EmailSentBy = @UserId,
-                                EmailSentByName = @UserName
-                            WHERE Id IN ({idsString})
-                            ",
-                        new
-                        {
-                            UserId = userId,
-                            UserName = userName
-                        }
-                    );
-                }
+                await _hotSheetsDapperRepository.ExecuteAsync(
+                    $@"
+                        UPDATE DensoHotSheets
+                        SET EmailSent = 1,
+                            EmailSentDate = GETDATE(),
+                            EmailSentBy = @UserId,
+                            EmailSentByName = @UserName
+                        WHERE Id IN ({idsString})
+                        ",
+                    new
+                    {
+                        UserId = userId,
+                        UserName = userName
+                    }
+                );
             }
             catch (Exception ex)
             {
                 throw new UserFriendlyException("Error al enviar correos: " + ex.Message);
             }
         }
+
+        public async Task EnviarNotificacion(NotificacionDto input)
+        {
+            try
+            {
+                if (input == null)
+                    throw new UserFriendlyException("Datos inválidos");
+
+                if (input.Registros == null || !input.Registros.Any())
+                    throw new UserFriendlyException("Sin registros");
+
+                var urlHotSheet = _appConfiguration["App:ClientRootAddress"] + "app/hotSheets";
+
+                // ===============================
+                // OBTENER IDS
+                // ===============================
+                var ids = input.Registros
+                    .Select(x => x.Id)
+                    .ToList();
+
+                var idsString = string.Join(",", ids);
+
+                // ===============================
+                // CONSULTAR DATOS COMPLETOS
+                // ===============================
+                string sql = $@"
+            SELECT
+                hs.Id,
+                hs.PlannerName,
+                hs.SupplierCode,
+                hs.SupplierName,
+                hs.PartNumber,
+                hs.PartDescription,
+                hs.InTransitQty,
+                ISNULL(tm.Description, '') AS TransportModeName,
+                ISNULL(hs.TrafficContainerFX, '') AS TrafficContainerFX,
+                ISNULL(hs.UnitNumber, '') AS UnitNumber,
+                hs.EtaDNMX,
+                hs.RealShortageDate,
+                ISNULL(ss.Description, '') AS ShortageShiftName
+            FROM DensoHotSheets hs
+            LEFT JOIN DensoTransportMode tm
+                ON tm.Id = hs.TransportModeId
+            LEFT JOIN DensoShortageShift ss
+                ON ss.Id = hs.ShortageShiftId
+            WHERE hs.Id IN ({idsString})
+        ";
+
+                var registros = (await _hotSheetsDapperRepository
+                    .QueryAsync<dynamic>(sql))
+                    .ToList();
+
+                if (!registros.Any())
+                    throw new UserFriendlyException("No se encontraron registros");
+
+                // ===============================
+                // OBTENER CORREOS POR ROL
+                // ===============================
+                var usuariosAuthors = await UserManager.GetUsersInRoleAsync("Authors");
+                //var usuariosAuthors = await UserManager.GetUsersInRoleAsync("IE");
+                
+                var usuariosPC = await UserManager.GetUsersInRoleAsync("PC");
+                var usuariosPQ = await UserManager.GetUsersInRoleAsync("PQ");
+
+                var correosDestino = usuariosAuthors
+                    .Where(x => !string.IsNullOrWhiteSpace(x.EmailAddress))
+                    .Select(x => x.EmailAddress.Trim())
+                    .Concat(
+                        usuariosPC
+                            .Where(x => !string.IsNullOrWhiteSpace(x.EmailAddress))
+                            .Select(x => x.EmailAddress.Trim())
+                    )
+                    .Concat(
+                        usuariosPQ
+                            .Where(x => !string.IsNullOrWhiteSpace(x.EmailAddress))
+                            .Select(x => x.EmailAddress.Trim())
+                    )
+                    .Distinct()
+                    .ToList();
+
+                if (!correosDestino.Any())
+                {
+                    throw new UserFriendlyException(
+                        "No se encontraron correos configurados para los roles Authors, PC o PQ.");
+                }
+
+                // ===============================
+                // ARMAR FILAS
+                // ===============================
+                string rows = "";
+
+                foreach (var item in registros)
+                {
+                    rows += $@"
+                <tr>
+                    <td>{item.SupplierCode}</td>
+                    <td>{item.SupplierName}</td>
+                    <td>{item.PartNumber}</td>
+                    <td>{item.PartDescription}</td>
+                    <td style='text-align:right'>{item.InTransitQty}</td>
+                    <td>{item.TransportModeName}</td>
+                    <td>{item.TrafficContainerFX}</td>
+                    <td>{item.UnitNumber}</td>
+                    <td>{item.EtaDNMX:yyyy-MM-dd}</td>
+                    <td>{item.RealShortageDate:yyyy-MM-dd}</td>
+                    <td>{item.ShortageShiftName}</td>
+                </tr>";
+                }
+
+                // ===============================
+                // ARMAR BODY
+                // ===============================
+                string body = $@"
+        <html>
+        <body style='font-family:Arial'>
+
+            <p>Estimado equipo,</p>
+
+            <p>
+                Por medio del presente se informa que los siguientes materiales se encuentran actualmente registrados en la Hot Sheet y requieren seguimiento para su atención y cierre.
+            </p>
+
+            <p>
+                Favor de revisar el estatus de los registros mostrados a continuación y realizar las acciones correspondientes para su actualización y completado.
+            </p>
+
+            <p>
+                Puede consultar el detalle completo y dar seguimiento a los registros mediante la siguiente liga:
+            </p>
+
+            <p>
+                <a href='{urlHotSheet}'
+                    style='font-size:14px;
+                           font-weight:bold;
+                           color:#0d6efd;
+                           text-decoration:none;'>
+                    Consultar Hot Sheet
+                </a>
+            </p>
+
+            <div style='overflow-x:auto;'>
+
+                <table border='1'
+                       cellspacing='0'
+                       cellpadding='5'
+                       style='border-collapse:collapse;
+                              width:100%;
+                              table-layout:auto;
+                              font-size:12px;'>
+
+                    <tr style='background:#2f75b5;color:white;'>
+
+                        <th>Supplier Code</th>
+                        <th>Supplier</th>
+                        <th>Part Number</th>
+                        <th>Description</th>
+                        <th>In Transit Qty</th>
+                        <th>Transport Mode</th>
+                        <th>Container FX</th>
+                        <th>Unit Number</th>
+                        <th>ETA DNMX</th>
+                        <th>Shortage Date</th>
+                        <th>Shift</th>
+
+                    </tr>
+
+                    {rows}
+
+                </table>
+
+            </div>
+
+            <br/>
+
+            <p>
+                Agradecemos su apoyo para dar seguimiento oportuno a estos materiales.
+            </p>
+
+            <p>
+                Saludos cordiales.
+            </p>
+
+        </body>
+        </html>";
+
+                // ===============================
+                // ENVIAR CORREO
+                // ===============================
+                var asunto = "Hot Sheet Critical Components Daily Follow Up";
+
+                foreach (var correo in correosDestino)
+                {
+                    await _emailSender.SendAsync(
+                        correo,
+                        asunto,
+                        body,
+                        true
+                    );
+                }
+
+                // ===============================
+                // MARCAR COMO ENVIADO
+                // ===============================
+                var userId = AbpSession.UserId;
+                var user = await UserManager.GetUserByIdAsync(userId.Value);
+                var userName = $"{user?.Name} {user?.Surname}";
+
+                await _hotSheetsDapperRepository.ExecuteAsync(
+                    $@"
+            UPDATE DensoHotSheets
+            SET EmailSent = 1,
+                EmailSentDate = GETDATE(),
+                EmailSentBy = @UserId,
+                EmailSentByName = @UserName
+            WHERE Id IN ({idsString})
+            ",
+                    new
+                    {
+                        UserId = userId,
+                        UserName = userName
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new UserFriendlyException("Error al enviar correos: " + ex.Message);
+            }
+        }
+
+        // public async Task EnviarNotificacion(NotificacionDto input)
+        //{
+        //    try
+        //    {
+        //        if (input == null)
+        //            throw new UserFriendlyException("Datos inválidos");
+
+        //        if (input.Correos == null || !input.Correos.Any())
+        //            throw new UserFriendlyException("Sin correos");
+
+        //        if (input.Registros == null || !input.Registros.Any())
+        //            throw new UserFriendlyException("Sin registros");
+
+
+
+        //        // 1. ARMAR HTML
+        //        var body = $@"
+        //    <html>
+        //    <head>
+        //        <style>
+        //            body {{ font-family: Arial; }}
+        //            table {{ border-collapse: collapse; width: 100%; }}
+        //            th {{ background:#2f75b5; color:white; padding:8px; }}
+        //            td {{ border:1px solid #ddd; padding:8px; }}
+        //            tr:nth-child(even) {{ background:#f2f2f2; }}
+        //        </style>
+        //    </head>
+        //    <body>
+
+        //    <h3>Lista de HotSheets  - {input.Planner}</h3>
+
+        //    <table>
+        //        <tr>
+        //            <th>Folio</th>
+        //            <th>Parte</th>
+        //            <th>Proveedor</th>
+        //        </tr>
+        //    ";
+
+        //        foreach (var r in input.Registros)
+        //        {
+        //            body += $@"
+        //        <tr>
+        //            <td>{r.Folio}</td>
+        //            <td>{r.Parte}</td>
+        //            <td>{r.Proveedor}</td>
+        //        </tr>";
+        //        }
+
+        //        body += "</table></body></html>";
+
+        //        if (input.Correos == null || !input.Correos.Any())
+        //        {
+        //            throw new UserFriendlyException("No hay correos para enviar");
+        //        }
+
+        //        // 2. ENVIAR CORREOS
+        //        foreach (var correo in input.Correos)
+        //        {
+        //            await _emailSender.SendAsync(
+        //                correo,
+        //                $"HotSheets - {input.Planner}",
+        //                body,
+        //                true
+        //            );
+        //        }
+
+        //        // 3. OBTENER IDS
+        //        var ids = input.Registros.Select(x => x.Id).ToList();
+
+        //        if (ids.Any())
+        //        {
+        //            var idsString = string.Join(",", ids);
+
+        //            var userId = AbpSession.UserId;
+        //            var user = await UserManager.GetUserByIdAsync(userId.Value);
+        //            var userName = user?.Name + " " + user?.Surname;
+
+        //            await _hotSheetsDapperRepository.ExecuteAsync(
+        //                $@"UPDATE DensoHotSheets 
+        //                    SET EmailSent = 1,
+        //                        EmailSentDate = GETDATE(),
+        //                        EmailSentBy = @UserId,
+        //                        EmailSentByName = @UserName
+        //                    WHERE Id IN ({idsString})
+        //                    ",
+        //                new
+        //                {
+        //                    UserId = userId,
+        //                    UserName = userName
+        //                }
+        //            );
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new UserFriendlyException("Error al enviar correos: " + ex.Message);
+        //    }
+        //}
 
 
         [HttpPost]
@@ -332,6 +770,32 @@ namespace Denso.HotSheet.Sheets
 
             try
             {                
+                var itemsDapper = await _hotSheetsDapperRepository.QueryAsync<HotSheetsItemDto>(sqlQuery, sqlParams);
+
+                return itemsDapper.ToList();
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public async Task<List<HotSheetsItemDto>> GetHotSheetsReports(GetHotSheetInput input)
+        {
+            string sqlQuery = "EXEC GetHotSheetsReports @UserId, @StatusHS, @StartDate, @EndDate, @TypeRecord";
+            var sqlParams = new
+            {
+                UserId = AbpSession.UserId,
+                StatusHS = input.StatusHS,
+                StartDate = input.StartDate,
+                EndDate = input.EndDate,
+                TypeRecord = input.TypeRecord
+            };
+
+            try
+            {
                 var itemsDapper = await _hotSheetsDapperRepository.QueryAsync<HotSheetsItemDto>(sqlQuery, sqlParams);
 
                 return itemsDapper.ToList();
@@ -650,6 +1114,8 @@ namespace Denso.HotSheet.Sheets
 
         public async Task NotificarUsuariosIE(int totalRegistros, string ids)
         {
+            var urlIE = _appConfiguration["App:ClientRootAddress"] + "app/importExports";
+
             try
             {
                 // ===============================
@@ -691,28 +1157,57 @@ namespace Denso.HotSheet.Sheets
                 // 3. BODY CORREO
                 // ===============================
                 string body = $@"
-                    <h2 style='color:#d32f2f;'>I/E Report - Nuevos registros</h2>
+                                    <html>
+                                    <body style='font-family:Arial;'>
 
-                    <p>
-                        Se enviaron <b>{totalRegistros}</b> registros al módulo I/E Report.
-                    </p>
+                                    <p>Estimado equipo de Import / Export,</p>
 
-                    <table border='1' cellspacing='0' cellpadding='5'
-                           style='border-collapse:collapse;font-family:Arial;font-size:12px;width:100%;'>
+                                    <p>
+                                        Solicitamos su apoyo para dar seguimiento al proceso de importación de los siguientes materiales,
+                                        los cuales actualmente se encuentran incluidos en la Hot Sheet para monitoreo prioritario.
+                                    </p>
 
-                        <tr style='background:#d32f2f;color:white;'>
-                            <th>Planner</th>
-                            <th>Supplier Code</th>
-                            <th>Supplier</th>
-                            <th>Part Number</th>
-                            <th>Description</th>
-                            <th>Qty</th>
-                        </tr>
+                                    <p>
+                                        A continuación se muestra el detalle de los registros asignados:
+                                    </p>
 
-                        {rows}
+                                    <table border='1' cellspacing='0' cellpadding='5'
+                                           style='border-collapse:collapse;font-family:Arial;font-size:12px;width:100%;'>
 
-                    </table>
-                    ";
+                                        <tr style='background:#d32f2f;color:white;'>
+                                            <th>Planner</th>
+                                            <th>Supplier Code</th>
+                                            <th>Supplier</th>
+                                            <th>Part Number</th>
+                                            <th>Description</th>
+                                                <th>Qty</th>
+                                            </tr>
+
+                                            {rows}
+
+                                        </table>
+
+                                        <br/>
+
+                                        <p>
+                                            Agradecemos su apoyo para revisar el estatus correspondiente y dar seguimiento oportuno a cada caso.
+                                        </p>
+
+                                        <p>
+                                            Para consultar el detalle y dar seguimiento a los registros, favor de ingresar al sistema mediante la siguiente liga:
+                                        </p>
+
+                                        <p>
+                                            <a href='{urlIE}'
+                                               style='font-size:14px;font-weight:bold;color:#0d6efd;'>
+                                                Acceder al módulo Import / Export
+                                            </a>
+                                        </p>
+
+                                        <p>Saludos cordiales.</p>
+
+                                        </body>
+                                        </html>";
 
                 // ===============================
                 // 4. CORREOS ROL IE
@@ -735,8 +1230,8 @@ namespace Denso.HotSheet.Sheets
                 foreach (var correo in correos)
                 {
                     await _emailSender.SendAsync(
-                        correo,
-                        "I/E Report - Nuevos registros asignados",
+                        correo,                        
+                        "I/E HotSheet - Nuevos registros asignados",
                         body,
                         true
                     );
@@ -816,10 +1311,16 @@ namespace Denso.HotSheet.Sheets
                             hotSheet.TransportMode = null;
                             hotSheet.StatusHotSheet = null;
 
+                            if (hotSheet.TypeRecord == "IE")
+                            {
+                                hotSheet.LocationStatus = input.LocationStatus;
+                            }
+
+
                             hotSheet.CompletedManually = input.CompletedManually;
                             if (input.CompletedManually == 1 && hotSheet.TypeRecord == "IE") {
                                 hotSheet.CompletedManually = 0;
-                                hotSheet.TypeRecord = "HS";
+                                hotSheet.TypeRecord = "HS";                            
                             }
 
                             if (input.CompletedManually == 1)
@@ -855,24 +1356,40 @@ namespace Denso.HotSheet.Sheets
                 if (ids == null || !ids.Any())
                     return;
 
+                var urlReporte = _appConfiguration["App:ClientRootAddress"] +
+                                 "app/reports/report-hot-sheets";
+
                 var idsString = string.Join(",", ids);
 
                 // ===============================
                 // 1. OBTENER REGISTROS
                 // ===============================
                 string sql = $@"
-                                SELECT 
-                                    Id,
-                                    plannerName,
-                                    supplierName,
-                                    partNumber,
-                                    partDescription,
-                                    deliveryOrder
-                                FROM DensoHotSheets
-                                WHERE Id IN ({idsString})
-                            ";
+                        SELECT
+                            hs.Id,
+                            hs.PlannerName,
+                            hs.SupplierCode,
+                            hs.SupplierName,
+                            hs.PartNumber,
+                            hs.PartDescription,
+                            hs.InTransitQty,
+                            ISNULL(tm.Description, '') AS TransportModeName,
+                            ISNULL(hs.TrafficContainerFX, '') AS TrafficContainerFX,
+                            ISNULL(hs.UnitNumber, '') AS UnitNumber,
+                            hs.EtaDNMX,
+                            hs.RealShortageDate,
+                            ISNULL(ss.Description, '') AS ShortageShiftName
+                        FROM DensoHotSheets hs
+                        LEFT JOIN DensoTransportMode tm
+                            ON tm.Id = hs.TransportModeId
+                        LEFT JOIN DensoShortageShift ss
+                            ON ss.Id = hs.ShortageShiftId
+                        WHERE hs.Id IN ({idsString})
+                    ";
 
-                var registros = (await _hotSheetsDapperRepository.QueryAsync<dynamic>(sql)).ToList();
+                var registros = (await _hotSheetsDapperRepository
+                    .QueryAsync<dynamic>(sql))
+                    .ToList();
 
                 if (!registros.Any())
                     return;
@@ -880,31 +1397,61 @@ namespace Denso.HotSheet.Sheets
                 // ===============================
                 // 2. AGRUPAR POR PLANNER
                 // ===============================
-                var grupos = registros.GroupBy(x => (string)x.plannerName);
+                var grupos = registros.GroupBy(x => (string)x.PlannerName);
 
                 foreach (var grupo in grupos)
                 {
                     var planner = grupo.Key;
 
                     // ===============================
-                    // 3. OBTENER CORREOS DEL CATÁLOGO
+                    // 3. OBTENER CORREOS DEL PLANEADOR
                     // ===============================
                     string sqlCorreos = @"
-                                            SELECT Correo
-                                            FROM PlaneadorCorreos
-                                            WHERE NombrePlaneador = @Nombre
-                                        ";
+                            SELECT Correo
+                            FROM PlaneadorCorreos
+                            WHERE NombrePlaneador = @Nombre
+                        ";
 
                     var correos = (await _hotSheetsDapperRepository
-                        .QueryAsync<string>(sqlCorreos, new { Nombre = planner }))
-                        .Distinct()
+                        .QueryAsync<string>(
+                            sqlCorreos,
+                            new { Nombre = planner }))
+                        .ToList();
+
+
+                    // ===============================
+                    // 3.1 OBTENER CORREOS ROLES PROD Y PQ
+                    // ===============================
+                    string sqlCorreosRoles = @"
+                                                SELECT DISTINCT u.EmailAddress
+                                                FROM AbpUsers u
+                                                INNER JOIN AbpUserRoles ur ON ur.UserId = u.Id
+                                                INNER JOIN AbpRoles r ON r.Id = ur.RoleId
+                                                WHERE r.Name IN ('PROD', 'PQ')
+                                                  AND u.IsDeleted = 0
+                                                  AND ISNULL(u.EmailAddress,'') <> ''
+                                            ";
+
+                    var correosRoles = (await _hotSheetsDapperRepository
+                        .QueryAsync<string>(sqlCorreosRoles))
+                        .ToList();
+
+
+                    // ===============================
+                    // 3.2 UNIR Y ELIMINAR DUPLICADOS
+                    // ===============================
+                    correos.AddRange(correosRoles);
+
+                    correos = correos
+                        .Where(x => !string.IsNullOrWhiteSpace(x))
+                        .Distinct(StringComparer.OrdinalIgnoreCase)
                         .ToList();
 
                     if (!correos.Any())
                         continue;
 
                     // ===============================
-                    // 4. ARMAR HTML
+                    // 4. ARMAR FILAS
                     // ===============================
                     string rows = "";
 
@@ -912,49 +1459,96 @@ namespace Denso.HotSheet.Sheets
                     {
                         rows += $@"
                         <tr>
-                            <td>{item.deliveryOrder}</td>
-                            <td>{item.partNumber}</td>
-                            <td>{item.partDescription}</td>
-                            <td>{item.supplierName}</td>
+                            <td>{item.SupplierCode}</td>
+                            <td>{item.SupplierName}</td>
+                            <td>{item.PartNumber}</td>
+                            <td>{item.PartDescription}</td>
+                            <td style='text-align:right'>{item.InTransitQty}</td>
+                            <td>{item.TransportModeName}</td>
+                            <td>{item.TrafficContainerFX}</td>
+                            <td>{item.UnitNumber}</td>
+                            <td>{item.EtaDNMX}</td>
+                            <td>{item.RealShortageDate}</td>
+                            <td>{item.ShortageShiftName}</td>
                         </tr>";
-                            }
-
-                            string body = $@"
-                    <html>
-                    <body style='font-family:Arial'>
-
-                        <h3 style='color:#2f75b5;'>HotSheet Completado</h3>
-
-                        <p>
-                            Se han completado manualmente registros para el planeador:
-                            <b>{planner}</b>
-                        </p>
-
-                        <table border='1' cellspacing='0' cellpadding='5'
-                               style='border-collapse:collapse;font-size:12px;width:100%;'>
-
-                            <tr style='background:#2f75b5;color:white;'>
-                                <th>Delivery Order</th>
-                                <th>Part Number</th>
-                                <th>Description</th>
-                                <th>Supplier</th>
-                            </tr>
-
-                            {rows}
-
-                        </table>
-
-                    </body>
-                    </html>";
+                    }
 
                     // ===============================
-                    // 5. ENVIAR
+                    // 5. ARMAR BODY
+                    // ===============================
+                    string body = $@"
+            <html>
+            <body style='font-family:Arial'>
+
+                <p>Estimado Planeador,</p>
+
+                <p>
+                    Por medio del presente se informa que los siguientes materiales fueron recibidos en almacén y ya se encuentran reflejados en inventario.
+                </p>
+
+                <p>
+                    Puede consultar el reporte completo en la siguiente liga:
+                </p>
+
+                <p>
+                    <a href='{urlReporte}'
+                       style='font-size:14px;
+                              font-weight:bold;
+                              color:#0d6efd;
+                              text-decoration:none;'>
+                        Consultar Reporte Hot Sheet
+                    </a>
+                </p>
+
+                <div style='overflow-x:auto;'>
+
+                    <table border='1'
+                           cellspacing='0'
+                           cellpadding='5'
+                           style='border-collapse:collapse;
+                                  width:100%;
+                                  table-layout:auto;
+                                  font-size:12px;'>
+
+                        <tr style='background:#2f75b5;color:white;'>
+
+                            <th style='white-space:nowrap;'>Supplier Code</th>
+                            <th style='white-space:nowrap;'>Supplier</th>
+                            <th style='white-space:nowrap;'>Part Number</th>
+                            <th style='white-space:nowrap;'>Description</th>
+                            <th style='white-space:nowrap;'>In Transit Qty</th>
+                            <th style='white-space:nowrap;'>Transport Mode</th>
+                            <th style='white-space:nowrap;'>Container FX</th>
+                            <th style='white-space:nowrap;'>Unit Number</th>
+                            <th style='white-space:nowrap;'>ETA DNMX</th>
+                            <th style='white-space:nowrap;'>Shortage Date</th>
+                            <th style='white-space:nowrap;'>Shift</th>
+
+                        </tr>
+
+                        {rows}
+
+                    </table>
+
+                </div>
+
+                <br/>
+
+                <p>
+                    Saludos cordiales.
+                </p>
+
+            </body>
+            </html>";
+
+                    // ===============================
+                    // 6. ENVIAR CORREO
                     // ===============================
                     foreach (var correo in correos)
                     {
                         await _emailSender.SendAsync(
                             correo,
-                            $"HotSheet Completado - {planner}",
+                            "Notificación de Recepción de Material - Hot Sheet",
                             body,
                             true
                         );
@@ -962,15 +1556,15 @@ namespace Denso.HotSheet.Sheets
                 }
 
                 // ===============================
-                // 6. MARCAR COMO ENVIADO
+                // 7. MARCAR COMO ENVIADO
                 // ===============================
                 await _hotSheetsDapperRepository.ExecuteAsync($@"
-                    UPDATE DensoHotSheets
-                    SET EmailSent = 1,
-                        EmailSentDate = GETDATE(),
-                        EmailSentBy = @UserId
-                    WHERE Id IN ({idsString})
-                ",
+            UPDATE DensoHotSheets
+            SET EmailSent = 1,
+                EmailSentDate = GETDATE(),
+                EmailSentBy = @UserId
+            WHERE Id IN ({idsString})
+        ",
                 new
                 {
                     UserId = AbpSession.UserId

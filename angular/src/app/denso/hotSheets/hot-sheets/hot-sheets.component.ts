@@ -235,6 +235,24 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
         
     }
 
+    onContentReady(e: any): void {
+
+        const headerCell = document.querySelector(
+            '.dx-datagrid-headers .dx-command-select'
+        );
+
+        if (headerCell && !headerCell.querySelector('.item-caption')) {
+
+            const span = document.createElement('span');
+            span.className = 'item-caption';
+            span.innerText = this.l('Item');
+            span.style.marginLeft = '8px';
+            span.style.fontWeight = '600';
+
+            headerCell.appendChild(span);
+        }
+    }
+
     public onInitNewRow(event: any): void {
         this.hotSheetChanges = new HotSheetsDto();
     }
@@ -435,8 +453,11 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
     }
 
     public get enabledEditInfo(): boolean {
+        console.log('enabledEditInfo:', this.appSession.user.isPC, this.appSession.user.isPC);     
+
         return (
-            this.appSession.user.isPC || this.appSession.user.isPC            
+            this.appSession.user.isPC || this.appSession.user.isPC         
+            
         );
     }
 
@@ -764,6 +785,12 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
 
         console.log('ANTES DE GUARDAR oki:', this.selectedRows);
 
+        if (!this.enabledEditInfo) {
+            this.notify.warn('No tiene permisos para cambiar rangos');
+            return;
+        }
+
+
         if (!(this.selectedRows && this.selectedRows.length > 0)) {
             this.notify.warn('Selecciona al menos un registro');
             return;
@@ -927,13 +954,10 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
         }, 800);
     }
 
-    // enviar todos
-    enviarTodos() {
+ 
 
-    // //Aqui no se validara si estan completados se enviara la lista completa de hot sheets independientemente si estan o no completados
-    // const completados = this.hotSheets.filter(x =>
-    //     this.esCompletado(x) && x.emailSent !== 1
-    // );
+// enviar todos
+enviarTodos() {
 
     const todos = this.hotSheets;
 
@@ -942,38 +966,138 @@ export class HotSheetsComponent extends AppComponentBase implements OnInit {
         return;
     }
 
-    this.procesarEnvio(todos);
+    this.enviarNotificacionGeneral(todos);
+}
+
+private enviarNotificacionGeneral(registros: any[]) {
+
+    if (!registros || registros.length === 0) {
+        abp.notify.warn('No hay registros');
+        return;
     }
 
+    const payload = {
+        registros: registros.map(r => ({
+            id: r.hotSheetId
+        }))
+    };
+
+    this._hotSheetservice.enviarNotificacion(payload)
+        .subscribe({
+            next: () => {
+
+                registros.forEach(r => {
+                    r.emailSent = 1;
+                });
+
+                this.enviados = ['Correo enviado correctamente'];
+                this.errores = [];
+                this.popupVisible = true;
+
+                this.dataGrid.instance.clearSelection();
+            },
+            error: (err) => {
+
+                this.enviados = [];
+                this.errores = [
+                    err?.message || 'Error al enviar correo'
+                ];
+                this.popupVisible = true;
+            }
+        });
+}
+
+    // enviarTodos() {
+
+    // // //Aqui no se validara si estan completados se enviara la lista completa de hot sheets independientemente si estan o no completados
+    // // const completados = this.hotSheets.filter(x =>
+    // //     this.esCompletado(x) && x.emailSent !== 1
+    // // );
+
+    // const todos = this.hotSheets;
+
+    // if (todos.length === 0) {
+    //     abp.notify.warn('No hay registros completados pendientes');
+    //     return;
+    // }
+
+    // this.procesarEnvio(todos);
+    // }
+
     // enviar seleccionados
-    enviarSeleccionados() {
+    // enviarSeleccionados() {
+
+    // if (!this.selectedRowsData || this.selectedRowsData.length === 0) {
+    //     abp.notify.warn('Seleccione registros');
+    //     return;
+    // }
+
+    // // const noCompletados = this.selectedRowsData.filter(x =>
+    // //     !this.esCompletado(x)
+    // // );
+
+    // // if (noCompletados.length > 0) {
+    // //     abp.notify.warn('Todos deben estar completados');
+    // //     return;
+    // // }
+
+    // const yaEnviados = this.selectedRowsData.filter(x =>
+    //     x.emailSent === 1
+    // );
+
+    // // if (yaEnviados.length > 0) {
+    // //     abp.notify.warn('Algunos ya fueron enviados');
+    // //     return;
+    // // }
+    
+    // if (yaEnviados.length > 0) {
+
+    //     abp.message.confirm(
+    //         'Algunos registros ya fueron enviados anteriormente. ¿Desea volver a enviarlos?',
+    //         'Confirmar reenvío',
+    //         (result: boolean) => {
+
+    //             if (result) {
+    //                 this.procesarEnvio(this.selectedRowsData);
+    //             }
+    //         }
+    //     );
+
+    //     return;
+    // }
+
+    // this.procesarEnvio(this.selectedRowsData);
+    // }
+
+enviarSeleccionados() {
 
     if (!this.selectedRowsData || this.selectedRowsData.length === 0) {
         abp.notify.warn('Seleccione registros');
         return;
     }
 
-    // const noCompletados = this.selectedRowsData.filter(x =>
-    //     !this.esCompletado(x)
-    // );
-
-    // if (noCompletados.length > 0) {
-    //     abp.notify.warn('Todos deben estar completados');
-    //     return;
-    // }
-
     const yaEnviados = this.selectedRowsData.filter(x =>
         x.emailSent === 1
     );
 
     if (yaEnviados.length > 0) {
-        abp.notify.warn('Algunos ya fueron enviados');
+
+        abp.message.confirm(
+            'Algunos registros ya fueron enviados anteriormente. ¿Desea volver a enviarlos?',
+            'Confirmar reenvío',
+            (result: boolean) => {
+
+                if (result) {
+                    this.enviarNotificacionGeneral(this.selectedRowsData);
+                }
+            }
+        );
+
         return;
     }
 
-    this.procesarEnvio(this.selectedRowsData);
-    }
-
+    this.enviarNotificacionGeneral(this.selectedRowsData);
+}
 
 
     showCommentButtonExist(e: any): boolean {

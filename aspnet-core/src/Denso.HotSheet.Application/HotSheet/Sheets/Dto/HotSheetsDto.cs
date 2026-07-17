@@ -40,5 +40,7 @@ namespace Denso.HotSheet.Sheets.Dto
         public long? CompletedManually { get; set; }
         public string TypeRecord { get; set; }
         public string TypeColor { get; set; }
+
+        public string LocationStatus { get; set; }
     }
 }

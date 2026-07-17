@@ -108,12 +108,13 @@ export class HomeComponent extends AppComponentBase implements OnInit {
 
         return data
             .sort((a, b) => {
-                if (a.supplierName < b.supplierName) return -1;
-                if (a.supplierName > b.supplierName) return 1;
+                //if (a.supplierName < b.supplierName) return -1;
+                //if (a.supplierName > b.supplierName) return 1;
                 return (order[a.typeColor] || 99) - (order[b.typeColor] || 99);
             })
             .map(x => ({
-                label: `${x.supplierName} - ${x.total} - ${x.typeColor}`,
+                //label: `${x.supplierName} - ${x.total} - ${x.typeColor}`,
+                label: `${x.total} - ${x.typeColor}`,
                 total: Number(x.total),
                 color: this.getColor(x.typeColor)
             }));
@@ -135,13 +136,14 @@ export class HomeComponent extends AppComponentBase implements OnInit {
         // separa el label
         const parts = arg.argumentText.split(' - ');
 
-        const proveedor = parts[0];
-        const cantidad = parts[1];
-        const categoria = parts[2];
+        //const proveedor = parts[0];
+        //const cantidad = parts[1];
+        //const categoria = parts[2];
 
         return {
             text:
-                `${proveedor} - ${cantidad} - ${categoria}\n` +
+               // `${proveedor} - ${cantidad} - ${categoria}\n` +
+                `${parts[0]}: ${parts[1]}\n` +
                 `${arg.percentText}`
         };
     };

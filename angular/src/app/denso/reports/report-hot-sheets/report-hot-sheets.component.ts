@@ -268,7 +268,7 @@ export class HotSheetsReportsComponent extends AppComponentBase implements OnIni
         input.statusHS = statusIncompleted;
         input.typeRecord = "HS";
         this._hotSheetservice
-            .getHotSheets(input)
+            .getHotSheetsReports(input)
             .pipe(
                 finalize(() => {
                     this.isTableLoading = false;

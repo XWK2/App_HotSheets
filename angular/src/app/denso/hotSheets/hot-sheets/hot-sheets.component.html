@@ -19,18 +19,16 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body grid-content" [busy]="isTableLoading">
-                       <!-- Leyenda de colores -->
-                        <!-- Leyenda de colores -->                        
-                         <div class="leyenda-colores">                                                        
-                            <label class="lb-filter" style="margin: 0 8px 0 0;">{{ 'Rango' | localize }}:</label>
-                         </div>
-                        <div class="leyenda-colores">
-                           
+                        <!-- <div class="leyenda-colores">                                                        
+                                
+                        </div> -->
+                        <!-- Leyenda de colores -->                 
+                        <div class="leyenda-colores">    
+                            <label class="lb-filter" style="margin: 0 8px 0 0;">{{ 'Rango' | localize }}:</label>     
                             <span class="color-cuadro" style="background-color: #D00000;"></span> A+                            
                             <span class="color-cuadro" style="background-color: #FF0000;"></span> A
                             <span class="color-cuadro" style="background-color: #FF8A3B;"></span> B
-                            <span class="color-cuadro" style="background-color: #47D45A;"></span> C                             
-                            
+                            <span class="color-cuadro" style="background-color: #47D45A;"></span> C  
                         </div>
                         <dx-data-grid
                             keyExpr="hotSheetId"
@@ -50,6 +48,7 @@
                             (onRowPrepared)="personalizarFila($event)"
                             [groupPanel]="{ visible: true }" [grouping]="{ autoExpandAll: true }"                            
                             (onSelectionChanged)="onSelectionChanged($event)"
+                            (onContentReady)="onContentReady($event)"
                         >
                             <!-- <dxo-scrolling mode="standard"></dxo-scrolling> -->
                             <dxo-paging [enabled]="true" [pageSize]="20"></dxo-paging>
@@ -553,9 +552,10 @@
                                 <dxi-item location="before" locateInMenu="auto">
                                     <div *dxTemplate>
                                     <div style="display: flex; align-items: center; gap: 15px;">
-
+                                       
+                                        
                                          <!-- Select-box para agrupamiento -->
-                                         <label class="lb-filter" style="margin: 0 8px 0 0;">{{ 'GroupBy' | localize }}:</label>
+                                         <label class="lb-filter" style="margin: 0 0px 0 0;">{{ 'GroupBy' | localize }}:</label>
                                          <dx-select-box
                                          width="225"
                                          [items]="groupingValues"
@@ -571,15 +571,15 @@
                                         placeholder="Buscar..."
                                         [value]="searchValue"
                                         (onValueChanged)="onSearch($event)"
-                                        width="200">
+                                        width="150">
                                         </dx-text-box>
 
+                                        <!-- Botón de actualización quitamos el texto [text]="'Search' | localize" -->
                                         <dx-button
-                                            stylingMode="contained"
-                                            [text]="'Search' | localize"
+                                            stylingMode="contained"                                            
                                             icon="search"
                                             type="normal"
-                                            [width]="120"
+                                            [width]="30"
                                             (click)="refresh()"
                                             class="dx-button-ml"
                                         >
@@ -588,11 +588,11 @@
                                     </div>
                                 </dxi-item>
 
-                                <dxi-item label="" [colSpan]="2">
+                                <!-- <dxi-item label="" [colSpan]="2">
                                     <div *dxTemplate>
                                        
                                     </div>
-                                </dxi-item>
+                                </dxi-item> -->
                                 
                                 <!--Combo de colores-->
                                 <dxi-item [label]="{ text: 'Color' }" [colSpan]="3">
@@ -667,12 +667,13 @@
                                 <dxi-item location="after" locateInMenu="never">
                                     <div *dxTemplate>
                                         <dx-button
-                                        text="Aplicar Color"
+                                        text="Aplicar Rango"
                                         stylingMode="contained"
                                         type="normal"
                                         icon="palette"                                        
                                         class="dx-button-ml"
-                                        (click)="updateSelectedColors()">
+                                        (click)="updateSelectedColors()"
+                                        [disabled]="!enabledEditInfo">
                                     </dx-button>
                                     </div>
                                 </dxi-item>
@@ -680,7 +681,7 @@
                              <dxi-item location="after" locateInMenu="always">                                    
                                 <div *dxTemplate>
                                     <dx-button aline="left"
-                                        text="Enviar correo a Todos"
+                                        text="Enviar Todos"
                                         stylingMode="contained"
                                         type="normal"                                            
                                         icon="email"
@@ -795,7 +796,7 @@
 
                             <!-- Otras columnas -->
                             <dxi-column
-                                [caption]="'' | localize"
+                                [caption]="'Rango' | localize"
                                 dataField="creationDate"
                                 [fixed]="true"
                                 fixedPosition="left"
@@ -855,7 +856,7 @@
                             </dxi-column>                                 
                         
                           <dxi-column                                   
-                            [caption]="'' | localize"     
+                            [caption]="'Comments' | localize"     
                             dataField="ExistComment"
                             [fixed]="true"
                             fixedPosition="left"
@@ -874,7 +875,8 @@
                           </div>
                         
                             <!-- Sumatoria al pie de la tabla -->
-                            <dxo-summary>
+                            <!-- Sumatoria por grupo -->
+                            <!-- <dxo-summary>
                                 <dxi-total-item 
                                 column="inTransitQty" 
                                 summaryType="sum" 
@@ -898,8 +900,7 @@
                                 summaryType="sum" 
                                 valueFormat="fixedPoint">
                                 </dxi-total-item>
-
-                                <!-- Sumatoria por grupo -->
+                                
                                 <dxi-group-item 
                                 column="deliveryOrder" 
                                 summaryType="sum" 
@@ -907,7 +908,7 @@
                                 displayFormat="Total: {0}">
                             </dxi-group-item>
 
-                            </dxo-summary>
+                            </dxo-summary> -->
 
                            
                         </dx-data-grid>
@@ -961,12 +962,12 @@
         [document]="documentViewerFileSelected"
         (onClose)="showDocumentViewerPopup = false"
     ></app-hotSheet-document-viewer-popup>
-
+    -->
     <app-hotSheet-comments-popup
         [showPopup]="showCommentsPopup"
         [comment]="commentSelected"
         (onClose)="showCommentsPopup = false"
-    ></app-hotSheet-comments-popup> -->
+    ></app-hotSheet-comments-popup> 
 
   
 

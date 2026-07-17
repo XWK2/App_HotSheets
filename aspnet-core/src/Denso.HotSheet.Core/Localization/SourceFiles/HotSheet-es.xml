@@ -66,7 +66,7 @@
     <text name="Delete">Eliminar</text>
     <text name="CreateNewRole">Crear nuevo rol</text>
     <text name="RoleName">Nombre de rol</text>
-    <text name="Actions">Acciones</text>
+    <text name="Actions">Editar</text>
     <text name="CouldNotCompleteLoginOperation">No se pudo completar la operación de inicio de sesión. Por favor, inténtelo de nuevo más tarde.</text>
     <text name="CouldNotValidateExternalUser">No se pudo validar el usuario externo</text>
     <text name="EditRole">Editar rol</text>
@@ -118,7 +118,7 @@
     <text name="ResetPasswordStepTwoInfo">2. Copie esta contraseña aleatoria para poder enviársela al usuario</text>
 
     <!--Denso - Hot Sheet-->
-    <text name="StarSheet" value="Hoja Estrella" />
+    <text name="StarSheet" value="Hoja de Estrellas" />
     <text name="HotSheet" value="Hot Sheet" />
     <text name="Catalogs" value="Catálogos" />
     <text name="Carriers" value="Transportistas" />
@@ -378,8 +378,16 @@
     <text name="Currency" value="Moneda" />
     <text name="Survey" value="Encuesta" />
     <text name="Surveys" value="Encuestas" />
-    <text name="HotSheets" value="Hot Sheet" />
-    <text name="StarSheets" value="Hojas Estrellas" />
+    <text name="HotSheets" value="Hot Sheet Almacen" />
+    <text name="ImportExports" value="Hot Sheet Import" />
+    <text name="Help" value="Ayuda" />
+    <text name="TotalPendingHS" value="Materiales pendientes de entrada - Almacen" />
+    <text name="TotalPendingIE" value="Materiales pendientes de importación – I/E" />
+    <text name="TotaEstatusDeptos" value="Estatus por departamento" />
+    <text name="Open" value="Abierto" />
+    <text name="Closed" value="Cerrado" />
+    
+    <text name="StarSheets" value="Hojas de Estrellas" />
     <text name="AnswerSurvey" value="Contestar Encuesta" />
     <text name="SurveyTitle" value="Encuesta de satisfacción del usuario" />
     <text name="SurveySubTitle" value="Por favor ayúdenos a mejorar nuestro servicio respondiendo esta breve encuesta" />     
@@ -531,17 +539,17 @@
     <text name="PartNumber" value="Número de Parte"/>
     <text name="PartNumberHS" value="P/N"/>
     <text name="PartNumberCodeHS" value="Código"/>
-    <text name="PartDescriptionHS" value="Descripcion"/>
-    <text name="InTransitQty" value="Cantidad en Tránsito"/>
+    <text name="PartDescriptionHS" value="Descripción"/>
+    <text name="InTransitQty" value="Material en Tránsito"/>
     <text name="DiaStockIn" value="Inventario DIA"/>
-    <text name="DiaLocation" value="Ubicacion"/>
-    <text name="CIGMAReceived" value="Recibido por CIGMA"/>
-    <text name="TransportMode" value="Método Transporte"/>
+    <text name="DiaLocation" value="Ubicación en DIA"/>
+    <text name="CIGMAReceived" value="Recibido en CIGMA"/>
+    <text name="TransportMode" value="Método de Transporte"/>
     <text name="TransportModeId" value="Id"/>
     <text name="TransportModeName" value="Nombre"/>
-    <text name="DeliveryOrder" value="Orden Entrega"/>
-    <text name="TrafficContainerFX" value="Contenedor Tráfico FX"/>
-    <text name="UnitNumber" value="Número de Caja"/>
+    <text name="DeliveryOrder" value="Orden de Entrega"/>
+    <text name="TrafficContainerFX" value="Contenedor Tráfico FedEx"/>
+    <text name="UnitNumber" value="Número de Trailer"/>
     <text name="EtaDNMX" value="ETA DNMX"/>
     <text name="Status" value="Estatus" />
     <text name="StatusId" value="Id"/>
@@ -557,10 +565,10 @@
     <text name="SendStarSheetToHotSheet" value="Hot Sheets Enviadas, Satisfactoriamente"/>
 
     <text name="SendToIE" value="Enviar a IE"/>
-    <text name="ImportExport" value="Import Export"/>
+    <text name="ImportExport" value="Hot Sheet Import "/>
     
-    <text name="PurchaseOrder" value="Orden de Compra"/>
-    <text name="PurchaseOrders" value="Ordenes de Compra"/>
+    <text name="PurchaseOrder" value="Órden de Compra"/>
+    <text name="PurchaseOrders" value="Órdenes de Compra"/>
     <text name="Qty" value="Cantidad"/>
     <text name="RequiredDate" value="Fecha Requerida"/>
     <text name="Ticket" value="Boleta"/>
@@ -571,9 +579,17 @@
     <text name="CompletedManually" value="Completado Manualmente"/>
     <text name="AgregarPO" value="Añadir PO"/>
     <text name="Schedule" value="Agenda" />
-    <text name="ADate" value="Arrival Date" />
+    <text name="ADate" value="Fecha de llegada" />
     <text name="RCVD" value="Recibido en CIGMA" />
+    <text name="OrderQty" value="Cantidad de Orden" />
+    <text name="DelQty" value="Cantidad Entrega" />
     <text name="Rango" value="Rango" />
-    
+    <text name="Container" value="Contenedor" />
+    <text name="ReceivedQty" value="Cantidad recibida" />
+    <text name="DueDate" value="Fecha de Vencimiento" />
+    <text name="Item" value="Item" />
+    <text name="Notas" value="Notas" />
+    <text name="Acciones" value="Editar" />
   </texts>
 </localizationDictionary>
+

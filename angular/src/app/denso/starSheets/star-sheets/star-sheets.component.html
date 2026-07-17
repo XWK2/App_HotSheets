@@ -2,7 +2,7 @@
     <section class="content-header">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-2">
+                <div class="col-6">
                     <h1 class="denso-page-title"><i class="fa-solid fa-square-poll-vertical"></i>&nbsp;{{ 'StarSheets' | localize }}</h1>
                 </div>
                
@@ -44,16 +44,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body grid-content" [busy]="isTableLoading">                      
-                        <dx-button
-                        stylingMode="contained"
-                        [text]="'UpdateInformation' | localize"
-                        icon="refresh"
-                        type="default"
-                        [width]="220"
-                        class="dx-button-ml"
-                        (click)="wsPortalShippingUpdateStarSheets()"                        
-                    >
-                    </dx-button>
+                       
                         <!-- <div class="leyenda-colores">
                             <span class="color-cuadro" style="background-color: #fafbfd;"></span> Hoy                            
                             <span class="color-cuadro" style="background-color: #FFF59D;"></span> Ayer
@@ -445,6 +436,16 @@
                                 <dxi-item location="before" locateInMenu="auto">
                                     <div *dxTemplate>
                                     <div style="display: flex; align-items: center; gap: 15px;">
+                                         <dx-button
+                                            stylingMode="contained"
+                                            [text]="'UpdateInformation' | localize"
+                                            icon="refresh"
+                                            type="default"
+                                            [width]="220"
+                                            class="dx-button-ml"
+                                            (click)="wsPortalShippingUpdateStarSheets()"                        
+                                        >
+                                        </dx-button>
 
                                          <!-- Select-box para agrupamiento -->
                                          <label class="lb-filter" style="margin: 0 8px 0 0;">{{ 'GroupBy' | localize }}:</label>
@@ -623,12 +624,12 @@
                           </div> -->
                         
                             <!-- Sumatoria al pie de la tabla -->
-                            <dxo-summary>
-                                <dxi-total-item 
+                             <dxo-summary> 
+                                <!-- <dxi-total-item 
                                 column="inTransitQty" 
                                 summaryType="sum" 
                                 valueFormat="fixedPoint">
-                                </dxi-total-item>
+                                </dxi-total-item> -->
 
                                 <!-- <dxi-total-item 
                                 column="diaStockIn" 
@@ -649,12 +650,12 @@
                                 </dxi-total-item> -->
 
                                 <!-- Sumatoria por grupo -->
-                                <dxi-group-item 
+                                <!-- <dxi-group-item 
                                 column="deliveryOrder" 
                                 summaryType="sum" 
                                 valueFormat="fixedPoint" 
-                                displayFormat="Total: {0}">
-                            </dxi-group-item>
+                                displayFormat="Total: {0}"> -->
+                            <!-- </dxi-group-item> -->
 
                             </dxo-summary>
 

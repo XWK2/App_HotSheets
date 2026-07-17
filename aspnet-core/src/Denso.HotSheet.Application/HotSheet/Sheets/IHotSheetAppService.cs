@@ -18,6 +18,8 @@ namespace Denso.HotSheet.Sheets
         Task<DashboardKpiDto> GetDashboard(GetDashboardInput input);
         Task<List<HotSheetsItemDto>> GetHotSheets(GetHotSheetInput input);
 
+        Task<List<HotSheetsItemDto>> GetHotSheetsReports(GetHotSheetInput input);
+
         //Task<List<ImportExportItemDto>> GetImportExports(GetImportExportInput input);
 
         Task<List<PurchaseOrdersItemDto>> GetPurchaseOrders(GetPurchaseOrdersInput input);

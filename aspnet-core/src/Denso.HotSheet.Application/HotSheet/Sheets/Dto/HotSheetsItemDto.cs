@@ -52,5 +52,7 @@ namespace Denso.HotSheet.Sheets.Dto
 
         public long? emailSent { get; set; }
 
+        public string LocationStatus { get; set; }
+
     }
 }

@@ -50,6 +50,7 @@
                             (onRowPrepared)="personalizarFila($event)"
                             [groupPanel]="{ visible: true }" [grouping]="{ autoExpandAll: true }"                            
                             (onSelectionChanged)="onSelectionChanged($event)"
+                            (onContentReady)="onContentReady($event)"
                         >
                             <!-- <dxo-scrolling mode="standard"></dxo-scrolling> -->
                             <dxo-paging [enabled]="true" [pageSize]="20"></dxo-paging>
@@ -63,7 +64,7 @@
                             </dxo-selection>
                             
                             <dxo-editing mode="popup" [allowUpdating]="true" [useIcons]="true" [allowAdding]="false" [allowDeleting]="false" >
-                                <dxo-popup [title]="'HotSheetInfo' | localize" [showTitle]="true" [width]="1050" [height]="700"> 
+                                <dxo-popup [title]="'ImportExport' | localize" [showTitle]="true" [width]="1050" [height]="700"> 
                                   
                                 </dxo-popup>                                
                                 <dxo-form colCount="1">
@@ -74,7 +75,7 @@
                                             [animationEnabled]="true"                                            
                                             [swipeEnabled]="true">
                                                 
-                                                <dxi-item [title]="'HotSheet' | localize" > 
+                                                <dxi-item [title]="'ImportExport' | localize" > 
                                                     <div class="tab-content">                                       
                                                         <dx-form labelLocation="top" colCount="2">
                                                             <dxi-item [label]="{ text: 'DeliveryOrder' | localize }" [colSpan]="2">                                                        
@@ -238,6 +239,18 @@
                                                                     
                                                                 </div>
                                                                 <dxi-validation-rule type="required"></dxi-validation-rule>
+                                                            </dxi-item>
+                                                            <dxi-item [label]="{ text: 'Location Status' }" [colSpan]="1">
+                                                                <div *dxTemplate>
+                                                                    <dx-select-box
+                                                                        displayExpr="text"
+                                                                        valueExpr="value"
+                                                                        [(value)]="hotSheetChanges.locationStatus"
+                                                                        [items]="locationStatusOptions"
+                                                                        [searchEnabled]="true"
+                                                                        [readOnly]="!canEditField('locationStatus')">
+                                                                    </dx-select-box>
+                                                                </div>
                                                             </dxi-item>
 
                                                             <dxi-item [label]="{ text: 'Color' }" [colSpan]="2">
@@ -666,12 +679,13 @@
                             <dxi-item location="after" locateInMenu="auto">
                                 <div *dxTemplate>
                                     <dx-button
-                                    text="Aplicar Color"
+                                    text="Aplicar Rango"
                                     stylingMode="contained"
                                     type="normal"
                                     icon="palette"
                                     class="dx-button-ml"
-                                    (click)="updateSelectedColors()">
+                                    (click)="updateSelectedColors()"
+                                    [disabled]="!enabledEditInfo">
                                 </dx-button>
                                 </div>
                             </dxi-item>
@@ -745,7 +759,7 @@
 
                             <!-- Otras columnas -->
                             <dxi-column
-                                [caption]="'' | localize"
+                                [caption]="'Rango' | localize"
                                 dataField="creationDate"
                                 [fixed]="true"
                                 fixedPosition="left"
@@ -805,7 +819,7 @@
                             </dxi-column>                                 
                         
                           <dxi-column                                   
-                            [caption]="'' | localize"     
+                            [caption]="'Comments' | localize"     
                             dataField="ExistComment"
                             [fixed]="true"
                             fixedPosition="left"
@@ -824,7 +838,8 @@
                           </div>
                         
                             <!-- Sumatoria al pie de la tabla -->
-                            <dxo-summary>
+                            <!-- Sumatoria por grupo -->
+                            <!-- <dxo-summary>
                                 <dxi-total-item 
                                 column="inTransitQty" 
                                 summaryType="sum" 
@@ -848,8 +863,7 @@
                                 summaryType="sum" 
                                 valueFormat="fixedPoint">
                                 </dxi-total-item>
-
-                                <!-- Sumatoria por grupo -->
+                                
                                 <dxi-group-item 
                                 column="deliveryOrder" 
                                 summaryType="sum" 
@@ -857,7 +871,7 @@
                                 displayFormat="Total: {0}">
                             </dxi-group-item>
 
-                            </dxo-summary>
+                            </dxo-summary> -->
 
                            
                         </dx-data-grid>

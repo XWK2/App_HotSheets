@@ -41,6 +41,14 @@ export class ImportExportsComponent extends AppComponentBase implements OnInit {
         { text: 'Incomplete', value: 0 }
       ];
     
+    locationStatusOptions = [
+        { value: 'AT_DENSO', text: 'Denso - At Denso' },
+        { value: 'AT_SEGROVE', text: 'Segrove - At Segrove' },
+        { value: 'AT_AIRPORT', text: 'Aeropuerto - At Airport' },
+        { value: 'IN_TRANSIT', text: 'En Tránsito - In Transit' },
+        { value: 'AT_MANZANILLO', text: 'Manzanillo - At Manzanillo' }
+    ];
+
     statusSelected: string = 'completado';
 
     //statusSelected: string | null = null;
@@ -231,6 +239,24 @@ export class ImportExportsComponent extends AppComponentBase implements OnInit {
         this.isIEUser = this.permission.isGranted('Pages.ImportExports.IE');
     }
 
+     onContentReady(e: any): void {
+
+        const headerCell = document.querySelector(
+            '.dx-datagrid-headers .dx-command-select'
+        );
+
+        if (headerCell && !headerCell.querySelector('.item-caption')) {
+
+            const span = document.createElement('span');
+            span.className = 'item-caption';
+            span.innerText = this.l('Item');
+            span.style.marginLeft = '8px';
+            span.style.fontWeight = '600';
+
+            headerCell.appendChild(span);
+        }
+    }
+    
     public onInitNewRow(event: any): void {
         this.hotSheetChanges = new HotSheetsDto();
     }
@@ -253,6 +279,7 @@ export class ImportExportsComponent extends AppComponentBase implements OnInit {
             this.hotSheetChanges.realShortageDate = newhotSheet.realShortageDate;                
             this.hotSheetChanges.shortage = newhotSheet.shortage;
             this.hotSheetChanges.completedManually = newhotSheet.completedManually;
+            this.hotSheetChanges.locationStatus = newhotSheet.locationStatus;
 
             this.hotSheetChanges.typeColor = this.getColorFromCode(newhotSheet.typeColor);
             // const shortage = newhotSheet.shortage;            
@@ -451,7 +478,8 @@ export class ImportExportsComponent extends AppComponentBase implements OnInit {
             'transportModeId',
             'statusId',
             'etaDNMX',
-            'completedManually'
+            'completedManually',
+            'locationStatus'
         ];
 
         return allowed.includes(field);
@@ -703,6 +731,11 @@ export class ImportExportsComponent extends AppComponentBase implements OnInit {
        updateSelectedColors(): void {
 
             console.log('ANTES DE GUARDAR oki:', this.selectedRows);
+
+            if (!this.enabledEditInfo) {
+                this.notify.warn('No tiene permisos para cambiar rangos');
+                return;
+            }
 
             if (!(this.selectedRows && this.selectedRows.length > 0)) {
                 this.notify.warn('Selecciona al menos un registro');

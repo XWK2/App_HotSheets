@@ -44,7 +44,10 @@
 </div> -->
 
 <div class="card-body chart-container" id="chart-wh">
-
+    <div class="text-center mt-2">
+        <!-- <strong>Total pendientes HS: {{ getTotal(dashboard.wh) }}</strong> -->
+        <strong>{{ l('TotalPendingHS') }}: {{ getTotal(dashboard.wh) }}</strong>
+    </div>
     <ng-container *ngIf="showCharts">
    
         <dx-pie-chart
@@ -80,9 +83,7 @@
         </dx-pie-chart>
 
  </ng-container>
-<div class="text-center mt-2">
-    <strong>Total pendientes HS: {{ getTotal(dashboard.wh) }}</strong>
-</div>
+
 
 </div>
 </div>
@@ -105,7 +106,10 @@
 </div> -->
 
 <div class="card-body chart-container" id="chart-ie">
-
+    <div class="text-center mt-2">
+        <!-- <strong>Total pendientes IE: {{ getTotal(dashboard.ie) }}</strong> -->
+        <strong>{{ l('TotalPendingIE') }}: {{ getTotal(dashboard.ie) }}</strong>
+    </div>
     <ng-container *ngIf="showCharts">
         <dx-pie-chart
                 [dataSource]="dashboard.ie"
@@ -136,9 +140,7 @@
         </dx-pie-chart>
     </ng-container>
 
-<div class="text-center mt-2">
-    <strong>Total pendientes IE: {{ getTotal(dashboard.ie) }}</strong>
-</div>
+
 </div>
 </div>
 </div>
@@ -162,15 +164,17 @@
 </div> -->
 
 <div class="card-body chart-container" id="chart-status">
-
+    <div class="text-center mt-2">        
+        <strong>{{ l('TotaEstatusDeptos') }}</strong>
+    </div>
      <ng-container *ngIf="showCharts">
         <dx-chart [dataSource]="dashboard.status" [animation]="animationConfig">
 
-        <dxi-series name="Abierto" valueField="abierto" argumentField="area" type="stackedBar" color="#ff4d4d">
+        <dxi-series  [name]="l('Open')" valueField="abierto" argumentField="area" type="stackedBar" color="#ff4d4d">
             <dxo-label [visible]="true" position="inside"></dxo-label>
         </dxi-series>
 
-        <dxi-series name="Cerrado" valueField="cerrado" argumentField="area" type="stackedBar" color="#28a745">
+        <dxi-series  [name]="l('Closed')" valueField="cerrado" argumentField="area" type="stackedBar" color="#28a745">
             <dxo-label [visible]="true" position="inside"></dxo-label>
         </dxi-series>
 
