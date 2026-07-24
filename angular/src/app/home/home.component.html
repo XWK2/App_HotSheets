@@ -53,7 +53,8 @@
         <dx-pie-chart
             [dataSource]="dashboard.wh"
             [diameter]="0.7"
-            [animation]="animationConfig">
+            [animation]="animationConfig"
+            [customizePoint]="customizePoint">
 
         <dxi-series argumentField="label" valueField="total">
             <!-- <dxo-label [visible]="true" position="columns" [customizeText]="customizePieLabel">
@@ -114,7 +115,8 @@
         <dx-pie-chart
                 [dataSource]="dashboard.ie"
                 [diameter]="0.7"
-                [animation]="animationConfig">
+                [animation]="animationConfig"
+                [customizePoint]="customizePoint">
 
             <dxi-series argumentField="label" valueField="total">
                 <dxo-label
@@ -168,7 +170,16 @@
         <strong>{{ l('TotaEstatusDeptos') }}</strong>
     </div>
      <ng-container *ngIf="showCharts">
+        <div class="d-flex justify-content-around mb-2">
+            <strong>WH</strong>
+            <strong>I/E</strong>
+        </div>
         <dx-chart [dataSource]="dashboard.status" [animation]="animationConfig">
+
+        <!-- Oculta la etiquetas verticales de los titulos en el pie de cada grid y en su lugar agregamos labels horizontales -->
+        <dxo-argument-axis>
+            <dxo-label [visible]="false"></dxo-label>
+        </dxo-argument-axis>
 
         <dxi-series  [name]="l('Open')" valueField="abierto" argumentField="area" type="stackedBar" color="#ff4d4d">
             <dxo-label [visible]="true" position="inside"></dxo-label>
@@ -179,6 +190,8 @@
         </dxi-series>
 
         </dx-chart>
+     
+
      </ng-container>
 
 

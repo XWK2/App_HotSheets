@@ -122,13 +122,28 @@ export class HomeComponent extends AppComponentBase implements OnInit {
 
     getColor(type: string): string {
         switch (type) {
-            case 'A+': return '#ff0000';
-            case 'A': return '#ff7f00';
-            case 'B': return '#ffd700';
-            case 'C': return '#28a745';
-            default: return '#999';
+             case 'A+':
+            return '#d50000';
+
+        case 'A':
+            return '#ff1f1f';
+
+        case 'B':
+            return '#f68b38';
+
+        case 'C':
+            return '#4caf50';
+
+        default:
+            return '#bdbdbd';
         }
     }
+    
+    customizePoint = (pointInfo: any) => {
+        return {
+            color: pointInfo.data.color
+        };
+    };
 
     customizePieLabel = (arg: any) => `${arg.valueText}`;
 

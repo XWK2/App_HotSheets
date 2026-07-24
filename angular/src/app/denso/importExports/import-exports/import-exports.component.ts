@@ -480,6 +480,10 @@ export class ImportExportsComponent extends AppComponentBase implements OnInit {
             'etaDNMX',
             'completedManually',
             'locationStatus'
+            ,'realShortageDate'
+            ,'shortageShiftId'
+            ,'shortage'
+            
         ];
 
         return allowed.includes(field);

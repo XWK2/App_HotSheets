@@ -388,7 +388,7 @@
     <text name="Currency" value="Currency" />    
     <text name="Survey" value="Survey" />
     <text name="Surveys" value="Surveys" />
-    <text name="HotSheets" value="Hot Sheets Warehouse" />
+    <text name="HotSheets" value="Hot Sheet Warehouse" />
     <text name="StarSheets" value="Star Sheet" />
     <text name="AnswerSurvey" value="Answer Survey" />
     <text name="SurveyTitle" value="User Satisfaction Survey" />
